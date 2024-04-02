@@ -1,0 +1,109 @@
+:root {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
+    --white: #f9f9f9;
+    --light-grey: #c8e4e7;
+    --grey: grey;
+    --green1: #2CCCD3;
+    --green2: #21979c;
+    --green3: #223C4A;
+    --black: #0e1a21;
+    --overlay: #223c4aab;
+  
+    --todo: #cffdffd7;
+    --doing: #9cfaffd5;
+    --done: #2cccd4d7;
+
+    --antracite: #424242;
+    --azul: #44a9df;
+    --verde: #5cbc6b;
+    --amarelo: #ffd758;
+    --vermelho: #ef5350;
+    --laranja: #f47d22;
+  
+    --warningMessages: #9C3B21;
+  
+    margin: 0;
+    padding: 0;
+  }
+
+.editProfilePanel {
+    display: flex;
+    flex-direction: column;
+    z-index: 2;
+    padding-left: 100px;
+    font-size: 15px;
+    text-align: left;
+    color: var(--green3);
+    border-radius: 10px;
+    width: 300px;
+    height: 30px;
+}
+
+#username-title-editProfile {
+    margin-top: 40px;
+    text-transform: uppercase;
+    font-size: 20px;
+    color: var(--green3);
+    font-weight: bold;
+    text-align: center;
+    z-index: 2;
+}
+
+.labels-edit-profile {
+    display: flex;
+    flex-direction: column;
+    z-index: 2;
+    margin-top: 20px;
+    padding-left: 5px;
+    font-size: 15px;
+    text-align: left;
+    color: var(--green3);
+    border-radius: 10px;
+    width: 200px;
+    height: 30px;
+
+}
+.editProfile-fields {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 3;
+  padding-left: 10px;
+  font-size: 13px;
+  text-align: left;
+  color: var(--green3);
+  background-color: color-mix(in srgb, var(--light-grey), transparent 10%);
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  width: 300px;
+  height: 30px;
+}
+
+.editProfile-Buttons {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    z-index: 3;
+    margin-top: 20px;
+    margin-left: 60px;
+}
+
+#profile-save-button,
+#profile-cancel-button {
+    width: 80px;
+    height: 40px;
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--white);
+    background-color: var(--green2);
+    border: solid var(--green3) 2px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+#profile-save-button:hover,
+#profile-cancel-button:hover {
+    background-color: var(--green3);
+    color: var(--white);
+}

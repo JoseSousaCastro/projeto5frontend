@@ -1,0 +1,112 @@
+:root {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  
+    --white: #f9f9f9;
+    --light-grey: #c8e4e7;
+    --grey: grey;
+    --green1: #2CCCD3;
+    --green2: #21979c;
+    --green3: #223C4A;
+    --black: #0e1a21;
+    --overlay: #223c4aab;
+  
+    --todo: #cffdffd7;
+    --doing: #9cfaffd5;
+    --done: #2cccd4d7;
+  
+    --antracite: #424242;
+    --azul: #44a9df;
+    --verde: #5cbc6b;
+    --amarelo: #ffd758;
+    --vermelho: #ef5350;
+    --laranja: #f47d22;
+  
+    --warningMessages: #9C3B21;
+  
+    margin: 0;
+    padding: 0;
+  }
+  
+  .center-container-register {
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding-top: 100px;
+      height: 360px;
+    }
+    .registerPanel-user {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 3;
+      padding: 20px;
+      font-size: 15px;
+      text-align: center;
+      color: var(--green3);
+      background-color: color-mix(in srgb, var(--light-grey), transparent 10%);
+      border-radius: 10px;
+      max-width: 500px;
+      width: 100%;
+      height: 300px;
+      height: 100%;
+    }
+    #logo-register {
+      margin-block: 20px;
+      max-width: 250px;
+      height: auto;
+    }
+    .inputs-register {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+    .left-inputs,
+    .right-inputs {
+        width: 200px;
+        margin: 0 10px;
+    }
+    
+    .inputRegister-fields {
+      margin-bottom: 15px;
+      padding: 5px;
+      width: 100%;
+      height: 25px;
+      border: var(--green3) 1px solid;
+      border-top-right-radius: 5px;
+      border-top-left-radius: 5px;
+    }
+    .submitButton {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    #registerButton-register {
+      width: 150px;
+      height: 32px;
+      text-transform: uppercase;
+      font-size: 12px;
+      font-weight: bold;
+      background-color: var(--done);
+      color: var(--green3);
+      border-radius: 5px;
+      transition: background-color 0.3s, color 0.3s;
+      cursor: pointer;
+    }
+    #registerButton-register:hover {
+      background-color: var(--green3);
+      color: var(--green1);
+    }
+    .registerPanel ::placeholder {
+      color: var(--green2);
+    }
+    .registerPanel :focus::placeholder {
+      opacity: 0.5;
+    }
+    .registerPanel input[type="text"] {
+      color: var(--green3);
+    }
+  
