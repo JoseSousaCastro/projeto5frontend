@@ -23,9 +23,11 @@ function EditTask() {
         category: null,
     });
 
-    const [selectedCategory, setSelectedCategory] = useState(null);
+    const [selectedCategory, setSelectedCategory] = useState(taskDetails.category);
     const [stateId, setStateId] = useState("");
     const [priority, setPriority] = useState("");
+
+    console.log("selected category", selectedCategory);
 
     useEffect(() => {
         if (task) {
@@ -75,7 +77,7 @@ function EditTask() {
             console.error("Error: Only the task owner can edit this task.");
                 return;
             }
-            const response = await fetch(`http://localhost:8080/project5/rest/users/updatetask/${taskId}`, {
+            const response = await fetch(`http://localhost:8080/project_backend/rest/users/updatetask/${taskId}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -163,7 +165,7 @@ function EditTask() {
                             <h4 className="taskH4">Category</h4>
                         </div>
                         <div className="div-dropdown">
-                            <select id="task-category-edit" name="category" value={taskDetails.category} onChange={handleInputChange} required >
+                            <select id="task-category-edit" name="category" value={selectedCategory} onChange={handleInputChange} required >
                                 <option value="" disabled>
                                     Choose an option
                                 </option>
