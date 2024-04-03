@@ -35,7 +35,7 @@ export const taskStore = create(
 
             fetchTasks: async () => {
                 try {
-                    const response = await fetch("http://localhost:8080/project_backend/rest/users/tasks", {
+                    const response = await fetch("http://localhost:8080/project5/rest/users/tasks", {
                         method: "GET",
                         headers: {
                             "Content-Type": "application/json",

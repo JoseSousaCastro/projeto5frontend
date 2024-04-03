@@ -62,7 +62,7 @@ function AddTask() {
         console.log("newTask", newTask)
 
         try {
-            const response = await fetch(`http://localhost:8080/project_backend/rest/users/${username}/addTask`, {
+            const response = await fetch(`http://localhost:8080/project5/rest/users/${username}/addTask`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

@@ -14,7 +14,7 @@ export default function UserCard({ user }) {
 
     const handleEraseUser = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/project_backend/rest/users/update/${username}/visibility`, {
+            const response = await fetch(`http://localhost:8080/project5/rest/users/update/${username}/visibility`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -37,7 +37,7 @@ export default function UserCard({ user }) {
 
     const handleDeleteUser = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/project_backend/rest/users/${username}`, {
+            const response = await fetch(`http://localhost:8080/project5/rest/users/${username}`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",
@@ -60,7 +60,7 @@ export default function UserCard({ user }) {
 
     const handleRestoreUser = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/project_backend/rest/users/update/${username}/visibility`, {
+            const response = await fetch(`http://localhost:8080/project5/rest/users/update/${username}/visibility`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",

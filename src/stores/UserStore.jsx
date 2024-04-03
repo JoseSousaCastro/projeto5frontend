@@ -32,7 +32,7 @@ export const userStore = create(
 
             fetchUsers: async () => {
                 try {
-                    const response = await fetch("http://localhost:8080/project_backend/rest/users/all", {
+                    const response = await fetch("http://localhost:8080/project5/rest/users/all", {
                         method: "GET",
                         headers: {
                             "Content-Type": "application/json",

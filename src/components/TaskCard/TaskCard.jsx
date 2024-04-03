@@ -46,7 +46,7 @@ export default function TaskCard({ task }) {
 
     const handleEraseTask = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/project_backend/rest/users/${taskId}`, {
+            const response = await fetch(`http://localhost:8080/project5/rest/users/${taskId}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -68,7 +68,7 @@ export default function TaskCard({ task }) {
 
     const handleDeleteTask = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/project_backend/rest/users/delete/${taskId}`, {
+            const response = await fetch(`http://localhost:8080/project5/rest/users/delete/${taskId}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -90,7 +90,7 @@ export default function TaskCard({ task }) {
 
     const handleRestoreTask = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/project_backend/rest/users/${taskId}`, {
+            const response = await fetch(`http://localhost:8080/project5/rest/users/${taskId}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",

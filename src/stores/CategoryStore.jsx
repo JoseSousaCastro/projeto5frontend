@@ -36,7 +36,7 @@ export const categoryStore = create(
             },
             fetchCategories: async () => {
                 try {
-                    const response = await fetch("http://localhost:8080/project_backend/rest/users/categories", {
+                    const response = await fetch("http://localhost:8080/project5/rest/users/categories", {
                         method: "GET",
                         headers: {
                             "Content-Type": "application/json",

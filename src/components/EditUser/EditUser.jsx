@@ -16,7 +16,7 @@ function EditUser() {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/project_backend/rest/users/${username}`, {
+                const response = await fetch(`http://localhost:8080/project5/rest/users/${username}`, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",
@@ -44,7 +44,7 @@ function EditUser() {
 
         try {
             const response = await fetch(
-                `http://localhost:8080/project_backend/rest/users/update/${username}`,
+                `http://localhost:8080/project5/rest/users/update/${username}`,
                 {
                     method: "PUT",
                     headers: {

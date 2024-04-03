@@ -46,7 +46,7 @@ function Login() {
         };
 
         try {
-            const response = await fetch("http://localhost:8080/project_backend/rest/users/login", {
+            const response = await fetch("http://localhost:8080/project5/rest/users/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -71,7 +71,7 @@ function Login() {
 
                 // Fetch das categorias e armazenamento na store de categorias
                 try {
-                    const responseCategories = await fetch("http://localhost:8080/project_backend/rest/users/categories", {
+                    const responseCategories = await fetch("http://localhost:8080/project5/rest/users/categories", {
                         method: "GET",
                         headers: {
                             "Content-Type": "application/json",

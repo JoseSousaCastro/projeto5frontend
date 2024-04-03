@@ -30,7 +30,7 @@ function Register() {
         };
         
         try {
-            const response = await fetch("http://localhost:8080/project_backend/rest/users/register", {
+            const response = await fetch("http://localhost:8080/project5/rest/users/register", {
                 method: "POST",
         headers: {
           "Content-Type": "application/json",

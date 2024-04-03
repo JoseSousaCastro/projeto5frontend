@@ -23,7 +23,7 @@ function TasksAside() {
 
         const username = selectedUser;
         try {
-            const response = await fetch(`http://localhost:8080/project_backend/rest/users/${username}/tasks` , {
+            const response = await fetch(`http://localhost:8080/project5/rest/users/${username}/tasks` , {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -49,7 +49,7 @@ function TasksAside() {
 
         const category = selectedCategory;
         try {
-            const response = await fetch(`http://localhost:8080/project_backend/rest/users/tasks/${category}` , {
+            const response = await fetch(`http://localhost:8080/project5/rest/users/tasks/${category}` , {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -74,7 +74,7 @@ function TasksAside() {
 
         const username = selectedUser;
         try {
-            const response = await fetch(`http://localhost:8080/project_backend/rest/users/eraseAllTasks/${username}` , {
+            const response = await fetch(`http://localhost:8080/project5/rest/users/eraseAllTasks/${username}` , {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",

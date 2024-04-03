@@ -27,7 +27,7 @@ function CategoriesAside() {
         }
         try {
             console.log({ name: newCategoryName });
-            const response = await fetch('http://localhost:8080/project_backend/rest/users/newCategory/', {
+            const response = await fetch('http://localhost:8080/project5/rest/users/newCategory/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -72,7 +72,7 @@ function CategoriesAside() {
         }
     
         try {
-            const response = await fetch(`http://localhost:8080/project_backend/rest/users/editCategory/${selectedEditCategory}`, {
+            const response = await fetch(`http://localhost:8080/project5/rest/users/editCategory/${selectedEditCategory}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -106,7 +106,7 @@ function CategoriesAside() {
             return;
         }
         try {
-            const response = await fetch(`http://localhost:8080/project_backend/rest/users/deleteCategory/${selectedDeleteCategory}`, {
+            const response = await fetch(`http://localhost:8080/project5/rest/users/deleteCategory/${selectedDeleteCategory}`, {
                 method: 'DELETE',
                 headers: {
                     token: token,

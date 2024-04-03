@@ -39,7 +39,7 @@ function TasksMain() {
         console.log("token:", token);
     
         // Atualizar o stateId da tarefa no servidor
-        fetch(`http://localhost:8080/project_backend/rest/users/tasks/${taskId}/${newStateId}`, {
+        fetch(`http://localhost:8080/project5/rest/users/tasks/${taskId}/${newStateId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',

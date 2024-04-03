@@ -45,7 +45,7 @@ function UsersAside() {
 
     const handleTypeOfUser = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/project_backend/rest/users/update/${username}/role`, {
+            const response = await fetch(`http://localhost:8080/project5/rest/users/update/${username}/role`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
