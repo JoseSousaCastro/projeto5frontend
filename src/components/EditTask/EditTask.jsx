@@ -75,7 +75,19 @@ function EditTask() {
         }
     };
 
+    const handlestateClick = (stateId) => {
+        setStateId(stateId);
+        console.log("stateId", stateId);
+        setTaskDetails({ ...taskDetails, stateId: stateId });
+    };
+    
+    const handlePriorityClick = (priority) => {
+        setPriority(priority);
+        setTaskDetails({ ...taskDetails, priority: priority });
+    };
+
     const handleSaveTask = async () => {
+        console.log("taskDetails", taskDetails);
         try {
             // Verifica se o usuário é proprietário da tarefa
             if (typeOfUser === 100 && task.ownerId !== userStore((state) => state.userId)) {
@@ -94,7 +106,7 @@ function EditTask() {
             });
 
             if (response.ok) {
-                fetchTasks();
+                await fetchTasks();
                 navigate("/home", { replace: true });
             } else {
                 const responseBody = await response.text();
@@ -105,13 +117,7 @@ function EditTask() {
         }
     };
 
-    const handlestateClick = (stateId) => {
-        setStateId(stateId);
-    };
-    
-    const handlePriorityClick = (priority) => {
-        setPriority(priority);
-    };
+
 
     return (
         <div className="edit-task">
