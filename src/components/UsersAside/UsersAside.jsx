@@ -10,6 +10,7 @@ function UsersAside() {
     const [selectedUser, setSelectedUser] = useState("");
     const [selectedTypeOfUser, setSelectedTypeOfUser] = useState("");
     const [username, setUsername] = useState(""); 
+    const [updatedTypeOfUser, setUpdatedTypeOfUser] = useState(""); // Tipo de usuário atualizado localmente
 
     const token = userStore((state) => state.token);
 
@@ -30,34 +31,42 @@ function UsersAside() {
         if (selectedUserObj && selectedUserObj.typeOfUser) {
             setSelectedTypeOfUser(selectedUserObj.typeOfUser);
             setUsername(selectedUserObj.username);
+        } else {
+            setSelectedTypeOfUser("");
+            setUsername("");
         }
     }, [selectedUser, users]);
 
     const handleUserSelect = (selectField) => {
         const newUsername = selectField[selectField.selectedIndex].value;
-    
         setSelectedUser(newUsername);
         const selectedUserObj = users.find(user => user.username === newUsername);
-
         setUsername(selectedUserObj.username);
-
-        console.log("selected user", selectedUserObj);
-        console.log("selected type of user", selectedTypeOfUser);
-        console.log("selected username", newUsername);
+        setUpdatedTypeOfUser(selectedUserObj.typeOfUser); // Atualizar o tipo de usuário localmente
+        console.log("Selected user:", selectedUserObj);
     };
     
+    // Função para atualizar o tipo de usuário quando um botão de função de usuário é clicado
+    const handleRoleButtonClick = (typeOfUser) => {
+        setUpdatedTypeOfUser(typeOfUser);
+        console.log("Updated type of user:", typeOfUser);
+    };
 
-    const handleTypeOfUser = async (typeOfUser) => {
+    // Função para enviar a atualização do tipo de usuário para o backend
+    const handleTypeOfUser = async () => {
         try {
+            console.log("username:", username);
+            console.log("Updating user role:", updatedTypeOfUser);
+            console.log("Token:", token);
             const response = await fetch(`http://localhost:8080/project5/rest/users/update/${username}/role`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
                     token: token,
-                    role: typeOfUser
+                    typeOfUser: updatedTypeOfUser // Enviar o tipo de usuário atualizado como cabeçalho
                 },
                 body: JSON.stringify({
-                    role: typeOfUser
+                    typeOfUser: updatedTypeOfUser
                 }),
             });
             if (response.ok) {
@@ -70,7 +79,7 @@ function UsersAside() {
         } catch (error) {
             console.error("Error changing user role:", error);
         }
-    }
+    };
 
     return (
         <div>
@@ -92,11 +101,11 @@ function UsersAside() {
                         ))}
                     </select>
                     <div>
-                        <button className={`role-button developer ${selectedTypeOfUser === 100 ? "selected" : ""}`} >Developer</button>
+                        <button className={`role-button developer ${updatedTypeOfUser === 100 ? "selected" : ""}`} onClick={() => handleRoleButtonClick(100)}>Developer</button>
                         <br />
-                        <button className={`role-button scrumMaster ${selectedTypeOfUser === 200 ? "selected" : ""}`} >Scrum Master</button>
+                        <button className={`role-button scrumMaster ${updatedTypeOfUser === 200 ? "selected" : ""}`} onClick={() => handleRoleButtonClick(200)}>Scrum Master</button>
                         <br />
-                        <button className={`role-button productOwner ${selectedTypeOfUser === 300 ? "selected" : ""}`} >Product Owner</button>
+                        <button className={`role-button productOwner ${updatedTypeOfUser === 300 ? "selected" : ""}`} onClick={() => handleRoleButtonClick(300)}>Product Owner</button>
                         <br />
                     </div>
                     <div>
