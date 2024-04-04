@@ -17,30 +17,32 @@ function EditTask() {
     const [taskDetails, setTaskDetails] = useState({
         title: "",
         description: "",
+        stateId: "",
         priority: "",
         startDate: "",
         limitDate: "",
-        category: null,
+        category: "",
     });
 
     const [selectedCategory, setSelectedCategory] = useState(taskDetails.category);
     const [stateId, setStateId] = useState("");
     const [priority, setPriority] = useState("");
 
-    console.log("selected category", selectedCategory);
+    console.log("selected category inicial", selectedCategory);
 
     useEffect(() => {
         if (task) {
             setTaskDetails({
                 title: task.title || "",
                 description: task.description || "",
+                stateId: task.stateId || "",
                 priority: task.priority || "",
                 startDate: task.startDate || "",
                 limitDate: task.limitDate || "",
-                category: task.category || null,
+                category: task.category || {},
             });
-            setSelectedCategory(task.category || null);
-            setStateId(task.stateId || "");
+            setSelectedCategory(task.category || {});
+            setStateId(task.stateId || "");     
             setPriority(task.priority || "");
         }
     }, [task]);
@@ -49,8 +51,10 @@ function EditTask() {
         const { name, value } = event.target;
 
         if (name === "category") {
-            const selectedCategory = categories.find(category => category.name === value) || null;
-            setSelectedCategory(selectedCategory);
+            const newCategory = { name: value };
+            setSelectedCategory(newCategory);            
+            setTaskDetails({ ...taskDetails, category: newCategory });
+            console.log("selected category 1", newCategory);
         } else {
             setTaskDetails({ ...taskDetails, [name]: value });
         }
@@ -77,13 +81,15 @@ function EditTask() {
             console.error("Error: Only the task owner can edit this task.");
                 return;
             }
+            console.log("selected category 2", selectedCategory);
+            console.log("taskDetails", taskDetails);
             const response = await fetch(`http://localhost:8080/project5/rest/users/updatetask/${taskId}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
                     token: token,
                 },
-                body: JSON.stringify({ ...taskDetails, category: selectedCategory }),
+                body: JSON.stringify({ ...taskDetails}),
             });
 
             if (response.ok) {
@@ -165,7 +171,7 @@ function EditTask() {
                             <h4 className="taskH4">Category</h4>
                         </div>
                         <div className="div-dropdown">
-                            <select id="task-category-edit" name="category" value={selectedCategory} onChange={handleInputChange} required >
+                            <select id="task-category-edit" name="category" value={taskDetails.category ? taskDetails.category.name : ''} onChange={handleInputChange} required >
                                 <option value="" disabled>
                                     Choose an option
                                 </option>
