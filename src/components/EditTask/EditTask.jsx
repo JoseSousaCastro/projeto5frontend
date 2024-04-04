@@ -77,7 +77,7 @@ function EditTask() {
             console.error("Error: Only the task owner can edit this task.");
                 return;
             }
-            const response = await fetch(`http://localhost:8080/project_backend/rest/users/updatetask/${taskId}`, {
+            const response = await fetch(`http://localhost:8080/project5/rest/users/updatetask/${taskId}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
