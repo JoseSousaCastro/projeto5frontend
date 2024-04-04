@@ -11,6 +11,7 @@ function EditTask() {
     const { taskId } = useParams();
     const token = userStore((state) => state.token);
     const task = taskStore((state) => state.tasks.find(task => task.id === taskId));
+    const fetchTasks = taskStore((state) => state.fetchTasks);
 
     const typeOfUser = userStore((state) => state.typeOfUser);
 
@@ -93,6 +94,7 @@ function EditTask() {
             });
 
             if (response.ok) {
+                fetchTasks();
                 navigate("/home", { replace: true });
             } else {
                 const responseBody = await response.text();

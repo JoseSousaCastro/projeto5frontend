@@ -110,13 +110,34 @@
     font-size: 12px;
     font-weight: bold;
     color: var(--white);
-    background-color: var(--green2);
+    background-color: var(--green3);
     border: solid var(--green3) 2px;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
     cursor: pointer;
 }
 .filter-button:hover {
-    background-color: var(--green3);
+    background-color: var(--green2);
     color: var(--white);
+}
+
+.role-button {
+    margin-block: 10px;
+    width: 100px;
+    height: 40px;
+    text-transform: uppercase;
+    font-size: 11px;
+    font-weight: bold;
+    color: var(--green3);
+    background-color: var(--todo);
+    border: solid var(--green3) 2px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    cursor: pointer;
+    box-shadow: var(--grey) 2px 2px 5px;
+}
+.role-button.selected {
+    background-color: var(--done);
+    color: var(--green3);
+    box-shadow: var(--grey) 4px 4px 5px;
 }
