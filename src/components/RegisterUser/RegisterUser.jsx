@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../RegisterUser/RegisterUser.css";
+import { userStore } from "../../stores/UserStore";
 
 
 function RegisterUser() {
     const [inputs, setInputs] = useState({});
     const navigate = useNavigate();
-        
+    const fetchUsers = userStore((state) => state.fetchUsers);
 
     const handleChange = (event) => {
         const name = event.target.name;
@@ -38,6 +39,7 @@ function RegisterUser() {
         });
 
     if (response.ok) {
+        await fetchUsers();
         // Registro bem-sucedido
         console.log("Registo feito com sucesso!");
         navigate('/users-list', { replace: true });

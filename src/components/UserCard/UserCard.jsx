@@ -23,7 +23,7 @@ export default function UserCard({ user }) {
             });
 
             if (response.ok) {
-                fetchUsers();
+                await fetchUsers();
                 navigate("/users-list", { replace: true });
             } else {
                 const responseBody = await response.text();
@@ -46,7 +46,7 @@ export default function UserCard({ user }) {
             });
 
             if (response.ok) {
-                fetchUsers();
+                await fetchUsers();
                 navigate("/deleted-users", { replace: true });
             } else {
                 const responseBody = await response.text();
@@ -69,7 +69,7 @@ export default function UserCard({ user }) {
             });
 
             if (response.ok) {
-                fetchUsers();
+                await fetchUsers();
                 navigate("/users-list", { replace: true });
             } else {
                 const responseBody = await response.text();

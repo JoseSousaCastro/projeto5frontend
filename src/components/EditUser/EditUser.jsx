@@ -8,6 +8,7 @@ function EditUser() {
     const navigate = useNavigate();
     const { username } = useParams();
     const typeOfUser = userStore((state) => state.typeOfUser);
+    const fetchUsers = userStore((state) => state.fetchUsers);
 
     const token = userStore((state) => state.token);
 
@@ -56,6 +57,7 @@ function EditUser() {
             );
 
             if (response.ok) {
+                await fetchUsers();
                 navigate("/users-list", { replace: true });
             } else {
                 const responseBody = await response.text();

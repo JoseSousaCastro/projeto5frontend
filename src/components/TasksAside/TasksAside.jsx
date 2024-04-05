@@ -32,7 +32,7 @@ function TasksAside() {
             });
             if (response.ok) {
                 const tasks = await response.json();
-                filterTasksByUser(tasks);
+                await filterTasksByUser(tasks);
                 navigate("/home", { replace: true });
             } else {
                 const responseBody = await response.text();
@@ -58,7 +58,7 @@ function TasksAside() {
             });
             if (response.ok) {
                 const tasks = await response.json();
-                filterTasksByCategory(tasks);
+                await filterTasksByCategory(tasks);
                 navigate("/home", { replace: true });
             } else {
                 const responseBody = await response.text();
@@ -83,7 +83,7 @@ function TasksAside() {
             });
             if (response.ok) {
                 const tasks = await response.json();
-                deleteAllUserTasks(tasks);
+                await deleteAllUserTasks(tasks);
                 navigate("/home", { replace: true });
             } else {
                 const responseBody = await response.text();

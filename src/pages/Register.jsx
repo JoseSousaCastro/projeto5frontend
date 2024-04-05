@@ -41,8 +41,8 @@ function Register() {
       if (response.ok) {
         // Registro bem-sucedido
         console.log("Registo feito com sucesso!");
-        navigate('/', { replace: true });
-        updateName(inputs.username);
+        await updateName(inputs.username);
+        navigate('/', { replace: true });        
       } else {
         const responseBody = await response.text();
         console.error("Erro no registo:", response.statusText, responseBody);

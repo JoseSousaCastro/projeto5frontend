@@ -55,7 +55,7 @@ export default function TaskCard({ task }) {
             });
 
             if (response.ok) {
-                fetchTasks();
+                await fetchTasks();
                 navigate("/home", { replace: true });
             } else {
                 const responseBody = await response.text();
@@ -77,7 +77,7 @@ export default function TaskCard({ task }) {
             });
 
             if (response.ok) {
-                fetchTasks();
+                await fetchTasks();
                 navigate("/tasks-deleted", { replace: true });
             } else {
                 const responseBody = await response.text();
@@ -99,7 +99,7 @@ export default function TaskCard({ task }) {
             });
 
             if (response.ok) {
-                fetchTasks();
+                await fetchTasks();
                 navigate("/home", { replace: true });
             } else {
                 const responseBody = await response.text();

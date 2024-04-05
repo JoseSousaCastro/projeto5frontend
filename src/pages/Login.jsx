@@ -12,6 +12,7 @@ function Login() {
     const updateUserStore = userStore(state => state);
     const updateCategoryStore = categoryStore(state => state);
     const updateTaskStore = taskStore(state => state);
+    const fetchUsers = userStore(state => state.fetchUsers);
 
     const handleChange = (event) => {
         const name = event.target.name;
@@ -99,6 +100,7 @@ function Login() {
                 console.log("Tasks:", updateTaskStore.tasks);
 
                 console.log("Login feito com sucesso!");
+                await fetchUsers();
                 navigate('/home', { replace: true });
             } else {
                 const responseBody = await response.json();

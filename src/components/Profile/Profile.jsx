@@ -48,11 +48,11 @@ function Profile() {
 
             if (response.ok) {
                 const user = await response.json();
-                updateEmail(user.email);
-                updateFirstName(user.firstName);
-                updateLastName(user.lastName);
-                updatePhone(user.phone);
-                updatePhotoURL(user.photoURL);
+                await updateEmail(user.email);
+                await updateFirstName(user.firstName);
+                await updateLastName(user.lastName);
+                await updatePhone(user.phone);
+                await updatePhotoURL(user.photoURL);
 
                 navigate("/home", { replace: true });
             } else {

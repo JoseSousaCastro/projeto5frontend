@@ -36,7 +36,7 @@ function CategoriesAside() {
                 body: JSON.stringify({ name: newCategoryName }),
             });
             if (response.ok) {
-                fetchCategories();
+                await fetchCategories();
                 setNewCategoryName("");
                 setSelectedEditCategory("");
                 setEditCategoryName("");

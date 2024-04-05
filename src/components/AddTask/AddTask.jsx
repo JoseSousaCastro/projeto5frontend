@@ -72,7 +72,7 @@ function AddTask() {
             });
 
             if (response.ok) {
-                fetchTasks();                
+                await fetchTasks();                
                 navigate("/home");
             } else {
                 const responseBody = await response.text();
