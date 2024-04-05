@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { userStore } from "./UserStore";
-import { categoryStore } from "./CategoryStore";
 
 export const taskStore = create(
     persist(
@@ -52,6 +51,65 @@ export const taskStore = create(
                     }
                 } catch (error) {
                     console.error("Error fetching tasks:", error);
+                }
+            },
+
+            fetchTasksByUser: async (username) => {
+                try {
+                    const response = await fetch(`http://localhost:8080/project5/rest/users/${username}/tasks`, {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                            token: userStore.getState().token,
+                        },
+                    });
+                    if (response.ok) {
+                        const tasks = await response.json();
+                        set({ tasks });
+                    } else {
+                        console.error("Failed to fetch tasks by user:", response.statusText);
+                    }
+                } catch (error) {
+                    console.error("Error fetching tasks by user:", error);
+                }
+            },
+
+            fetchTasksByCategory: async (category) => {
+                try {
+                    const response = await fetch(`http://localhost:8080/project5/rest/users/tasks/${category}`, {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                            token: userStore.getState().token,
+                        },
+                    });
+                    if (response.ok) {
+                        const tasks = await response.json();
+                        set({ tasks });
+                    } else {
+                        console.error("Failed to fetch tasks by category:", response.statusText);
+                    }
+                } catch (error) {
+                    console.error("Error fetching tasks by category:", error);
+                }
+            },
+
+            deleteAllUserTasks: async (username) => {
+                try {
+                    const response = await fetch(`http://localhost:8080/project5/rest/users/eraseAllTasks/${username}`, {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json",
+                            token: userStore.getState().token,
+                        },
+                    });
+                    if (response.ok) {
+                        console.log("All user tasks deleted");
+                    } else {
+                        console.error("Failed to delete all user tasks:", response.statusText);
+                    }
+                } catch (error) {
+                    console.error("Error deleting all user tasks:", error);
                 }
             }
         }),

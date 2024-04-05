@@ -12,6 +12,8 @@ import RegisterUserPage from './pages/RegisterUserPage';
 import UsersDeleted from './pages/UsersDeleted';
 import UsersEditUser from './pages/UsersEditUser';
 import UsersList from './pages/UsersList';
+import TasksByUser from './pages/TasksByUser';
+import TasksByCategory from './pages/TasksByCategory';
 
 
 function App() {
@@ -29,6 +31,8 @@ function App() {
       <Route path="/deleted-users" element={<UsersDeleted />} />
       <Route path="/edit-user/:username" element={<UsersEditUser />} />
       <Route path="/users-list" element={<UsersList />} />
+      <Route path="/tasks/:username" element={<TasksByUser />} />
+      <Route path="/tasks/:category" element={<TasksByCategory />} /> 
     </Routes>
   );
 }

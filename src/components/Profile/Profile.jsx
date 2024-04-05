@@ -4,7 +4,7 @@ import { userStore } from "../../stores/UserStore";
 import { useNavigate } from "react-router-dom";
 
 function Profile() {
-    const [inputs, setInputs] = useState("");
+    const [inputs] = useState("");
     const navigate = useNavigate();
 
     const token = userStore((state) => state.token);

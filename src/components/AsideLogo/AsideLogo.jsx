@@ -1,12 +1,21 @@
 import React from "react";
 import "../AsideLogo/AsideLogo.css";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { taskStore } from "../../stores/TaskStore";
 
 function AsideLogo() {
+    const navigate = useNavigate();
+    const { fetchTasks } = taskStore();
+
+    const handleBackToHome = async () => {
+        await fetchTasks();
+        navigate("/home");
+    }
+
     return (
         <div className="aside-logo">
             <div className="div-back-home">
-                <Link to="/home" className="link-to-home">Back to tasks</Link>
+                <p to="/home" className="link-to-home" onClick={handleBackToHome}>Back to tasks</p>
             </div>
             <img src="/multimedia/symbol-05.png" id="logo-aside" width="220" alt="Agile-Scrum-logo"/>
         </div>

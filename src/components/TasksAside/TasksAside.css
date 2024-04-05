@@ -104,7 +104,6 @@
     cursor: pointer;
 }
 
-.filter-button,
 .delete-all-user-tasks {
     margin-top: 10px;
     width: 150px;
@@ -112,15 +111,22 @@
     text-transform: uppercase;
     font-size: 12px;
     font-weight: bold;
-    color: var(--white);
-    background-color: var(--green2);
+    color: var(--green3);
+    background-color: var(--green1);
     border: solid var(--green3) 2px;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
     cursor: pointer;
 }
-.filter-button:hover,
 .delete-all-user-tasks:hover {
-    background-color: var(--green3);
+    background-color: var(--green2);
     color: var(--white);
+}
+
+#filter-button {
+    color: var(--green1);
+}
+#filter-button:hover {
+    background-color: var(--green1);
+    color: var(--green3);
 }

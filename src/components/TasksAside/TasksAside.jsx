@@ -3,22 +3,44 @@ import { Link, useNavigate } from "react-router-dom";
 import "../TasksAside/TasksAside.css";
 import { userStore } from "../../stores/UserStore";
 import { categoryStore } from "../../stores/CategoryStore";
+import { taskStore } from "../../stores/TaskStore";
 
 function TasksAside() {
     const { users, typeOfUser } = userStore(); // Obtém a lista de usuários
     const { categories } = categoryStore(); // Obtém a lista de categorias
     const navigate = useNavigate();
+    const { fetchTasksByUser, fetchTasksByCategory, deleteAllUserTasks, fetchTasks } = taskStore(); // Obtém a lista de tarefas
+
 
     const [selectedUser, setSelectedUser] = useState("");
     const [selectedCategory, setSelectedCategory] = useState("");
 
-    const deleteAllUserTasks = userStore((state) => state.deleteAllUserTasks);
-    const filterTasksByUser = userStore((state) => state.filterTasksByUser);
-    const filterTasksByCategory = userStore((state) => state.filterTasksByCategory);
+    const handleFilterByUser = async () => {
+        console.log("selectedUser", selectedUser);
+        if (selectedUser) {
+            await fetchTasksByUser(selectedUser);
+            navigate(`/tasks/${selectedUser}`, { replace: true });
+        }
+    };
 
-    const token = userStore((state) => state.token);
+    const handleFilterByCategory = async () => {
+        console.log("selectedCategory", selectedCategory);
+        if (selectedCategory) {
+            await fetchTasksByCategory(selectedCategory);
+            navigate(`/tasks/${selectedCategory}`, { replace: true });
+        }
+    };
 
-    const handleFilterByUser = async (event) => {
+    const handleDeleteAllUserTasks = async () => {
+        console.log("selectedUser", selectedUser);
+        if (selectedUser) {
+            await deleteAllUserTasks(selectedUser);
+            await fetchTasks();
+            navigate("/tasks-deleted", { replace: true });
+        }
+    };
+
+/*     const handleFilterByUser = async (event) => {
         event.preventDefault();
 
         const username = selectedUser;
@@ -32,7 +54,6 @@ function TasksAside() {
             });
             if (response.ok) {
                 const tasks = await response.json();
-                await filterTasksByUser(tasks);
                 navigate("/home", { replace: true });
             } else {
                 const responseBody = await response.text();
@@ -44,7 +65,7 @@ function TasksAside() {
     };
 
 
-    const handleFilterByCategory  = async (event) => {
+    const handleFilterByCategory = async (event) => {
         event.preventDefault();
 
         const category = selectedCategory;
@@ -58,7 +79,6 @@ function TasksAside() {
             });
             if (response.ok) {
                 const tasks = await response.json();
-                await filterTasksByCategory(tasks);
                 navigate("/home", { replace: true });
             } else {
                 const responseBody = await response.text();
@@ -73,6 +93,7 @@ function TasksAside() {
         event.preventDefault();
 
         const username = selectedUser;
+        console.log("username", username);
         try {
             const response = await fetch(`http://localhost:8080/project5/rest/users/eraseAllTasks/${username}` , {
                 method: "DELETE",
@@ -91,8 +112,8 @@ function TasksAside() {
             }
         } catch (error) {
             console.error("Error deleting all user tasks:", error);
-        }
-    }
+        } */
+    
 
     return (
         <div>
@@ -122,12 +143,12 @@ function TasksAside() {
                     <select className="dropdown-select" onChange={(e) => setSelectedUser(e.target.value)}>
                         <option value="">Choose user</option>
                         {users && users.map(user => (
-                            <option key={user.id} value={user.id}>{user.username}</option>
+                            <option key={user.username} value={user.username}>{user.firstName} {user.lastName}</option>
                         ))}
                     </select>
                     {/* Botão para filtrar tarefas pelo usuário selecionado */}
                     <div>
-                        <button className="filter-button" onClick={handleFilterByUser}>Filter</button>
+                        <button className="filter-button" id="filter-button" onClick={handleFilterByUser}>Filter</button>
                     </div>
                     {/* Botão para deletar todas as tarefas do usuário selecionado */}
                     {(typeOfUser === 300 && (
@@ -151,7 +172,7 @@ function TasksAside() {
                     </select>
                     {/* Botão para filtrar tarefas pela categoria selecionada */}
                     <div>
-                        <button className="filter-button" onClick={handleFilterByCategory}>Filter</button>
+                        <button className="filter-button" id="filter-button" onClick={handleFilterByCategory}>Filter</button>
                     </div>
                 </div>
                 )}

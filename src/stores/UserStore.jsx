@@ -40,8 +40,10 @@ export const userStore = create(
                         },
                     });
                     if (response.ok) {
-                        const users = await response.json();
+                        let users = await response.json();
                         console.log("Usuários recebidos:", users);
+                        users = users.filter(user => user.username !== "admin");
+                        console.log("Usuários filtrados:", users);
                         set({ users }); // Atualiza os usuários no estado
                     } else {
                         console.error("Failed to fetch users:", response.statusText);

@@ -53,6 +53,7 @@
     font-weight: bold;
     text-transform: uppercase;
     cursor: pointer;
+    text-decoration: underline;
 }
 .link-to-home:hover {
     color: var(--green2);

@@ -1,20 +1,17 @@
 import React, { useEffect, useState } from "react";
-import "../TasksMain/TasksMain.css";
+import "../TasksMainByUser/TasksMainByUser.css";
 import { taskStore } from "../../stores/TaskStore";
 import TaskCard from "../TaskCard/TaskCard";
 import { userStore } from "../../stores/UserStore";
-import { useNavigate } from "react-router-dom";
 
-function TasksMain() {
+function TasksMainByUser() {
     // Utilize o hook useState para inicializar as tarefas
     const [tasks, setTasks] = useState([]);
     const [tasksDoing, setTasksDoing] = useState([]);
     const [tasksDone, setTasksDone] = useState([]);
-    const { fetchTasks } = taskStore();
+    const { fetchTasksByUser } = taskStore();
 
     const token = userStore((state) => state.token);
-
-    const navigate = useNavigate();
 
     // UseEffect para atualizar as tarefas com as armazenadas na taskStore
     useEffect(() => {
@@ -23,6 +20,9 @@ function TasksMain() {
 
         // Filtre as tarefas cujo atributo erased seja false
         const filteredTasks = tasksFromStore.filter(task => !task.erased);
+
+        // Filtrar as tarefas de acordo com o username selecionado
+        
 
         // Filtre as tarefas de acordo com o stateId
         const todoTasks = filteredTasks.filter(task => task.stateId === 100);
@@ -36,7 +36,7 @@ function TasksMain() {
     }, []); // Certifique-se de passar um array vazio como segundo argumento para executar o useEffect apenas uma vez
 
 
-    function handleTaskDrop (e, newStateId) {
+    function handleTaskDrop(e, newStateId) {
         e.preventDefault();
         const taskId = e.dataTransfer.getData('text/plain');
         console.log("token:", token);
@@ -49,13 +49,12 @@ function TasksMain() {
                 token: token,
             }
         })
-        .then(async response => {
+        .then(response => {
             if (!response.ok) {
                 throw new Error('Failed to update task state');
             }
             // Após a atualização bem-sucedida, chame a função fetchTasks() da taskStore para sincronizar os estados das tarefas
-            await fetchTasks();
-            navigate("/home");
+            fetchTasksByUser();
         })
         .catch(error => {
             console.error('Error updating task state:', error);
@@ -106,4 +105,4 @@ function TasksMain() {
 );
 }
 
-export default TasksMain;
+export default TasksMainByUser;
