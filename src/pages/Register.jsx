@@ -77,7 +77,6 @@ function Register() {
                         <button type="submit" id="registerButton-register">Sign up</button>
                     </div>
                 </form>
-                <br />
                 <p>Already have an account? <Link to="/" id="login-link">Sign in</Link></p>
             </div>
         </div>

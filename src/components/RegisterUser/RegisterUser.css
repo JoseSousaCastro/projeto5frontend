@@ -52,17 +52,12 @@
       height: 300px;
       height: 100%;
     }
-    #logo-register {
-      margin-block: 20px;
-      max-width: 250px;
-      height: auto;
-    }
     .inputs-register {
       display: flex;
       justify-content: center;
       align-items: center;
       flex-wrap: wrap;
-      margin-top: 10px;
+      margin-top: 30px;
     }
     .left-inputs,
     .right-inputs {

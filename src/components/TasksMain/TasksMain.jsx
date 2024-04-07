@@ -36,30 +36,32 @@ function TasksMain() {
     }, []); // Certifique-se de passar um array vazio como segundo argumento para executar o useEffect apenas uma vez
 
 
-    function handleTaskDrop (e, newStateId) {
+    async function handleTaskDrop(e, newStateId) {
         e.preventDefault();
         const taskId = e.dataTransfer.getData('text/plain');
         console.log("token:", token);
     
-        // Atualizar o stateId da tarefa no servidor
-        fetch(`http://localhost:8080/project5/rest/users/tasks/${taskId}/${newStateId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                token: token,
-            }
-        })
-        .then(async response => {
-            if (!response.ok) {
-                throw new Error('Failed to update task state');
-            }
-            // Após a atualização bem-sucedida, chame a função fetchTasks() da taskStore para sincronizar os estados das tarefas
+        try {
+            const response = await fetch(`http://localhost:8080/project5/rest/users/tasks/${taskId}/${newStateId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    token: token,
+                }
+            });
+    
+            if (response.ok) {
+            const responseBody = await response.text();
+            console.log('Response:', responseBody);
             await fetchTasks();
             navigate("/home");
-        })
-        .catch(error => {
+            } else {
+                throw new Error('Failed to update task state');
+            }    
+
+        } catch (error) {
             console.error('Error updating task state:', error);
-        });
+        }
     }
 
     return (
