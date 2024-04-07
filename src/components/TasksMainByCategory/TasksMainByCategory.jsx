@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import "../TasksMainByCategory/TasksMainByCategory.css";
-import { useLocation } from "react-router-dom";
 import { taskStore } from "../../stores/TaskStore";
 import TaskCard from "../TaskCard/TaskCard";
 import { userStore } from "../../stores/UserStore";
+import { useNavigate, useParams } from "react-router-dom";
 
 function TasksMainByCategory() {
     // Utilize o hook useState para inicializar as tarefas
@@ -11,18 +11,17 @@ function TasksMainByCategory() {
     const [tasksDoing, setTasksDoing] = useState([]);
     const [tasksDone, setTasksDone] = useState([]);
 
-    const location = useLocation();
-    const queryParams = new URLSearchParams(location.search);
-    const category = queryParams.get('category');
+    const categoryURL = useParams().category;
     
     const { fetchTasksByCategory } = taskStore();
     const token = userStore((state) => state.token);
 
-
+    const navigate = useNavigate();
 
     // UseEffect para atualizar as tarefas com as armazenadas na taskStore
     useEffect(() => {
-        const filteredTasks = taskStore.getState().tasks.filter(task => !task.erased && task.category === category);
+        const filteredTasks = taskStore.getState().tasks.filter(task => !task.erased);
+        console.log("filteredTasks", filteredTasks);
 
         // Filtre as tarefas de acordo com o stateId
         const todoTasks = filteredTasks.filter(task => task.stateId === 100);
@@ -36,34 +35,40 @@ function TasksMainByCategory() {
     }, []); // Certifique-se de passar um array vazio como segundo argumento para executar o useEffect apenas uma vez
 
 
-    function handleTaskDrop(e, newStateId) {
+    async function handleTaskDrop(e, newStateId) {
         e.preventDefault();
         const taskId = e.dataTransfer.getData('text/plain');
         console.log("token:", token);
     
-        // Atualizar o stateId da tarefa no servidor
-        fetch(`http://localhost:8080/project5/rest/users/tasks/${taskId}/${newStateId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                token: token,
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
+        try {
+            const response = await fetch(`http://localhost:8080/project5/rest/users/tasks/${taskId}/${newStateId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    token: token,
+                }
+            });
+    
+            if (response.ok) {
+            const responseBody = await response.text();
+            console.log('Response:', responseBody);
+            await fetchTasksByCategory(categoryURL);
+            setTasks(taskStore.getState().tasks.filter(task => task.stateId === 100 && !task.erased));
+            setTasksDoing(taskStore.getState().tasks.filter(task => task.stateId === 200 && !task.erased));
+            setTasksDone(taskStore.getState().tasks.filter(task => task.stateId === 300 && !task.erased));
+            navigate(`/tasksbc/${categoryURL}`);
+            } else {
                 throw new Error('Failed to update task state');
-            }
-            // Após a atualização bem-sucedida, chame a função fetchTasks() da taskStore para sincronizar os estados das tarefas
-            fetchTasksByCategory();
-        })
-        .catch(error => {
+            }    
+
+        } catch (error) {
             console.error('Error updating task state:', error);
-        });
+        }
     }
 
     return (
-    <div className="tasks-users-list" id="tasks-users-list-outer-container">
-        <div className="page-wrap-task-list" id="tasks-users-list-page-wrap">
+    <div className="tasks-categories-list" id="tasks-categories-list-outer-container">
+        <div className="page-wrap-task-list" id="tasks-categories-list-page-wrap">
             <div className="task-section">
                 <div className="titulo-main">
                     <h2 className="main-home">To do</h2>

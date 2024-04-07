@@ -3,6 +3,8 @@ import "../TasksMainByUser/TasksMainByUser.css";
 import { taskStore } from "../../stores/TaskStore";
 import TaskCard from "../TaskCard/TaskCard";
 import { userStore } from "../../stores/UserStore";
+import { useNavigate, useParams } from "react-router-dom";
+
 
 function TasksMainByUser() {
     // Utilize o hook useState para inicializar as tarefas
@@ -10,8 +12,13 @@ function TasksMainByUser() {
     const [tasksDoing, setTasksDoing] = useState([]);
     const [tasksDone, setTasksDone] = useState([]);
     const { fetchTasksByUser } = taskStore();
+    const usernameURL = useParams().username;
+
+    console.log("usernameURL", usernameURL);
 
     const token = userStore((state) => state.token);
+
+    const navigate = useNavigate();
 
     // UseEffect para atualizar as tarefas com as armazenadas na taskStore
     useEffect(() => {
@@ -20,9 +27,6 @@ function TasksMainByUser() {
 
         // Filtre as tarefas cujo atributo erased seja false
         const filteredTasks = tasksFromStore.filter(task => !task.erased);
-
-        // Filtrar as tarefas de acordo com o username selecionado
-        
 
         // Filtre as tarefas de acordo com o stateId
         const todoTasks = filteredTasks.filter(task => task.stateId === 100);
@@ -36,29 +40,36 @@ function TasksMainByUser() {
     }, []); // Certifique-se de passar um array vazio como segundo argumento para executar o useEffect apenas uma vez
 
 
-    function handleTaskDrop(e, newStateId) {
+    async function handleTaskDrop(e, newStateId) {
         e.preventDefault();
         const taskId = e.dataTransfer.getData('text/plain');
         console.log("token:", token);
     
-        // Atualizar o stateId da tarefa no servidor
-        fetch(`http://localhost:8080/project5/rest/users/tasks/${taskId}/${newStateId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                token: token,
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
+        try {
+            const response = await fetch(`http://localhost:8080/project5/rest/users/tasks/${taskId}/${newStateId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    token: token,
+                }
+            });
+    
+            if (response.ok) {
+            const responseBody = await response.text();
+            console.log('Response:', responseBody);
+            await fetchTasksByUser(usernameURL);
+            console.log("tasks", taskStore.getState().tasks);
+            setTasks(taskStore.getState().tasks.filter(task => task.stateId === 100 && !task.erased));
+            setTasksDoing(taskStore.getState().tasks.filter(task => task.stateId === 200 && !task.erased));
+            setTasksDone(taskStore.getState().tasks.filter(task => task.stateId === 300 && !task.erased));
+            navigate(`/tasksbu/${usernameURL}`);
+            } else {
                 throw new Error('Failed to update task state');
-            }
-            // Após a atualização bem-sucedida, chame a função fetchTasks() da taskStore para sincronizar os estados das tarefas
-            fetchTasksByUser();
-        })
-        .catch(error => {
+            }    
+
+        } catch (error) {
             console.error('Error updating task state:', error);
-        });
+        }
     }
 
     return (

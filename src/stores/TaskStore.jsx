@@ -86,6 +86,7 @@ export const taskStore = create(
                     if (response.ok) {
                         const tasks = await response.json();
                         set({ tasks });
+                        console.log("Tarefas armazenadas no fetch:", tasks);
                     } else {
                         console.error("Failed to fetch tasks by category:", response.statusText);
                     }

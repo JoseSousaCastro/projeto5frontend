@@ -19,17 +19,19 @@ function TasksAside() {
         console.log("selectedUser", selectedUser);
         if (selectedUser) {
             await fetchTasksByUser(selectedUser);
-            navigate(`/tasks/${selectedUser}`, { replace: true });
+            navigate(`/tasksbu/${selectedUser}`, { replace: true });
         }
     };
 
-    const handleFilterByCategory = async () => {
+    const handleFilterByCategory = async (e) => {
+        e.preventDefault(); // Impede o comportamento padrão do formulário
         console.log("selectedCategory", selectedCategory);
         if (selectedCategory) {
             await fetchTasksByCategory(selectedCategory);
-            navigate(`/tasks/${selectedCategory}`, { replace: true });
+            console.log("selectedCategory2", selectedCategory);
+            navigate(`/tasksbc/${selectedCategory}`, { replace: true });
         }
-    };
+    };   
 
     const handleDeleteAllUserTasks = async () => {
         console.log("selectedUser", selectedUser);
@@ -38,82 +40,7 @@ function TasksAside() {
             await fetchTasks();
             navigate("/tasks-deleted", { replace: true });
         }
-    };
-
-/*     const handleFilterByUser = async (event) => {
-        event.preventDefault();
-
-        const username = selectedUser;
-        try {
-            const response = await fetch(`http://localhost:8080/project5/rest/users/${username}/tasks` , {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    token: token,
-                },
-            });
-            if (response.ok) {
-                const tasks = await response.json();
-                navigate("/home", { replace: true });
-            } else {
-                const responseBody = await response.text();
-                console.error("Error filtering tasks by user:", response.statusText, responseBody);
-            }
-        } catch (error) {
-            console.error("Error filtering tasks by user:", error);
-        }
-    };
-
-
-    const handleFilterByCategory = async (event) => {
-        event.preventDefault();
-
-        const category = selectedCategory;
-        try {
-            const response = await fetch(`http://localhost:8080/project5/rest/users/tasks/${category}` , {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    token: token,
-                },
-            });
-            if (response.ok) {
-                const tasks = await response.json();
-                navigate("/home", { replace: true });
-            } else {
-                const responseBody = await response.text();
-                console.error("Error filtering tasks by category:", response.statusText, responseBody);
-            }
-        } catch (error) {
-            console.error("Error filtering tasks by category:", error);
-        }
-    }
-
-    const handleDeleteAllUserTasks = async (event) => {
-        event.preventDefault();
-
-        const username = selectedUser;
-        console.log("username", username);
-        try {
-            const response = await fetch(`http://localhost:8080/project5/rest/users/eraseAllTasks/${username}` , {
-                method: "DELETE",
-                headers: {
-                    "Content-Type": "application/json",
-                    token: token,
-                },
-            });
-            if (response.ok) {
-                const tasks = await response.json();
-                await deleteAllUserTasks(tasks);
-                navigate("/home", { replace: true });
-            } else {
-                const responseBody = await response.text();
-                console.error("Error deleting all user tasks:", response.statusText, responseBody);
-            }
-        } catch (error) {
-            console.error("Error deleting all user tasks:", error);
-        } */
-    
+    };    
 
     return (
         <div>
@@ -148,7 +75,7 @@ function TasksAside() {
                     </select>
                     {/* Botão para filtrar tarefas pelo usuário selecionado */}
                     <div>
-                        <button className="filter-button" id="filter-button" onClick={handleFilterByUser}>Filter</button>
+                        <button className="filter-button-byUser" id="filter-button-byUser" onClick={handleFilterByUser}>Filter</button>
                     </div>
                     {/* Botão para deletar todas as tarefas do usuário selecionado */}
                     {(typeOfUser === 300 && (
@@ -172,7 +99,7 @@ function TasksAside() {
                     </select>
                     {/* Botão para filtrar tarefas pela categoria selecionada */}
                     <div>
-                        <button className="filter-button" id="filter-button" onClick={handleFilterByCategory}>Filter</button>
+                        <button className="filter-button-byCat" id="filter-button-byCat" onClick={handleFilterByCategory}>Filter</button>
                     </div>
                 </div>
                 )}

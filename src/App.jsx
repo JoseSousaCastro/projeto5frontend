@@ -31,8 +31,8 @@ function App() {
       <Route path="/deleted-users" element={<UsersDeleted />} />
       <Route path="/edit-user/:username" element={<UsersEditUser />} />
       <Route path="/users-list" element={<UsersList />} />
-      <Route path="/tasks/:username" element={<TasksByUser />} />
-      <Route path="/tasks/:category" element={<TasksByCategory />} /> 
+      <Route path="/tasksbu/:username" element={<TasksByUser />} />
+      <Route path="/tasksbc/:category" element={<TasksByCategory />} /> 
     </Routes>
   );
 }

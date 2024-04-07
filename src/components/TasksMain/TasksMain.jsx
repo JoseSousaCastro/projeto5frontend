@@ -14,6 +14,7 @@ function TasksMain() {
 
     const token = userStore((state) => state.token);
 
+
     const navigate = useNavigate();
 
     // UseEffect para atualizar as tarefas com as armazenadas na taskStore
@@ -28,6 +29,7 @@ function TasksMain() {
         const todoTasks = filteredTasks.filter(task => task.stateId === 100);
         const doingTasks = filteredTasks.filter(task => task.stateId === 200);
         const doneTasks = filteredTasks.filter(task => task.stateId === 300);
+        
 
         // Atualize o estado das tarefas com os valores filtrados
         setTasks(todoTasks);
@@ -54,6 +56,9 @@ function TasksMain() {
             const responseBody = await response.text();
             console.log('Response:', responseBody);
             await fetchTasks();
+            setTasks(taskStore.getState().tasks.filter(task => task.stateId === 100 && !task.erased));
+            setTasksDoing(taskStore.getState().tasks.filter(task => task.stateId === 200 && !task.erased));
+            setTasksDone(taskStore.getState().tasks.filter(task => task.stateId === 300 && !task.erased));
             navigate("/home");
             } else {
                 throw new Error('Failed to update task state');

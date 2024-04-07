@@ -111,22 +111,33 @@
     text-transform: uppercase;
     font-size: 12px;
     font-weight: bold;
-    color: var(--green3);
-    background-color: var(--green1);
+    color: var(--white);
+    background-color: var(--green2);
     border: solid var(--green3) 2px;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
     cursor: pointer;
 }
 .delete-all-user-tasks:hover {
-    background-color: var(--green2);
+    background-color: var(--green1);
     color: var(--white);
 }
 
-#filter-button {
+.filter-button-byUser,
+.filter-button-byCat {
+    width: 150px;
+    height: 30px;
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: bold;
     color: var(--green1);
+    background-color: var(--green3);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    cursor: pointer;
 }
-#filter-button:hover {
+.filter-button-byUser:hover,
+.filter-button-byCat:hover {
     background-color: var(--green1);
     color: var(--green3);
 }
