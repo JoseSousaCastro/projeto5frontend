@@ -115,3 +115,12 @@
 .visible-icon:hover {
   transform: scale(1.2);
 }
+
+.user-not-confirmed {
+  background-color: var(--grey);
+  border: 4px solid var(--vermelho);
+}
+
+.user-not-confirmed .user-username-solo {
+  color: var(--vermelho);
+}

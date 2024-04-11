@@ -14,6 +14,9 @@ import UsersEditUser from './pages/UsersEditUser';
 import UsersList from './pages/UsersList';
 import TasksByUser from './pages/TasksByUser';
 import TasksByCategory from './pages/TasksByCategory';
+import RegisterConfirmation from './pages/RegisterConfirmation';
+import RecoverPass from './pages/RecoverPass';
+import PasswordReset from './pages/PasswordReset';
 
 
 function App() {
@@ -32,7 +35,10 @@ function App() {
       <Route path="/edit-user/:username" element={<UsersEditUser />} />
       <Route path="/users-list" element={<UsersList />} />
       <Route path="/tasksbu/:username" element={<TasksByUser />} />
-      <Route path="/tasksbc/:category" element={<TasksByCategory />} /> 
+      <Route path="/tasksbc/:category" element={<TasksByCategory />} />
+      <Route path="/register-confirmation/:username" element={<RegisterConfirmation />} />
+      <Route path="/recover-password" element={<RecoverPass />} />
+      <Route path="/reset-password/:username" element={<PasswordReset />} />
     </Routes>
   );
 }

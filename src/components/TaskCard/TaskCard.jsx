@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { userStore } from '../../stores/UserStore';
 import { taskStore } from '../../stores/TaskStore';
+import deleteIcon from '/AoR/42.Projeto5/projeto5frontend/projeto5frontend/src/dark-cross.png';
+import restoreIcon from '/AoR/42.Projeto5/projeto5frontend/projeto5frontend/src/reload.png';
 
 export default function TaskCard({ task }) {
     const navigate = useNavigate();
@@ -56,7 +58,7 @@ export default function TaskCard({ task }) {
 
             if (response.ok) {
                 await fetchTasks();
-                navigate("/home", { replace: true });
+                navigate("/tasks-deleted", { replace: true });
             } else {
                 const responseBody = await response.text();
                 console.error("Error deleting task:", response.statusText, responseBody);
@@ -69,7 +71,7 @@ export default function TaskCard({ task }) {
     const handleDeleteTask = async () => {
         try {
             const response = await fetch(`http://localhost:8080/project5/rest/users/delete/${taskId}`, {
-                method: "PUT",
+                method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",
                     token: token
@@ -78,7 +80,7 @@ export default function TaskCard({ task }) {
 
             if (response.ok) {
                 await fetchTasks();
-                navigate("/tasks-deleted", { replace: true });
+                navigate("/home", { replace: true });
             } else {
                 const responseBody = await response.text();
                 console.error("Error deleting task:", response.statusText, responseBody);
@@ -130,19 +132,19 @@ export default function TaskCard({ task }) {
                 <div className="task-del-restore">
                     {(typeOfUser === 300 || typeOfUser === 200) && (
                     <div className="task-restore">
-                        <img src="multimedia/reload1-03.png" alt="Restore" className="restore-icon" onClick={handleRestoreTask} />
+                        <img src={restoreIcon} alt="Restore" className="restore-icon" onClick={handleRestoreTask} />
                     </div>
                     )}
                     {typeOfUser === 300 && (
                     <div className="task-delete">
-                        <img src="multimedia/dark-cross-01.png" alt="Delete" className="delete-icon" onClick={handleDeleteTask} />
+                        <img src={deleteIcon} alt="Delete" className="delete-icon" onClick={handleDeleteTask} />
                     </div>
                     )}
                 </div>
             ) : (                
                 <div className="task-erase">
                     {(typeOfUser === 300 || typeOfUser === 200) && (
-                    <img src="multimedia/dark-cross-01.png" alt="Erase" className="erase-icon" onClick={handleEraseTask} />
+                    <img src={deleteIcon} alt='Erase' className='erase-icon' onClick={handleEraseTask} />
                     )}
                 </div>                
             )}

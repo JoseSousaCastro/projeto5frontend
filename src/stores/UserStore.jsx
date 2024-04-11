@@ -16,6 +16,8 @@ export const userStore = create(
             users: null, // Inicializa users como null
             visible: false,
             typeOfUser: "",
+            expirationTime: 0,
+            confirmed: false,
             updateUsername: (username) => set({ username }),
             updateToken: (token) => set({ token }),
             updatePhotoURL: (photoURL) => set({ photoURL }),
@@ -29,6 +31,8 @@ export const userStore = create(
             updateTypeOfUser: (typeOfUser) => set({ typeOfUser }),
             updateUsers: (users) => set({ users }), // Adiciona a função updateUsers
             deleteAllUserTasks: () => set({ userTasks: [] }),
+            updateExpirationTime: (expirationTime) => set({ expirationTime }),
+            updateConfirmed: (confirmed) => set({ confirmed }),
 
             fetchUsers: async () => {
                 try {

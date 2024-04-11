@@ -58,7 +58,6 @@
   }
   #username,
   #password {
-    margin-bottom: 15px;
     padding-left: 5px;
     width: 220px;
     height: 25px;
@@ -102,3 +101,12 @@
   #register-link {
     color: var(--green2);
   }
+.recover-pass {
+  color: var(--green3);  
+}
+#recover-link {
+  color: var(--green2);
+}
+#recover-link:hover {
+  font-weight: bold;
+}

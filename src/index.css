@@ -29,3 +29,12 @@
   background-color: var(--white);
   
 }
+#home-page-wrap {
+  min-height: 100vh; /* Garante que a página tenha pelo menos a altura da viewport */
+  display: flex;
+  flex-direction: column;
+}
+
+.aside-main-home-container {
+  flex: 1; /* Faz com que este div ocupe todo o espaço restante verticalmente */
+}

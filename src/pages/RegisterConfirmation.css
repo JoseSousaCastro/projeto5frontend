@@ -1,0 +1,102 @@
+:root {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  
+    --white: #f9f9f9;
+    --light-grey: #c8e4e7;
+    --grey: grey;
+    --green1: #2CCCD3;
+    --green2: #21979c;
+    --green3: #223C4A;
+    --black: #0e1a21;
+    --overlay: #223c4aab;
+  
+    --todo: #cffdffd7;
+    --doing: #9cfaffd5;
+    --done: #2cccd4d7;
+  
+    --antracite: #424242;
+    --azul: #44a9df;
+    --verde: #5cbc6b;
+    --amarelo: #ffd758;
+    --vermelho: #ef5350;
+    --laranja: #f47d22;
+  
+    --warningMessages: #9C3B21;
+  
+    margin: 0;
+    padding: 0;
+  }
+  
+  #register-confirm-outer-container {
+      z-index: 0;
+  }
+  #register-confirm-page-wrap {
+      z-index: 1;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+  
+  }
+    .register-confirm-panel {
+      z-index: 3;
+      padding: 20px;
+      font-size: 15px;
+      text-align: center;
+      color: var(--green3);
+      background-color: color-mix(in srgb, var(--light-grey), transparent 10%);
+      border-radius: 10px;
+      height: 400px;
+      width: 330px;
+    }
+    #logo-login {
+      margin-block: 20px;
+      max-width: 250px;
+      height: auto;
+    }
+    #password-register-confirm,
+    #passwordConfirm-register-confirm {
+      margin-bottom: 15px;
+      padding-left: 5px;
+      width: 220px;
+      height: 25px;
+      border: var(--green3) 1px solid;
+      border-top-right-radius: 5px;
+      border-top-left-radius: 5px;
+    }
+    #password-register-confirm {
+      margin-top: 20px;
+    }
+    #passwordConfirm-register-confirm {
+      margin-bottom: 20px;
+    }
+    .register-confirm-panel ::placeholder {
+      color: var(--green2);
+    }
+    .register-confirm-panel :focus::placeholder {
+      opacity: 0.5;
+    }
+    .register-confirm-panel input[type="text"] {
+      color: var(--green3);
+    }
+    #registerButton-register-confirm {
+      display: block;
+      margin: 15px auto;
+      width: 200px;
+      height: 32px;
+      text-transform: uppercase;
+      font-size: 12px;
+      font-weight: bold;
+      background-color: var(--done);
+      color: var(--green3);
+      border-radius: 5px;
+      transition: background-color 0.3s, color 0.3s;
+      cursor: pointer;
+    }
+    #registerButton-register-confirm:hover {
+      background-color: var(--green3);
+      color: var(--green1);
+    }
+  

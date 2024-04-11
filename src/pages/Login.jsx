@@ -115,17 +115,19 @@ function Login() {
 
     return (
         <div className="Login" id="login-outer-container">
-        <div className="page-wrap" id="login-page-wrap">
-           <div className="loginpanel">
-                <img src="/multimedia/logo-scrum-01.png" id="logo-login" alt="Agile-Scrum-logo" width="250" />
-                <form id="login-form" className="input-login" onSubmit={handleSubmit}>
-                    <input type="text" id="username" name="username" placeholder="username" onChange={handleChange} required />
-                    <input type="password" id="password" name="password" placeholder="password" onChange={handleChange} required />
-                    <button id="loginButton">Sign in</button>
-                </form>
-                <p>Don't have an account? <Link to="/register" id="register-link">Sign up</Link></p>
+            <div className="page-wrap" id="login-page-wrap">
+               <div className="loginpanel">
+                    <img src="/multimedia/logo-scrum-01.png" id="logo-login" alt="Agile-Scrum-logo" width="250" />
+                    <form id="login-form" className="input-login" onSubmit={handleSubmit}>
+                        <input type="text" id="username" name="username" placeholder="username" onChange={handleChange} required />
+                        <input type="password" id="password" name="password" placeholder="password" onChange={handleChange} required />
+                        <button id="loginButton">Sign in</button>
+                    </form>
+                    <div className="recover-pass">
+                        <p>Forget password? <Link to="/recover-password" id="recover-link">Recover password</Link></p>
+                    </div>
+                </div>
             </div>
-        </div>
         </div>
     );
 }
