@@ -41,6 +41,11 @@ function Login() {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
+        if (inputs.password === undefined || inputs.password === null || inputs.password === "") {
+            alert("Password is required");
+            return;
+        }
+
         const login = {
             username: inputs.username,
             password: inputs.password
