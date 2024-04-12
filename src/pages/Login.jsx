@@ -72,8 +72,16 @@ function Login() {
                 updateUserStore.updatePassword(user.password);
                 updateUserStore.updateTypeOfUser(user.typeOfUser);
                 updateUserStore.updateUserTasks(user.userTasks);
+                updateUserStore.updateUserConfirm(user.confirm);
+                updateUserStore.updateExpirationTime(user.expirationTime);
 
-                // Atualize outros dados do usuário conforme necessário
+                if (user.confirm === false && user.expirationTime !== 0) {
+                    alert("Check your email to confirm your account");
+                    return;
+                } else if (user.confirm === false && user.expirationTime === 0) {
+                    alert("Your account is blocked. Please contact the administrator");
+                    return;
+                }
 
                 // Fetch das categorias e armazenamento na store de categorias
                 try {

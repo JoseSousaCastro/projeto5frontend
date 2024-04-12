@@ -84,7 +84,7 @@ export default function UserCard({ user }) {
     return (
         <div className={`user ${!user.confirmed ? 'user-not-confirmed' : ''}`} style={{ backgroundColor: visible ? "white" : "#EDEDED" }}>
             {visible ? (
-                <Link to={`/edit-user/${username}`} className="user-username-solo">
+                <Link to={`/user-profile/${username}`} className="user-username-solo">
                     {firstName} {lastName}
                 </Link>
             ) : (

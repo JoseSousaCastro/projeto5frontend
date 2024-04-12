@@ -1,9 +1,9 @@
 import React from "react";
 import '../index.css'
 import Header from "../components/Header/Header";
-import EditUser from "../components/EditUser/EditUser";
+import UserProfile from "../components/UserProfile/UserProfile";
 import Footer from "../components/Footer/Footer";
-import AsideLogoUsers from "../components/AsideLogoUsers/AsideLogoUsers";
+import UserProfileAside from "../components/UserProfileAside/UserProfileAside";
 
 function UsersEditUser() {
 
@@ -17,10 +17,10 @@ function UsersEditUser() {
                 </div>
                 <div className="aside-main-home-container">
                     <div className="aside-home-container">
-                        <AsideLogoUsers />
+                        <UserProfileAside />
                     </div>
                     <div className="main-home-container">
-                        <EditUser />
+                        <UserProfile />
                     </div>
                 </div>
                 <div className="footer-home-container">

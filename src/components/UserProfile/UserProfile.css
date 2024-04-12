@@ -39,15 +39,32 @@
     width: 300px;
     height: 30px;
 }
+.editProfile-title-photo {
+    margin-top: 40px;
+    display: flex; /* Usa flexbox para alinhar os elementos lado a lado */
+    align-items: center; /* Alinha os itens verticalmente */
+}
+.editProfile-photo {
+    width: 70px;
+    height: 70px;
+    padding: 5px;
+    border-radius: 50%;
+    margin-inline: 15px;
+    box-shadow: 0 0 5px var(--green3);
+    object-fit: cover; /* Mantém a proporção da imagem e a ajusta dentro do elemento */
+    object-position: top; /* Alinha a imagem ao topo do elemento */
+}
 
 #username-title-editProfile {
-    margin-top: 40px;
     text-transform: uppercase;
     font-size: 20px;
     color: var(--green3);
     font-weight: bold;
     text-align: center;
     z-index: 2;
+    width: 250px;
+    height: 50px;
+    vertical-align: top;
 }
 
 .label-username-editProfile {

@@ -5,11 +5,11 @@ import "../pages/PasswordReset.css";
 import { useParams } from "react-router-dom";
 
 
-
 function PasswordReset() {
     const [inputs, setInputs] = useState({});
     const navigate = useNavigate();
     const usernameURL = useParams().username;
+
 
     console.log("usernameURL", usernameURL);
     console.log("inputs.password", inputs.password);

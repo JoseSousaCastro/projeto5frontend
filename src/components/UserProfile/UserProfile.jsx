@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import "../EditUser/EditUser.css";
+import "./UserProfile.css";
 import { userStore } from "../../stores/UserStore";
 import { useNavigate, useParams } from "react-router-dom";
 
-function EditUser() {
+function UserProfile() {
     const [inputs, setInputs] = useState({});
     const navigate = useNavigate();
     const { username } = useParams();
@@ -76,7 +76,10 @@ function EditUser() {
     return (
         <div>
             <div className="editProfilePanel">
-                <label id="username-title-editProfile">{username}</label>
+                <div className="editProfile-title-photo">
+                    {inputs.photoURL && (<img src={inputs.photoURL} alt="User" className="editProfile-photo" />)}
+                    <label id="username-title-editProfile">{username}</label>
+                </div>
                 <form className="editProfile-register" id="edit-profile-form" onSubmit={handleSubmit}>
                     <div className="editProfile-fieldsContainer">
                         <div className="left-fields-editProfile">
@@ -104,4 +107,4 @@ function EditUser() {
     );
 }
 
-export default EditUser;
+export default UserProfile;
