@@ -8,8 +8,12 @@ function UsersAside() {
     const navigate = useNavigate();
 
     const [selectedUser, setSelectedUser] = useState("");
+    const [selectedUser2, setSelectedUser2] = useState("");
+    const [selectedUser3, setSelectedUser3] = useState("");
     const [selectedTypeOfUser, setSelectedTypeOfUser] = useState("");
-    const [username, setUsername] = useState(""); 
+    const [username, setUsername] = useState("");
+    const [username2, setUsername2] = useState("");
+    const [username3, setUsername3] = useState("");
     const [updatedTypeOfUser, setUpdatedTypeOfUser] = useState(""); // Tipo de usuário atualizado localmente
 
     const token = userStore((state) => state.token);
@@ -52,6 +56,30 @@ function UsersAside() {
         console.log("Updated type of user:", typeOfUser);
     };
 
+    const handleUserSelect2 = (selectField) => {
+        const newUsername2 = selectField[selectField.selectedIndex].value;
+        setSelectedUser2(newUsername2);
+        const selectedUserObj2 = users.find(user => user.username === newUsername2);
+        if (selectedUserObj2) {
+            setUsername2(selectedUserObj2.username);
+            console.log("Selected user:", selectedUserObj2);
+        } else {
+            setUsername2("");
+        }
+    };
+
+    const handleUserSelect3 = (selectField) => {
+        const newEmail = selectField[selectField.selectedIndex].value;
+        setSelectedUser3(newEmail);
+        const selectedUserObj3 = users.find(user => user.email === newEmail);
+        if (selectedUserObj3) {
+            setUsername3(selectedUserObj3.username);
+            console.log("Selected user:", selectedUserObj3);
+        } else {
+            setUsername3("");
+        }
+    };
+
     // Função para enviar a atualização do tipo de usuário para o backend
     const handleTypeOfUser = async () => {
         try {
@@ -80,6 +108,14 @@ function UsersAside() {
             console.error("Error changing user role:", error);
         }
     };
+
+    const handleGoToProfile = () => {
+        if (selectedUser2) {
+            navigate(`/user-profile/${selectedUser2}`, { replace: true });
+        } else if (selectedUser3) {
+            navigate(`/user-profile/${selectedUser3}`, { replace: true });
+        }
+    }
 
     return (
         <div>
@@ -110,6 +146,24 @@ function UsersAside() {
                     </div>
                     <div>
                         <button className="filter-button" onClick={handleTypeOfUser}>Change role</button>
+                    </div>
+                </div>
+                <label className="dropdown-label">Filter by username or email</label>
+                <div className="dropdown">
+                    <select className="dropdown-goto-username" onChange={(e) => handleUserSelect2(e.target)} value={selectedUser2}>
+                        <option value="">Choose user</option>
+                        {users && users.map(user => (
+                            <option key={user.username} value={user.username}>{user.firstName} {user.lastName}</option>
+                        ))}
+                    </select>
+                    <select className="dropdown-goto-email" onChange={(e) => handleUserSelect3(e.target)} value={selectedUser3}>
+                        <option value="">Choose email</option>
+                        {users && users.map(user => (
+                            <option key={user.username} value={user.username}>{user.email}</option>
+                        ))}
+                    </select>
+                    <div>
+                        <button className="filter-button" onClick={handleGoToProfile}>Go to profile</button>
                     </div>
                 </div>
             </div>
