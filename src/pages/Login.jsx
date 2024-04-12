@@ -72,7 +72,7 @@ function Login() {
                 updateUserStore.updatePassword(user.password);
                 updateUserStore.updateTypeOfUser(user.typeOfUser);
                 updateUserStore.updateUserTasks(user.userTasks);
-                updateUserStore.updateUserConfirm(user.confirm);
+                updateUserStore.updateConfirmed(user.confirmed);
                 updateUserStore.updateExpirationTime(user.expirationTime);
 
                 if (user.confirm === false && user.expirationTime !== 0) {

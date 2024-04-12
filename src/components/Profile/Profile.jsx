@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "../Profile/Profile.css";
 import { userStore } from "../../stores/UserStore";
 import { useNavigate } from "react-router-dom";
+import { taskStore } from "../../stores/TaskStore";
 
 function Profile() {
     const [inputs] = useState("");
@@ -20,6 +21,13 @@ function Profile() {
     const updateLastName = userStore((state) => state.updateLastName);
     const updatePhone = userStore((state) => state.updatePhone);
     const updatePhotoURL = userStore((state) => state.updatePhotoURL);
+
+    const totalTasks = taskStore(state => state.tasks.filter(task => task.username === username)).length;
+    const getUserTasks = taskStore(state => state.tasks.filter(task => task.username === username));
+    const getUserToDoTasks = getUserTasks.filter(task => task.stateId === 100).length;
+    const getUserDoingTasks = getUserTasks.filter(task => task.stateId === 200).length;
+    const getUserDoneTasks = getUserTasks.filter(task => task.stateId === 300).length;
+
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -70,9 +78,12 @@ function Profile() {
     };
 
     return (
-        <div>
+        <div className="global-edit-profile">
             <div className="editProfilePanel">
-                <label id="username-title-editProfile">{username}</label>
+                <div className="editProfile-title-photo">
+                    {photoURL && <img src={photoURL} alt="User" className="editProfile-photo" />}
+                    <label id="username-title-editProfile">{username}</label>
+                </div>
                 <form className="editProfile-register" id="edit-profile-form" onSubmit={handleSubmit}>
                     <div className="editProfile-fieldsContainer">
                         <div className="left-fields-editProfile">
@@ -93,6 +104,17 @@ function Profile() {
                         <button type="reset" id="profile-cancel-button" onClick={handleCancel}>Cancel</button>
                     </div>
                 </form>
+            </div>
+            <div className="stats-own-profile-div">
+                <h1 className="stats-own-profile-title">Stats</h1>
+                <label className="stats-own-profile-labels">Total tasks</label>
+                <p className="stats-own-profile-infos">{totalTasks}</p>
+                <label className="stats-own-profile-labels">To do tasks</label>
+                <p className="stats-own-profile-infos">{getUserToDoTasks}</p>
+                <label className="stats-own-profile-labels">Doing tasks</label>
+                <p className="stats-own-profile-infos">{getUserDoingTasks}</p>
+                <label className="stats-own-profile-labels">Done tasks</label>
+                <p className="stats-own-profile-infos">{getUserDoneTasks}</p>
             </div>
         </div>
     );

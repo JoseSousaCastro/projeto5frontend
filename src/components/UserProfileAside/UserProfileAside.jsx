@@ -1,6 +1,5 @@
 import React from "react";
 import "./UserProfileAside.css";
-import { userStore } from "../../stores/UserStore";
 import { useParams } from "react-router-dom";
 import { taskStore } from "../../stores/TaskStore";
 
