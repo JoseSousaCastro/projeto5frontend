@@ -43,6 +43,9 @@ function Header() {
                             {typeOfUser === 200 || typeOfUser === 300 ? (
                                 <li id="nav-users"><Link to="/users-list">Users</Link></li>
                             ) : null}
+                            {typeOfUser === 300 ? (
+                                <li id="nav-dashboard"><Link to="/dashboard">Dashboard</Link></li>
+                            ) : null}
                         </ul>
                     </nav>
                 </div>

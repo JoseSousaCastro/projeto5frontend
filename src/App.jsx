@@ -17,6 +17,7 @@ import TasksByCategory from './pages/TasksByCategory';
 import RegisterConfirmation from './pages/RegisterConfirmation';
 import RecoverPass from './pages/RecoverPass';
 import PasswordReset from './pages/PasswordReset';
+import Dashboard from './pages/Dashboard';
 
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
       <Route path="/register-confirmation/:username" element={<RegisterConfirmation />} />
       <Route path="/recover-password" element={<RecoverPass />} />
       <Route path="/reset-password/:username" element={<PasswordReset />} />
+      <Route path="/dashboard" element={<Dashboard />} />
     </Routes>
   );
 }
