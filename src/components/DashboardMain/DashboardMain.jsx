@@ -1,42 +1,32 @@
-/* - Contagem do número total de utilizadores
-- Contagem do número de utilizadores confirmados e não confirmados
-- Contagem do número médio de tarefas por utilizador
-- Contagem do número de tarefas por estado (e.g. 5 em “DOING”, 2 em “DONE”, etc)
+/*
+-----USERS-----
+- Contagem do número total de utilizadores (Stacked Area Chart com o ponto seguinte incluído)
+- Contagem do número de utilizadores confirmados e não confirmados (Stacked Area Chart com o ponto anterior incluído)
+- Gráfico que mostre o número de utilizadores registados ao longo do tempo (e.g. gráfico de linhas). Os utilizadores apagados podem ser excluídos desta contagem.
+(Synchronized Area Chart - users apagados no de baixo)
+
+-----TASKS-----
+- Contagem do número de tarefas por estado (e.g. 5 em “DOING”, 2 em “DONE”, etc) (Percent Area Chart)
+- Gráfico cumulativo que mostre o número total de tarefas concluídas ao longo do tempo. Tarefas apagadas podem ser excluídas desta contagem.
+(Synchronized Area Chart - tarefas apagadas no de baixo)
+- Contagem do número médio de tarefas por utilizador (label com o valor)
+- Tempo médio que uma tarefa demora até ser concluída (data de conclusão é a última data em que a tarefa foi movida para “DONE”). (label com o valor)
+
+-----CATEGORIES-----
 - Listagem das categorias, ordenada da mais frequente (mais tarefas) à menos frequente
 
-- Tempo médio que uma tarefa demora até ser concluída (para fins de cálculo, considera-se como data de conclusão a última data em que a tarefa foi movida para “DONE”).
-- Gráfico que mostre o número de utilizadores registados ao longo do tempo (e.g. gráfico de linhas). Os utilizadores apagados podem ser excluídos desta contagem.
-- Gráfico cumulativo que mostre o número total de tarefas concluídas ao longo do tempo. Tarefas apagadas podem ser excluídas desta contagem.
+
 */
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, PureComponent } from "react";
 import { userStore } from "../../stores/UserStore";
 import { taskStore } from "../../stores/TaskStore";
 import "../DashboardMain/DashboardMain.css";
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+
 
 function DashboardMain() {
-    const users = userStore(state => state.users);
-    const tasks = taskStore(state => state.tasks);
-    const [userTasks, setUserTasks] = useState([]);
-    const [userTasksToDo, setUserTasksToDo] = useState([]);
-    const [userTasksDoing, setUserTasksDoing] = useState([]);
-    const [userTasksDone, setUserTasksDone] = useState([]);
-    const [userTasksTotal, setUserTasksTotal] = useState(0);
-    const [userTasksToDoTotal, setUserTasksToDoTotal] = useState(0);
-    const [userTasksDoingTotal, setUserTasksDoingTotal] = useState(0);
-    const [userTasksDoneTotal, setUserTasksDoneTotal] = useState(0);
 
-    const handleChange = (event) => {
-        const username = event.target.value;
-        const userTasks = tasks.filter(task => task.owner.name === username);
-        const userTasksToDo = userTasks.filter(task => task.stateId === 100);
-        const userTasksDoing = userTasks.filter(task => task.stateId === 200);
-        const userTasksDone = userTasks.filter(task => task.stateId === 300);
-        setUserTasksTotal(userTasks.length);
-        setUserTasksToDoTotal(userTasksToDo.length);
-        setUserTasksDoingTotal(userTasksDoing.length);
-        setUserTasksDoneTotal(userTasksDone.length);
-    }
 
     return (
         <div className="DashboardMain">
