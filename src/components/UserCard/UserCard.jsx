@@ -10,7 +10,9 @@ export default function UserCard({ user }) {
     const token = userStore((state) => state.token);
     const typeOfUser = userStore((state) => state.typeOfUser);
 
-    const { username, firstName, lastName, visible } = user;
+    const { username, firstName, lastName, visible, confirmed } = user;
+
+    const currentUser = userStore((state) => state.username);
 
     const handleEraseUser = async () => {
         try {
@@ -84,15 +86,21 @@ export default function UserCard({ user }) {
     return (
         <div className={`user ${!user.confirmed ? 'user-not-confirmed' : ''}`} style={{ backgroundColor: visible ? "white" : "#EDEDED" }}>
             {visible ? (
-                <Link to={`/user-profile/${username}`} className="user-username-solo">
-                    {firstName} {lastName}
-                </Link>
+                // se for o próprio utilizador encaminhar para outro route /edit-profile
+                currentUser === username ? (
+                    <Link to="/edit-profile" className="user-username-solo">
+                        {firstName} {lastName}
+                    </Link>
+                ) : (
+                    <Link to={`/user-profile/${username}`} className="user-username-solo">
+                        {firstName} {lastName}
+                    </Link>
+                )
             ) : (
                 <div className="user-username-solo user-username-solo-visible">
                     {firstName} {lastName}
                 </div>
             )}
-           
             {visible ? (
                 <div className="user-visible">
                      {typeOfUser === 300 && (

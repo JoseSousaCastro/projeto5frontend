@@ -16,6 +16,8 @@ function UsersAside() {
     const [username3, setUsername3] = useState("");
     const [updatedTypeOfUser, setUpdatedTypeOfUser] = useState(""); // Tipo de usuário atualizado localmente
 
+    const typeOfUser = userStore((state) => state.typeOfUser);
+
     const token = userStore((state) => state.token);
 
     useEffect(() => {
@@ -120,6 +122,7 @@ function UsersAside() {
     return (
         <div>
             <div className="aside-usersAside">
+                {typeOfUser === 300 && (
                 <div className="buttons-top">
                     <Link to="/register-user">
                         <button className="aside-button">Add User</button>
@@ -128,7 +131,11 @@ function UsersAside() {
                         <button className="aside-button" id="deleted-users-button">Deleted Users</button>
                     </Link>
                 </div>
+                )}
+                {typeOfUser === 300 && (
                 <label className="dropdown-label">Change user role</label>
+                )}
+                {typeOfUser === 300 && (
                 <div className="dropdown">
                     <select className="dropdown-select" onChange={(e) => handleUserSelect(e.target)} value={selectedUser}>
                         <option value="">Choose user</option>
@@ -148,6 +155,7 @@ function UsersAside() {
                         <button className="filter-button" onClick={handleTypeOfUser}>Change role</button>
                     </div>
                 </div>
+                )}
                 <label className="dropdown-label">Filter by username or email</label>
                 <div className="dropdown">
                     <select className="dropdown-goto-username" onChange={(e) => handleUserSelect2(e.target)} value={selectedUser2}>

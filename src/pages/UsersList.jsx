@@ -17,11 +17,9 @@ function UsersList() {
                     <Header />
                 </div>
                 <div className="aside-main-home-container">
-                {typeOfUser === 300 && ( // Renderiza UsersAside apenas para typeOfUser igual a 300
                         <div className="aside-home-container">
                             <UsersAside />
                         </div>
-                    )}
                     {typeOfUser === 200 && ( // Renderiza AsideLogoUsers apenas para typeOfUser igual a 200
                         <div className="aside-home-container">
                             <AsideLogoUsers />
