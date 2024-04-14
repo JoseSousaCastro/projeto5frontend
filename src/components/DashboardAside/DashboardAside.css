@@ -1,28 +1,94 @@
 :root {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 
-    --white: #f9f9f9;
-    --light-grey: #c8e4e7;
-    --grey: grey;
-    --green1: #2CCCD3;
-    --green2: #21979c;
-    --green3: #223C4A;
-    --black: #0e1a21;
-    --overlay: #223c4aab;
-  
-    --todo: #cffdffd7;
-    --doing: #9cfaffd5;
-    --done: #2cccd4d7;
+  --white: #f9f9f9;
+  --light-grey: #c8e4e7;
+  --grey: grey;
+  --green1: #2CCCD3;
+  --green2: #21979c;
+  --green3: #223C4A;
+  --black: #0e1a21;
+  --overlay: #223c4aab;
 
-    --antracite: #424242;
-    --azul: #44a9df;
-    --verde: #5cbc6b;
-    --amarelo: #ffd758;
-    --vermelho: #ef5350;
-    --laranja: #f47d22;
-  
-    --warningMessages: #9C3B21;
-  
-    margin: 0;
-    padding: 0;
-  }
+  --todo: #cffdffd7;
+  --doing: #9cfaffd5;
+  --done: #2cccd4d7;
+
+  --antracite: #424242;
+  --azul: #44a9df;
+  --verde: #5cbc6b;
+  --amarelo: #ffd758;
+  --vermelho: #ef5350;
+  --laranja: #f47d22;
+
+  --warningMessages: #9C3B21;
+
+  margin: 0;
+  padding: 0;
+}
+
+
+.dashboardAside {
+  width: 300px;
+  min-height: 720px;
+  max-height: 1000px;
+  padding-top: 40px;
+  float: left;
+  background-color: var(--light-grey);
+  text-align: center;
+}
+.dashboardAside label {
+  display: block;
+  margin: 40px 0 20px 0;
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--green3);
+  text-transform: uppercase;
+}
+
+.dropdown-select-dashboard {
+  font-size: 15px;
+  color: var(--green2);
+  background-color: var(--white);
+  border: solid var(--green3) 2px;
+  cursor: pointer;
+  text-transform: uppercase;
+  border-radius: 5px;
+  width: 200px;
+  height: 35px;
+  margin-bottom: 40px;
+  font-weight: bold;
+}
+
+.user-tasks {
+  border: 2px solid var(--green2);
+  background-color: var(--white);
+  margin: 0 50px 30px;
+  padding-inline: 20px;
+  padding-top: 10px;
+  padding-bottom: 15px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.dashboardAside-total {
+  padding-left: 10px;
+  display: block;
+  margin: 20px 0 20px;
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--green3);
+  text-transform: uppercase;
+  text-align: left;
+}
+
+.dashboardAside-total-tasktype {
+  padding-left: 30px;
+  display: block;
+  margin: 10px 0 10px 0;
+  font-size: 15px;
+  font-weight: bold;
+  color: var(--green2);
+  text-transform: uppercase;
+  text-align: left;
+}
