@@ -19,8 +19,6 @@
 */
 
 import React, { useEffect, useState, PureComponent } from "react";
-import { userStore } from "../../stores/UserStore";
-import { taskStore } from "../../stores/TaskStore";
 import "../DashboardMain/DashboardMain.css";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
