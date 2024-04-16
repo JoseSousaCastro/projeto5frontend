@@ -21,89 +21,107 @@
 import React, { useEffect, useState, PureComponent } from "react";
 import "../DashboardMain/DashboardMain.css";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { statsStore } from "../../stores/StatsStore";
 
 
 function DashboardMain() {
+    const [loaded, setLoaded] = useState(false);
+    const { fetchGlobalStats } = statsStore();
 
+    const data = 0;
+
+    useEffect(() => {
+        // Use fetchStats para buscar as estatísticas apenas uma vez após a montagem do componente
+        if (!loaded) {
+            fetchGlobalStats();
+            setLoaded(true);
+        }
+    }, [fetchGlobalStats, loaded]);
+
+    const totalUsers = statsStore(state => state.totalUsers);
+    const totalConfirmedUsers = statsStore(state => state.totalConfirmedUsers);
+    const totalUnconfirmedUsers = statsStore(state => state.totalUnconfirmedUsers);
+    const usersOverTime = statsStore(state => state.usersOverTime);
+    console.log("totalUsers", totalUsers);
+    console.log("totalConfirmedUsers", totalConfirmedUsers);
+    console.log("totalUnconfirmedUsers", totalUnconfirmedUsers);
+    console.log("usersOverTime", usersOverTime);
+
+    const totalToDoTasks = statsStore(state => state.totalToDoTasks);
+    const totalDoingTasks = statsStore(state => state.totalDoingTasks);
+    const totalDoneTasks = statsStore(state => state.totalDoneTasks);
+    const tasksCompletedOverTime = statsStore(state => state.tasksCompletedOverTime);
+    console.log("totalToDoTasks", totalToDoTasks);
+    console.log("totalDoingTasks", totalDoingTasks);
+    console.log("totalDoneTasks", totalDoneTasks);
+    console.log("tasksCompletedOverTime", tasksCompletedOverTime);
+
+    const tasksPerUser = statsStore(state => state.tasksPerUser);
+    const averageTaskTime = statsStore(state => state.averageTaskTime);
+    console.log("tasksPerUser", tasksPerUser);
+    console.log("averageTaskTime", averageTaskTime);
+
+    const categoriesListDesc = statsStore(state => state.categoriesListDesc);
+    console.log("categoriesListDesc", categoriesListDesc);
 
     return (
         <div className="DashboardMain">
             <div className="dashboard-main-container">
-                <label>Statistics</label>
+                <h2 className="stats-h2">Statistics</h2>
                 <div className="users-stats">
-                    <div className="users-stats-total-users">
-                        <label>Total Users:</label>
-                        <p>0</p>
+                    <div className="users-stats-left">
+                        <label className="users-stats-labels-titles">Total Users: </label><label className="users-stats-labels-values">{totalUsers}</label>
+                        <label className="users-stats-labels-titles">Confirmed Users:</label><label className="users-stats-labels-values">{totalConfirmedUsers}</label>
+                        <label className="users-stats-labels-titles">Unconfirmed Users:</label><label className="users-stats-labels-values">{totalUnconfirmedUsers}</label>
                     </div>
-                    <div className="users-stats-confirmed-users">
-                        <label>Confirmed Users:</label>
-                        <p>0</p>
-                    </div>
-                    <div className="users-stats-unconfirmed-users">
-                        <label>Unconfirmed Users:</label>
-                        <p>0</p>
-                    </div>
-                    <div className="users-stats-users-over-time">
+                    <div className="users-stats-right">
                         <label>Users</label>
-                        <ResponsiveContainer width="100%" height={200}>
-                            <AreaChart
-                                width={500}
-                                height={200}
-                                data={data}
-                                margin={{
-                                    top: 10, right: 30, left: 0, bottom: 0,
-                                }}
-                            >
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="name" />
-                                <YAxis />
-                                <Tooltip />
-                                <Legend />
-                                <Area type="monotone" dataKey="users" stackId="1" stroke="#223C4A" fill="#223C4A" />
-                            </AreaChart>
-                        </ResponsiveContainer>
+                            <ResponsiveContainer width="100%" height={200}>
+                                <AreaChart
+                                    width={300}
+                                    height={100}
+                                    data={usersOverTime}
+                                    margin={{
+                                        top: 10, right: 30, left: 0, bottom: 0,
+                                    }}
+                                >
+                                    <CartesianGrid strokeDasharray="3 3" />
+                                    <XAxis dataKey="name" />
+                                    <YAxis />
+                                    <Tooltip />
+                                    <Legend />
+                                    <Area type="monotone" dataKey="users" stackId="1" stroke="#223C4A" fill="#223C4A" />
+                                </AreaChart>
+                            </ResponsiveContainer>
                     </div>
                 </div>
                 <div className="tasks-stats">
-                    <div className="tasks-stats-total-todo-tasks">
-                        <label>Total To Do Tasks:</label>
-                        <p>0</p>
+                    <div className="tasks-stats-left">
+                        <label className="tasks-stats-labels-titles">Total To Do Tasks:</label><label className="tasks-stats-labels-values">{totalToDoTasks}</label>
+                        <label className="tasks-stats-labels-titles">Total Doing Tasks:</label><label className="tasks-stats-labels-values">{totalDoingTasks}</label>
+                        <label className="tasks-stats-labels-titles">Total Done Tasks:</label><label className="tasks-stats-labels-values">{totalDoneTasks}</label>
+                        <label className="tasks-stats-labels-titles">Average Tasks Per User:</label><label className="tasks-stats-labels-values">{tasksPerUser}</label>
+                        <label className="tasks-stats-labels-titles">Average Task Time:</label><label className="tasks-stats-labels-values">{averageTaskTime}</label>
                     </div>
-                    <div className="tasks-stats-total-doing-tasks">
-                        <label>Total Doing Tasks:</label>
-                        <p>0</p>
-                    </div>
-                    <div className="tasks-stats-total-done-tasks">
-                        <label>Total Done Tasks:</label>
-                        <p>0</p>
-                    </div>
-                    <div className="tasks-stats-tasks-per-user">
-                        <label>Average Tasks Per User:</label>
-                        <p>0</p>
-                    </div>
-                    <div className="tasks-stats-average-task-time">
-                        <label>Average Task Time:</label>
-                        <p>0</p>
-                    </div>
-                    <div className="tasks-stats-tasks-over-time">
+                    <div className="tasks-stats-right">
                         <label>Completed Tasks:</label>
-                        <ResponsiveContainer width="100%" height={200}>
-                            <AreaChart
-                                width={500}
-                                height={200}
-                                data={data}
-                                margin={{
-                                    top: 10, right: 30, left: 0, bottom: 0,
-                                }}
-                            >
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="name" />
-                                <YAxis />
-                                <Tooltip />
-                                <Legend />
-                                <Area type="monotone" dataKey="tasks" stackId="1" stroke="#223C4A" fill="#223C4A" />
-                            </AreaChart>
-                        </ResponsiveContainer>
+                            <ResponsiveContainer width="100%" height={200}>
+                                <AreaChart
+                                    width={300}
+                                    height={100}
+                                    data={tasksCompletedOverTime}
+                                    margin={{
+                                        top: 10, right: 30, left: 0, bottom: 0,
+                                    }}
+                                >
+                                    <CartesianGrid strokeDasharray="3 3" />
+                                    <XAxis dataKey="name" />
+                                    <YAxis />
+                                    <Tooltip />
+                                    <Legend />
+                                    <Area type="monotone" dataKey="tasks" stackId="1" stroke="#223C4A" fill="#223C4A" />
+                                </AreaChart>
+                            </ResponsiveContainer>
                     </div>
                 </div>
             </div>

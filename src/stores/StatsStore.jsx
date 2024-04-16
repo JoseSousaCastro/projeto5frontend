@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
+import { userStore } from "./UserStore";
 
 // Define a store
 export const statsStore = create(
@@ -30,31 +31,32 @@ export const statsStore = create(
 
             // Define the store's actions
             updateTotalUsers: (totalUsers) => set({ totalUsers }),
-            updatetotalConfirmedUsers: (totalConfirmedUsers) => set({ totalConfirmedUsers }),
-            updatetotalUnconfirmedUsers: (totalUnconfirmedUsers) => set({ totalUnconfirmedUsers }),
+            updateTotalConfirmedUsers: (totalConfirmedUsers) => set({ totalConfirmedUsers }),
+            updateTotalUnconfirmedUsers: (totalUnconfirmedUsers) => set({ totalUnconfirmedUsers }),
             updateUsersOverTime: (usersOverTime) => set({ usersOverTime }),
 
             updateTotalTasks: (totalTasks) => set({ totalTasks }),
-            updatetotalToDoTasks: (totalToDoTasks) => set({ totalToDoTasks }),
-            updatetotalDoingTasks: (totalDoingTasks) => set({ totalDoingTasks }),
-            updatetotalDoneTasks: (totalDoneTasks) => set({ totalDoneTasks }),
-            updatetasksCompletedOverTime: (tasksCompletedOverTime) => set({ tasksCompletedOverTime }),
+            updateTotalToDoTasks: (totalToDoTasks) => set({ totalToDoTasks }),
+            updateTotalDoingTasks: (totalDoingTasks) => set({ totalDoingTasks }),
+            updateTotalDoneTasks: (totalDoneTasks) => set({ totalDoneTasks }),
+            updateTasksCompletedOverTime: (tasksCompletedOverTime) => set({ tasksCompletedOverTime }),
 
-            updatetasksPerUser: (tasksPerUser) => set({ tasksPerUser }),
+            updateTasksPerUser: (tasksPerUser) => set({ tasksPerUser }),
             updateAverageTaskTime: (averageTaskTime) => set({ averageTaskTime }),
 
             updateCategoriesListDesc: (categoriesListDesc) => set({ categoriesListDesc }),
 
 
             updateTotalUserTasks: (totalUserTasks) => set({ totalUserTasks }),
-            updatetotalUserToDoTasks: (totalUserToDoTasks) => set({ totalUserToDoTasks }),
-            updatetotalUserDoingTasks: (totalUserDoingTasks) => set({ totalUserDoingTasks }),
-            updatetotalUserDoneTasks: (totalUserDoneTasks) => set({ totalUserDoneTasks }),
+            updateTotalUserToDoTasks: (totalUserToDoTasks) => set({ totalUserToDoTasks }),
+            updateTotalUserDoingTasks: (totalUserDoingTasks) => set({ totalUserDoingTasks }),
+            updateTotalUserDoneTasks: (totalUserDoneTasks) => set({ totalUserDoneTasks }),
 
         
         fetchGlobalStats: async () => {
+            console.log("token", userStore.getState().token);
             try {
-                const response = await fetch("http://localhost:8080/project5/rest/users/global-stats", {
+                const response = await fetch("http://localhost:8080/project5/rest/users/stats", {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",

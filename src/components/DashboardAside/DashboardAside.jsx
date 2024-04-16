@@ -5,30 +5,40 @@
 import React, { useEffect, useState } from "react";
 import { userStore } from "../../stores/UserStore";
 import { taskStore } from "../../stores/TaskStore";
+import { statsStore } from "../../stores/StatsStore";
 import "../DashboardAside/DashboardAside.css";
 
 function DashboardAside () {
 	const users = userStore(state => state.users);
-	const tasks = taskStore(state => state.tasks);
-	const [userTasks, setUserTasks] = useState([]);
-	const [userTasksToDo, setUserTasksToDo] = useState([]);
-	const [userTasksDoing, setUserTasksDoing] = useState([]);
-	const [userTasksDone, setUserTasksDone] = useState([]);
-	const [userTasksTotal, setUserTasksTotal] = useState(0);
-	const [userTasksToDoTotal, setUserTasksToDoTotal] = useState(0);
-	const [userTasksDoingTotal, setUserTasksDoingTotal] = useState(0);
-	const [userTasksDoneTotal, setUserTasksDoneTotal] = useState(0);
+	const fetchUserStats = statsStore(state => state.fetchUserStats);
+
+	const totalUserTasks = statsStore(state => state.totalUserTasks);
+	const totalUserToDoTasks = statsStore(state => state.totalUserToDoTasks);
+	const totalUserDoingTasks = statsStore(state => state.totalUserDoingTasks);
+	const totalUserDoneTasks = statsStore(state => state.totalUserDoneTasks);
+
+	const updateTotalUserTasks = statsStore(state => state.updateTotalUserTasks);
+	const updatetotalUserToDoTasks = statsStore(state => state.updatetotalUserToDoTasks);
+	const updatetotalUserDoingTasks = statsStore(state => state.updatetotalUserDoingTasks);
+	const updatetotalUserDoneTasks = statsStore(state => state.updatetotalUserDoneTasks);
+
 
 	const handleChange = (event) => {
 		const username = event.target.value;
-		const userTasks = tasks.filter(task => task.owner.name === username);
-		const userTasksToDo = userTasks.filter(task => task.stateId === 100);
-		const userTasksDoing = userTasks.filter(task => task.stateId === 200);
-		const userTasksDone = userTasks.filter(task => task.stateId === 300);
-		setUserTasksTotal(userTasks.length);
-		setUserTasksToDoTotal(userTasksToDo.length);
-		setUserTasksDoingTotal(userTasksDoing.length);
-		setUserTasksDoneTotal(userTasksDone.length);
+	}
+
+	const handleClick = async () => {
+		const selectedUsername = document.getElementById("select-user").value;
+		console.log("selectedUsername", selectedUsername);
+		if (selectedUsername) {
+			await fetchUserStats(selectedUsername); // Chamando a função fetchUserStats com o username selecionado
+			updateTotalUserTasks(totalUserTasks);
+			updatetotalUserToDoTasks(totalUserToDoTasks);
+			updatetotalUserDoingTasks(totalUserDoingTasks);
+			updatetotalUserDoneTasks(totalUserDoneTasks);
+		} else {
+			console.error("Please select a user.");
+		}
 	}
 
 return (
@@ -41,11 +51,12 @@ return (
 					<option key={user.username} value={user.username}>{user.firstName} {user.lastName}</option>
 				))}
 			</select>
+			<button className="dashboardAside-button" onClick={handleClick}>Show stats</button>
 			<div className="user-tasks">
-				<p className="dashboardAside-total">Total Tasks: {userTasksTotal}</p>
-				<p className="dashboardAside-total-tasktype">To Do: {userTasksToDoTotal}</p>
-				<p className="dashboardAside-total-tasktype">Doing: {userTasksDoingTotal}</p>
-				<p className="dashboardAside-total-tasktype">Done: {userTasksDoneTotal}</p>
+				<p className="dashboardAside-total">Total Tasks: {totalUserTasks}</p>
+				<p className="dashboardAside-total-tasktype">To Do: {totalUserToDoTasks}</p>
+				<p className="dashboardAside-total-tasktype">Doing: {totalUserDoingTasks}</p>
+				<p className="dashboardAside-total-tasktype">Done: {totalUserDoneTasks}</p>
 			</div>
 		</div>
 	</div>

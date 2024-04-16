@@ -114,6 +114,7 @@ function Login() {
 
                 console.log("Login feito com sucesso!");
                 await fetchUsers();
+                console.log("Usuários:", updateUserStore.users);
                 navigate('/home', { replace: true });
             } else {
                 const responseBody = await response.json();

@@ -101,6 +101,8 @@ function UsersAside() {
             });
             if (response.ok) {
                 await fetchUsers();
+                setSelectedUser("");
+                setUpdatedTypeOfUser("");
                 navigate("/users-list", { replace: true });
             } else {
                 const responseBody = await response.text();

@@ -26,3 +26,57 @@
     margin: 0;
     padding: 0;
   }
+
+  .DashboardMain {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+  
+.dashboard-main-container {
+    text-align: center;
+}
+  
+.stats-h2 {
+    font-size: 20px;
+    text-transform: uppercase;
+    color: var(--green3);
+    text-align: left;
+}
+  
+.users-stats,
+.tasks-stats {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+  
+.users-stats-left,
+.tasks-stats-left {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Espaço entre os elementos */
+    width: 250px;
+}
+  
+.users-stats-right,
+.tasks-stats-right {
+    width: 500px;
+}
+  
+.users-stats-left p,
+.tasks-stats-left p {
+    margin-left: 5px;
+    text-align: left;
+    margin: 0; /* Resetar a margem */
+}
+  
+.users-stats-left label,
+.tasks-stats-left label {
+    margin-bottom: 5px;
+    text-align: left;
+}
+
+.tasks-stats {
+    margin-top: 30px;
+}
