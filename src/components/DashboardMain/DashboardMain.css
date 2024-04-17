@@ -29,8 +29,9 @@
 
   .DashboardMain {
     display: flex;
-    justify-content: center;
+    justify-content: left;
     margin-top: 20px;
+    padding-left: 100px;
 }
   
 .dashboard-main-container {
@@ -55,7 +56,6 @@
 .tasks-stats-left {
     display: flex;
     flex-direction: column;
-    gap: 10px; /* Espaço entre os elementos */
     width: 250px;
 }
   
@@ -64,19 +64,73 @@
     width: 500px;
 }
   
-.users-stats-left p,
-.tasks-stats-left p {
-    margin-left: 5px;
-    text-align: left;
-    margin: 0; /* Resetar a margem */
-}
-  
 .users-stats-left label,
 .tasks-stats-left label {
     margin-bottom: 5px;
-    text-align: left;
 }
 
 .tasks-stats {
-    margin-top: 30px;
+    margin-block: 40px;
+}
+
+.users-stats-labels-titles,
+.tasks-stats-labels-titles,
+.categories-stats-label {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+    color: var(--green2);
+    font-weight: bold;
+}
+.categories-stats-label {
+    margin-bottom: 10px;
+    color: var(--green3);
+}
+
+.users-stats-labels-values,
+.tasks-stats-labels-values {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+    color: var(--green3);
+    font-weight: bold;
+}
+
+.users-stats-div-total-users,
+.users-stats-div-confirmed-users,
+.users-stats-div-unconfirmed-users,
+.tasks-stats-div-total-todoTasks,
+.tasks-stats-div-total-doingTasks,
+.tasks-stats-div-total-doneTasks,
+.tasks-stats-div-tasksPerUser,
+.tasks-stats-div-averageTaskTime {
+    display: flex;
+    justify-content: space-between;
+}
+
+.categories-stats {
+    margin-top: 20px;
+    align-items: left;
+}
+
+.categories-list {
+    list-style-type: none;
+    text-align: left;
+    padding-left: 0;
+}
+
+.categories-stats-li {
+    justify-content: space-between;
+    margin-top: 5px;
+}
+
+.categories-stats-span-left {
+    font-size: 13px;
+    color: var(--green2);
+    font-weight: bold;
+}
+.categories-stats-span-right {
+    font-size: 13px;
+    color: var(--green3);
+    font-weight: bold;
 }

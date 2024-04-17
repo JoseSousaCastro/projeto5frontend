@@ -47,8 +47,9 @@
 }
 
 .dropdown-select-dashboard {
-  font-size: 15px;
-  color: var(--green2);
+  font-size: 13px;
+  text-align: center;
+  color: var(--green3);
   background-color: var(--white);
   border: solid var(--green3) 2px;
   cursor: pointer;
@@ -56,12 +57,12 @@
   border-radius: 5px;
   width: 200px;
   height: 35px;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
   font-weight: bold;
 }
 
 .user-tasks {
-  border: 2px solid var(--green2);
+  border: 2px solid var(--green3);
   background-color: var(--white);
   margin: 0 50px 30px;
   padding-inline: 20px;
@@ -92,3 +93,4 @@
   text-transform: uppercase;
   text-align: left;
 }
+

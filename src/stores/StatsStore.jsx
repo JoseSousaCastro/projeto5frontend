@@ -92,6 +92,7 @@ export const statsStore = create(
         },
 
         fetchUserStats: async (username) => {
+            console.log("token", userStore.getState().token);
             try {
                 const response = await fetch(`http://localhost:8080/project5/rest/users/${username}/stats`, {
                     method: "GET",
