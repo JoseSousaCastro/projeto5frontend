@@ -47,6 +47,9 @@ function Header() {
                         </ul>
                     </nav>
                 </div>
+                <div className="nav-notifications">
+                        <label id="notifications-label">5 Notifications</label>
+                </div>
                 <div className="nav-menu-right">
                     <div className="link-edit-profile">
                         <img src={photoURL} id="profile-pic" alt="profile-pic" />

@@ -133,3 +133,19 @@
   .logout-button:hover img {
     content:url(/public/multimedia/logout_hover.png);
   }
+
+  .nav-notifications {
+    border: 2px solid var(--green1);
+    border-radius: 5px;
+    padding: 5px 20px;
+    color: var(--green1);
+    text-transform: uppercase;
+    font-size: 15px;
+    font-weight: bold;
+  }
+
+  .nav-notifications:hover {
+    background-color: var(--white);
+    color: var(--green3);
+    transform: scale(1.2);
+  }
