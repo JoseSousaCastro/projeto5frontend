@@ -1,29 +1,27 @@
 import React from "react";
 import "./UserProfileAside.css";
 import { useParams } from "react-router-dom";
-import { taskStore } from "../../stores/TaskStore";
+import { statsStore } from "../../stores/StatsStore";
 
 
 function UserProfileAside() {
-    const { username } = useParams();
 
-    const totalTasks = taskStore(state => state.tasks.filter(task => task.username === username)).length;
-    const getUserTasks = taskStore(state => state.tasks.filter(task => task.username === username));
-    const getUserToDoTasks = getUserTasks.filter(task => task.stateId === 100).length;
-    const getUserDoingTasks = getUserTasks.filter(task => task.stateId === 200).length;
-    const getUserDoneTasks = getUserTasks.filter(task => task.stateId === 300).length;
+    const totalUserTasks = statsStore((state) => state.totalUserTasks);
+    const totalUserToDoTasks = statsStore((state) => state.totalUserToDoTasks);
+    const totalUserDoingTasks = statsStore((state) => state.totalUserDoingTasks);
+    const totalUserDoneTasks = statsStore((state) => state.totalUserDoneTasks);
 
     return (
         <div className="stats-aside-div">
             <h1 className="stats-aside-title">Stats</h1>
             <label className="stats-aside-labels">Total tasks</label>
-            <p className="stats-aside-infos">{totalTasks}</p>
+            <p className="stats-aside-infos">{totalUserTasks}</p>
             <label className="stats-aside-labels">To do tasks</label>
-            <p className="stats-aside-infos">{getUserToDoTasks}</p>
+            <p className="stats-aside-infos">{totalUserToDoTasks}</p>
             <label className="stats-aside-labels">Doing tasks</label>
-            <p className="stats-aside-infos">{getUserDoingTasks}</p>
+            <p className="stats-aside-infos">{totalUserDoingTasks}</p>
             <label className="stats-aside-labels">Done tasks</label>
-            <p className="stats-aside-infos">{getUserDoneTasks}</p>
+            <p className="stats-aside-infos">{totalUserDoneTasks}</p>
         </div>
     );
 }

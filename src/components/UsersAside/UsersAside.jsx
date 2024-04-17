@@ -113,13 +113,24 @@ function UsersAside() {
         }
     };
 
+    const loggedUser = userStore().username;
+
     const handleGoToProfile = () => {
         if (selectedUser2) {
-            navigate(`/user-profile/${selectedUser2}`, { replace: true });
+            if (selectedUser2 === loggedUser) {
+                navigate("/edit-profile/", { replace: true });
+            } else {
+                navigate(`/user-profile/${selectedUser2}`, { replace: true });
+            }
         } else if (selectedUser3) {
-            navigate(`/user-profile/${selectedUser3}`, { replace: true });
+            if (selectedUser3 === loggedUser) {
+                navigate("/edit-profile/", { replace: true });
+            } else {
+                navigate(`/user-profile/${selectedUser3}`, { replace: true });
+            }
         }
-    }
+    };
+    
 
     return (
         <div>
