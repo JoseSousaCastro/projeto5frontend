@@ -2,9 +2,17 @@ import React from "react";
 import "./UserProfileAside.css";
 import { useParams } from "react-router-dom";
 import { statsStore } from "../../stores/StatsStore";
+import { useEffect } from "react";
 
 
 function UserProfileAside() {
+    const { username } = useParams();
+    const { fetchUserStats } = statsStore();
+
+    useEffect(() => {
+        fetchUserStats(username);
+    }, [username]);
+
 
     const totalUserTasks = statsStore((state) => state.totalUserTasks);
     const totalUserToDoTasks = statsStore((state) => state.totalUserToDoTasks);

@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import "../Profile/Profile.css";
 import { userStore } from "../../stores/UserStore";
 import { useNavigate } from "react-router-dom";
-import { taskStore } from "../../stores/TaskStore";
+import { useEffect } from "react";
+import { statsStore } from "../../stores/StatsStore";
 
 function Profile() {
     const [inputs] = useState("");
@@ -22,11 +23,17 @@ function Profile() {
     const updatePhone = userStore((state) => state.updatePhone);
     const updatePhotoURL = userStore((state) => state.updatePhotoURL);
 
-    const totalTasks = taskStore(state => state.tasks.filter(task => task.username === username)).length;
-    const getUserTasks = taskStore(state => state.tasks.filter(task => task.username === username));
-    const getUserToDoTasks = getUserTasks.filter(task => task.stateId === 100).length;
-    const getUserDoingTasks = getUserTasks.filter(task => task.stateId === 200).length;
-    const getUserDoneTasks = getUserTasks.filter(task => task.stateId === 300).length;
+    const { fetchUserStats } = statsStore();
+
+    useEffect(() => {
+        fetchUserStats(username);
+    }, [username]);
+
+
+    const totalUserTasks = statsStore((state) => state.totalUserTasks);
+    const totalUserToDoTasks = statsStore((state) => state.totalUserToDoTasks);
+    const totalUserDoingTasks = statsStore((state) => state.totalUserDoingTasks);
+    const totalUserDoneTasks = statsStore((state) => state.totalUserDoneTasks);
 
 
     const handleSubmit = async (event) => {
@@ -108,13 +115,13 @@ function Profile() {
             <div className="stats-own-profile-div">
                 <h1 className="stats-own-profile-title">Stats</h1>
                 <label className="stats-own-profile-labels">Total tasks</label>
-                <p className="stats-own-profile-infos">{totalTasks}</p>
+                <p className="stats-own-profile-infos">{totalUserTasks}</p>
                 <label className="stats-own-profile-labels">To do tasks</label>
-                <p className="stats-own-profile-infos">{getUserToDoTasks}</p>
+                <p className="stats-own-profile-infos">{totalUserToDoTasks}</p>
                 <label className="stats-own-profile-labels">Doing tasks</label>
-                <p className="stats-own-profile-infos">{getUserDoingTasks}</p>
+                <p className="stats-own-profile-infos">{totalUserDoingTasks}</p>
                 <label className="stats-own-profile-labels">Done tasks</label>
-                <p className="stats-own-profile-infos">{getUserDoneTasks}</p>
+                <p className="stats-own-profile-infos">{totalUserDoneTasks}</p>
             </div>
         </div>
     );
