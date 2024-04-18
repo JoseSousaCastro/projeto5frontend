@@ -13,16 +13,35 @@ function Header() {
     const photoURL = userStore(state => state.photoURL);
     const typeOfUser = userStore(state => state.typeOfUser);
 
-    const handleSubmit = (event) => {
+    const token = userStore(state => state.token);
+
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        // Limpar dados sensíveis durante o logout
-        updateUserStore.updateToken(""); // Limpar o token
-        updateUserStore.updatePassword(""); // Limpar a senha, se estiver armazenada
-        // Limpar dados armazenados na sessionStorage
-        sessionStorage.removeItem("categoryStore");
-        sessionStorage.removeItem("taskStore");
-        sessionStorage.removeItem("userStore");
-        navigate('/', { replace: true });
+
+        try
+        {
+        const logout = await fetch("http://localhost:8080/project5/rest/users/logout", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    token: token,
+                },
+            });
+            if (!logout.ok) {
+                console.error("Error: Logout failed.");
+            } else {
+                console.log("Logout successful.");
+                updateUserStore.updateToken(""); // Limpar o token
+                updateUserStore.updatePassword(""); // Limpar a senha, se estiver armazenada
+                // Limpar dados armazenados na sessionStorage
+                sessionStorage.removeItem("categoryStore");
+                sessionStorage.removeItem("taskStore");
+                sessionStorage.removeItem("userStore");
+                navigate('/', { replace: true });
+            }
+        } catch (error) {
+            console.error("Error:", error);
+        }
     }
 
     const handleClick = (event) => {
