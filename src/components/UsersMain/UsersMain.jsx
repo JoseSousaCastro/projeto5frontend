@@ -20,12 +20,17 @@ function UsersMain() {
         return <div>Loading...</div>;
     }
 
-    const deletedUsers = users.filter(user => user.visible);
+    // Filtra o user que está logado
+    const allUsersExceptLoggedUser = users.filter(user => user.username !== userStore.getState().username);
+
+    const deletedUsers = allUsersExceptLoggedUser.filter(user => user.visible);
 
     // Filtra os usuários por tipo
     const usersDeveloper = deletedUsers.filter(user => user.typeOfUser === 100);
     const usersScrumMaster = deletedUsers.filter(user => user.typeOfUser === 200);
     const usersProductOwner = deletedUsers.filter(user => user.typeOfUser === 300);
+
+    
 
     return (
         <div className="users-users-list" id="users-users-list-outer-container">

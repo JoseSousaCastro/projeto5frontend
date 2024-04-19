@@ -1,11 +1,11 @@
 import React from "react";
 import '../index.css'
 import Header from "../components/Header/Header";
-import UsersAside from "../components/UsersAside/UsersAside";
+import AsideLogoUsers from "../components/AsideLogoUsers/AsideLogoUsers";
 import UsersMain from "../components/UsersMain/UsersMain";
 import Footer from "../components/Footer/Footer";
 
-function UsersList() {
+function UsersListAll() {
 
     return (
         <div className="Home" id="home-outer-container">
@@ -15,7 +15,7 @@ function UsersList() {
                 </div>
                 <div className="aside-main-home-container">
                     <div className="aside-home-container">
-                        <UsersAside />
+                        <AsideLogoUsers />
                     </div>
                     <div className="main-home-container">
                         <UsersMain />
@@ -29,4 +29,4 @@ function UsersList() {
     );
 }
 
-export default UsersList
+export default UsersListAll

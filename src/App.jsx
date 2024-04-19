@@ -18,6 +18,7 @@ import RegisterConfirmation from './pages/RegisterConfirmation';
 import RecoverPass from './pages/RecoverPass';
 import PasswordReset from './pages/PasswordReset';
 import Dashboard from './pages/Dashboard';
+import UsersListAll from './pages/UsersListAll';
 
 
 function App() {
@@ -41,6 +42,7 @@ function App() {
       <Route path="/recover-password" element={<RecoverPass />} />
       <Route path="/reset-password/:username" element={<PasswordReset />} />
       <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/users-list-all" element={<UsersListAll />} />
     </Routes>
   );
 }

@@ -1,12 +1,11 @@
 import React from 'react';
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import '../pages/RecoverPass.css';
 
 
 function RecoverPass() {
     const [inputs, setInputs] = useState({});
-    const navigate = useNavigate();
     const handleChange = (event) => {
         const name = event.target.name;
         const value = event.target.value;
@@ -29,6 +28,7 @@ function RecoverPass() {
             if (response.ok) {
                 console.log("Email sent!");
                 // alerta para o utilizador a indicar que foi enviado um email para recuperar a password
+                alert("An email was sent to you to recover the password.");                
             } else {
                 const responseBody = await response.text();
                 console.error("Email not send, error:", response.statusText, responseBody);
