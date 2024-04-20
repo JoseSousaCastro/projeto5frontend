@@ -16,16 +16,9 @@ function UserProfile() {
   const [messageText, setMessageText] = useState(""); // Inicializando com uma string vazia
   const [messages, setMessages] = useState([]);
 
-/*   const firstName = userStore(
-    (state) => state.users.find((user) => user.username === username).firstName
-  );
-  const lastName = userStore(
-    (state) => state.users.find((user) => user.username === username).lastName
-  ); */
 
   const sender = userStore((state) => state.username);
   const receiver = username;
-
   const token = userStore((state) => state.token);
 
   const websocket = new WebSocket(
@@ -100,16 +93,59 @@ function UserProfile() {
     navigate("/users-list", { replace: true });
   };
 
-  const handleOpenChat = (event) => {
+  const handleOpenChat = async (event) => {
     event.preventDefault();
+    console.log("token", token);
+    console.log("username", username);
+    try {
+      const response = await fetch(
+        `http://localhost:8080/project5/rest/users/getAllMessagesBetweenUsers/${username}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            token: token,
+          },
+        }
+      );
+  
+      if (response.ok) {
+        const messagesData = await response.json();
+        console.log("messagesData", messagesData);
+  
+        // Mapeando as propriedades das mensagens
+        const formattedMessages = messagesData.map(message => ({
+          sender: message.senderUsername,
+          receiver: message.receiverUsername,
+          text: message.message,
+          date: new Date(message.sentAt),
+        }));
+  
+        // Definindo as mensagens formatadas no estado
+        setMessages(formattedMessages);
+        
+      } else {
+        console.error(
+          "Error fetching messages:",
+        );
+      }
+    } catch (error) {
+      console.error("Error fetching messages:", error);
+    }
+  
     setIsChatOpen((prevIsChatOpen) => !prevIsChatOpen); // Inverte o estado do chat
     const button = event.currentTarget;
-    if (isChatOpen) {
-      button.setAttribute("data-text", "Close chat"); // Define o atributo data-text como "Close chat" quando o chat está aberto
-    } else {
-      button.setAttribute("data-text", "Open chat"); // Define o atributo data-text como "Open chat" quando o chat está fechado
+    if (button) { // Verifica se o botão está disponível antes de usá-lo
+      if (isChatOpen) {
+        button.setAttribute("data-text", "Close chat"); // Define o atributo data-text como "Close chat" quando o chat está aberto
+      } else {
+        button.setAttribute("data-text", "Open chat"); // Define o atributo data-text como "Open chat" quando o chat está fechado
+      }
     }
   };
+
+
+  console.log("Message text:", messageText);
 
   const sendMessage = (message) => {
     const messageObject = {
@@ -133,8 +169,6 @@ function UserProfile() {
     } catch (error) {
       console.error("Error sending message:", error);
     }
-     // Limpa o campo de texto
-
   };
 
   useEffect(() => {
@@ -145,11 +179,12 @@ function UserProfile() {
       
       // Cria um novo objeto de mensagem com os dados recebidos
       const message = {
-        sender: messageData.sender,
-        receiver: messageData.receiver,
-        text: messageData.text,
-        date: new Date(messageData.date), // Convertendo a data para um objeto Date
+        sender: messageData.senderUsername,
+        receiver: messageData.receiverUsername,
+        text: messageData.message,
+        date: new Date(messageData.sentAt), // Convertendo a data para um objeto Date
       };
+      console.log("Message object:", message);
       // Adiciona a mensagem à lista de mensagens
       setMessages(prevMessages => [...prevMessages, message]);
     };
