@@ -8,153 +8,213 @@ import { websocketStore } from "../stores/WebsocketStore.jsx";
 import "../pages/Login.css";
 
 function Login() {
-    const [inputs, setInputs] = useState({});
-    const navigate = useNavigate();
-    const updateUserStore = userStore(state => state);
-    const updateCategoryStore = categoryStore(state => state);
-    const updateTaskStore = taskStore(state => state);
-    const fetchUsers = userStore(state => state.fetchUsers);
+  const [inputs, setInputs] = useState({});
+  const navigate = useNavigate();
+  const updateUserStore = userStore((state) => state);
+  const updateCategoryStore = categoryStore((state) => state);
+  const updateTaskStore = taskStore((state) => state);
+  const fetchUsers = userStore((state) => state.fetchUsers);
 
-    const handleChange = (event) => {
-        const name = event.target.name;
-        const value = event.target.value;
-        setInputs(values => ({...values, [name]: value}));
-    }
+  const handleChange = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+    setInputs((values) => ({ ...values, [name]: value }));
+  };
 
-    const [tasksFetched, setTasksFetched] = useState(false);
+  const [tasksFetched, setTasksFetched] = useState(false);
 
-    useEffect(() => {
-        const fetchTasksIfNeeded = async () => {
-            if (!tasksFetched) {
-                try {
-                    await updateTaskStore.fetchTasks();
-                    setTasksFetched(true);
-                } catch (error) {
-                    console.error("Error fetching tasks:", error);
-                }
-            }
-        };
-
-        fetchTasksIfNeeded();
-    }, [tasksFetched, updateTaskStore]);
-
-    
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-
-        if (inputs.password === undefined || inputs.password === null || inputs.password === "") {
-            alert("Password is required");
-            return;
-        }
-
-        const login = {
-            username: inputs.username,
-            password: inputs.password
-        };
-
+  useEffect(() => {
+    const fetchTasksIfNeeded = async () => {
+      if (!tasksFetched) {
         try {
-            const response = await fetch("http://localhost:8080/project5/rest/users/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(login),
-            });
-
-            if (response.ok) {
-                const user = await response.json();
-                updateUserStore.updateUsername(user.username);
-                updateUserStore.updateToken(user.token);
-                updateUserStore.updatePhotoURL(user.photoURL);
-                updateUserStore.updateEmail(user.email);
-                updateUserStore.updateFirstName(user.firstName);
-                updateUserStore.updateLastName(user.lastName);
-                updateUserStore.updatePhone(user.phone);
-                updateUserStore.updatePassword(user.password);
-                updateUserStore.updateTypeOfUser(user.typeOfUser);
-                updateUserStore.updateUserTasks(user.userTasks);
-                updateUserStore.updateConfirmed(user.confirmed);
-                updateUserStore.updateExpirationTime(user.expirationTime);
-
-                if (user.confirm === false && user.expirationTime !== 0) {
-                    alert("Check your email to confirm your account");
-                    return;
-                } else if (user.confirm === false && user.expirationTime === 0) {
-                    alert("Your account is blocked. Please contact the administrator");
-                    return;
-                }
-
-                // Fetch das categorias e armazenamento na store de categorias
-                try {
-                    const responseCategories = await fetch("http://localhost:8080/project5/rest/users/categories", {
-                        method: "GET",
-                        headers: {
-                            "Content-Type": "application/json",
-                            token: user.token, // Adicione o token de autenticação
-                        },
-                    });
-
-                    if (responseCategories.ok) {
-                        const categories = await responseCategories.json();
-                        console.log("Categorias:", categories);
-                        updateCategoryStore.setCategories(categories.map(category => category.name));
-                    } else {
-                        console.error("Failed to fetch categories:", responseCategories.statusText);
-                    }
-                } catch (error) {
-                    console.error("Error fetching categories:", error);
-                }
-
-                // Fetch de todas as tarefas e armazenamento na store de tarefas
-                try {
-                    await updateTaskStore.fetchTasks(); // Chama a função fetchTasks da store de tarefas
-                } catch (error) {
-                    console.error("Error fetching tasks:", error);
-                }
-                console.log("Tasks:", updateTaskStore.tasks);
-
-                console.log("Login feito com sucesso!");
-
-                const token = user.token;
-                const notificationSocket = new WebSocket(
-                    `ws://localhost:8080/project5/websocket/notifications/${token}`
-                  );
-                    notificationSocket.onopen = () => {
-                        console.log("Conexão com WebSocket aberta!");
-                        websocketStore.getState().setNotificationSocket(notificationSocket);
-                    };
-                
-                await fetchUsers();
-                console.log("Usuários:", updateUserStore.users);
-                navigate('/home', { replace: true });
-            } else {
-                const responseBody = await response.json();
-                console.error("Erro no login:", response.statusText, responseBody);
-                // Pode exibir uma mensagem de erro para o usuário
-            }
+          await updateTaskStore.fetchTasks();
+          setTasksFetched(true);
         } catch (error) {
-            console.error("Erro no login:", error);
-            // Pode exibir uma mensagem de erro para o usuário
+          console.error("Error fetching tasks:", error);
         }
+      }
+    };
+
+    fetchTasksIfNeeded();
+  }, [tasksFetched, updateTaskStore]);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if (
+      inputs.password === undefined ||
+      inputs.password === null ||
+      inputs.password === ""
+    ) {
+      alert("Password is required");
+      return;
     }
 
-    return (
-        <div className="Login" id="login-outer-container">
-            <div className="page-wrap" id="login-page-wrap">
-               <div className="loginpanel">
-                    <img src="/multimedia/logo-scrum-01.png" id="logo-login" alt="Agile-Scrum-logo" width="250" />
-                    <form id="login-form" className="input-login" onSubmit={handleSubmit}>
-                        <input type="text" id="username" name="username" placeholder="username" onChange={handleChange} required />
-                        <input type="password" id="password" name="password" placeholder="password" onChange={handleChange} required />
-                        <button id="loginButton">Sign in</button>
-                    </form>
-                    <div className="recover-pass">
-                        <p>Forget password? <Link to="/recover-password" id="recover-link">Recover password</Link></p>
-                    </div>
-                </div>
-            </div>
+    const login = {
+      username: inputs.username,
+      password: inputs.password,
+    };
+
+    try {
+      const response = await fetch(
+        "http://localhost:8080/project5/rest/users/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(login),
+        }
+      );
+
+      if (response.ok) {
+        const user = await response.json();
+        updateUserStore.updateUsername(user.username);
+        updateUserStore.updateToken(user.token);
+        updateUserStore.updatePhotoURL(user.photoURL);
+        updateUserStore.updateEmail(user.email);
+        updateUserStore.updateFirstName(user.firstName);
+        updateUserStore.updateLastName(user.lastName);
+        updateUserStore.updatePhone(user.phone);
+        updateUserStore.updatePassword(user.password);
+        updateUserStore.updateTypeOfUser(user.typeOfUser);
+        updateUserStore.updateUserTasks(user.userTasks);
+        updateUserStore.updateConfirmed(user.confirmed);
+        updateUserStore.updateExpirationTime(user.expirationTime);
+
+        if (user.confirm === false && user.expirationTime !== 0) {
+          alert("Check your email to confirm your account");
+          return;
+        } else if (user.confirm === false && user.expirationTime === 0) {
+          alert("Your account is blocked. Please contact the administrator");
+          return;
+        }
+
+        // Fetch das categorias e armazenamento na store de categorias
+        try {
+          const responseCategories = await fetch(
+            "http://localhost:8080/project5/rest/users/categories",
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                token: user.token, // Adicione o token de autenticação
+              },
+            }
+          );
+
+          if (responseCategories.ok) {
+            const categories = await responseCategories.json();
+            console.log("Categorias:", categories);
+            updateCategoryStore.setCategories(
+              categories.map((category) => category.name)
+            );
+          } else {
+            console.error(
+              "Failed to fetch categories:",
+              responseCategories.statusText
+            );
+          }
+        } catch (error) {
+          console.error("Error fetching categories:", error);
+        }
+
+        // Fetch de todas as tarefas e armazenamento na store de tarefas
+        try {
+          await updateTaskStore.fetchTasks(); // Chama a função fetchTasks da store de tarefas
+        } catch (error) {
+          console.error("Error fetching tasks:", error);
+        }
+        console.log("Tasks:", updateTaskStore.tasks);
+
+        console.log("Login feito com sucesso!");
+
+        const token = user.token;
+        const notificationSocket = new WebSocket(
+          `ws://localhost:8080/project5/websocket/notifications/${token}`
+        );
+        notificationSocket.onopen = () => {
+          console.log("Conexão com WebSocket aberta!");
+
+          // Definir um listener para lidar com a primeira mensagem recebida do servidor
+          notificationSocket.onmessage = (event) => {
+            const data = JSON.parse(event.data); // Convertendo a string JSON para um objeto JavaScript
+            console.log("Received notification counts:", data);
+
+            // Convertendo o objeto de contagens de notificações em um array
+            const notificationArray = Object.entries(data).map(
+              ([sender, count]) => ({
+                sender,
+                count,
+              })
+            );
+
+            // Armazenar as contagens de notificações como um array na store websocketStore
+            websocketStore.getState().setNotificationArray(notificationArray);
+            console.log(
+              "Notification array:",
+              websocketStore.getState().notificationArray
+            );
+          };
+
+          websocketStore.getState().setNotificationSocket(notificationSocket);
+        };
+
+        await fetchUsers();
+        console.log("Usuários:", updateUserStore.users);
+        navigate("/home", { replace: true });
+      } else {
+        const responseBody = await response.json();
+        console.error("Erro no login:", response.statusText, responseBody);
+        // Pode exibir uma mensagem de erro para o usuário
+      }
+    } catch (error) {
+      console.error("Erro no login:", error);
+      // Pode exibir uma mensagem de erro para o usuário
+    }
+  };
+
+  return (
+    <div className="Login" id="login-outer-container">
+      <div className="page-wrap" id="login-page-wrap">
+        <div className="loginpanel">
+          <img
+            src="/multimedia/logo-scrum-01.png"
+            id="logo-login"
+            alt="Agile-Scrum-logo"
+            width="250"
+          />
+          <form id="login-form" className="input-login" onSubmit={handleSubmit}>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              placeholder="username"
+              onChange={handleChange}
+              required
+            />
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="password"
+              onChange={handleChange}
+              required
+            />
+            <button id="loginButton">Sign in</button>
+          </form>
+          <div className="recover-pass">
+            <p>
+              Forget password?{" "}
+              <Link to="/recover-password" id="recover-link">
+                Recover password
+              </Link>
+            </p>
+          </div>
         </div>
-    );
+      </div>
+    </div>
+  );
 }
 
 export default Login;

@@ -7,15 +7,17 @@ import { websocketStore } from "../../stores/WebsocketStore";
 function Header() {
   const navigate = useNavigate();
   const updateUserStore = userStore((state) => state);
-  const websocket = websocketStore((state) => state.notificationSocket); // Obtendo a notificationSocket da websocketStore
+  const websocket = websocketStore((state) => state.notificationSocket); // Obtendo o WebSocket da websocketStore
+  const notificationsArray = websocketStore((state) => state.notificationArray); // Obtendo o array de notificações da websocketStore
+  const notificationsCount = websocketStore((state) => state.getNotificationArrayLength()); // Obtendo o comprimento do array de notificações da websocketStore
+
+  console.log("notificationsArray", notificationsArray);
+  console.log("notificationsCount", notificationsCount);
 
   const firstName = userStore((state) => state.firstName);
   const photoURL = userStore((state) => state.photoURL);
   const typeOfUser = userStore((state) => state.typeOfUser);
   const token = userStore((state) => state.token);
-
-  const [notificationsArray, setNotificationsArray] = useState([]);
-  const [notificationsCount, setNotificationsCount] = useState(0);
 
   const processLogout = async (event) => {
     event.preventDefault();
@@ -42,12 +44,12 @@ function Header() {
         sessionStorage.removeItem("taskStore");
         sessionStorage.removeItem("userStore");
 
-              // Limpar o WebSocket
-      if (websocket) {
-        websocket.close();
-        websocketStore.getState().setNotificationSocket(null);
-      }
-      console.log("WebSocket closed");
+        // Limpar o WebSocket
+        if (websocket) {
+          websocket.close();
+          websocketStore.getState().setNotificationSocket(null);
+        }
+        console.log("WebSocket closed");
 
         navigate("/", { replace: true });
       }
@@ -60,37 +62,6 @@ function Header() {
     event.preventDefault();
     navigate("/edit-profile");
   };
-
-  useEffect(() => {
-    const handleFirstMessage = (event) => {
-      const data = JSON.parse(event.data); // Convertendo a string JSON para um objeto JavaScript
-      const notificationsArray = Object.entries(data).map(([key, value]) => ({
-        sender: key, // String
-        count: value, // Integer
-      }));
-
-      // Agora você tem um array onde cada elemento contém um par chave-valor da hashmap recebida
-      // Você pode fazer o que quiser com esse array, como armazená-lo no estado ou exibi-lo na interface do usuário
-      console.log(notificationsArray);
-      setNotificationsArray(notificationsArray);
-      setNotificationsCount(notificationsArray.length);
-
-      // Removendo a função de manipulação de mensagem após processar a primeira mensagem
-      websocket.removeEventListener('message', handleFirstMessage);
-    };
-
-    // Definindo a função de manipulação de mensagem para a primeira mensagem recebida
-    if (websocket) {
-      websocket.addEventListener('message', handleFirstMessage);
-    }
-
-    // Limpando o ouvinte de mensagem ao desmontar o componente
-    return () => {
-      if (websocket) {
-        websocket.removeEventListener('message', handleFirstMessage);
-      }
-    };
-  }, [websocket]);
 
   return (
     <div className="header" id="header-outer-container">
@@ -127,13 +98,25 @@ function Header() {
           </nav>
         </div>
         <div className="nav-notifications">
-          <select id="notifications-dropdown">
-              <option value="default" className="dropdown-notifications-defaultValue">{notificationsCount} Notifications</option>
-              {notificationsArray.map((notification, index) => (
-                  <option key={index} value={index} className="dropdown-notifications-otherValues">
-                  <p>You have {notification.count} messages from {notification.sender}</p>
-                </option>
-              ))}
+          <select className="notifications-dropdown">
+            <option
+              value="default"
+              className="dropdown-notifications-defaultValue"
+            >
+              {notificationsCount} Notifications
+            </option>
+            {notificationsArray.map((notification, index) => (
+              <option
+                key={index}
+                value={index}
+                className="dropdown-notifications-otherValues"
+              >
+                <p>
+                  You have {notification.count} messages from{" "}
+                  {notification.sender}
+                </p>
+              </option>
+            ))}
           </select>
         </div>
         <div className="nav-menu-right">
