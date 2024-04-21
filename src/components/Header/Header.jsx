@@ -41,6 +41,14 @@ function Header() {
         sessionStorage.removeItem("categoryStore");
         sessionStorage.removeItem("taskStore");
         sessionStorage.removeItem("userStore");
+
+              // Limpar o WebSocket
+      if (websocket) {
+        websocket.close();
+        websocketStore.getState().setNotificationSocket(null);
+      }
+      console.log("WebSocket closed");
+
         navigate("/", { replace: true });
       }
     } catch (error) {

@@ -6,7 +6,6 @@ import "react-chat-elements/dist/main.css";
 import { MessageBox } from "react-chat-elements";
 import { Input } from "react-chat-elements";
 import { Button } from "react-chat-elements";
-import { websocketStore } from "../../stores/WebsocketStore";
 
 function UserProfile() {
   const [inputs, setInputs] = useState({});
@@ -22,6 +21,7 @@ function UserProfile() {
   const token = userStore((state) => state.token);
 
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [chatSocket, setChatSocket] = useState(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -119,19 +119,22 @@ function UserProfile() {
       console.error("Error fetching messages:", error);
     }
   
-    // Abrir ou fechar o WebSocket chatSocket
-    const { chatSocket, closeChatSocket, openChatSocket } = websocketStore.getState();
-    if (isChatOpen) {
-      // Fechar o WebSocket
-      if (chatSocket) {
-        closeChatSocket();
-      }
-    } else {
       // Abrir o WebSocket
-      if (!chatSocket) {
-        openChatSocket(token, receiver);
+      if (isChatOpen === false) {
+        const chatSocket = new WebSocket(
+          `ws://localhost:8080/project5/websocket/chat/${token}/${receiver}`
+        );
+        chatSocket.onopen = () => {
+          console.log("Chat socket opened");
+          setChatSocket(chatSocket);
+        }
+     } else {
+        if (chatSocket) {
+          chatSocket.close();
+          console.log("Chat socket closed");
+          setChatSocket(null);
+        }
       }
-    }
   
     setIsChatOpen((prevIsChatOpen) => !prevIsChatOpen);
   };
@@ -145,7 +148,6 @@ function UserProfile() {
     };
     setMessages((prevMessages) => [...prevMessages, messageObject]);
     try {
-      const { chatSocket } = websocketStore.getState();
       if (chatSocket && chatSocket.readyState === WebSocket.OPEN) {
         chatSocket.send(JSON.stringify(messageObject));
         setMessageText("");
@@ -174,7 +176,6 @@ function UserProfile() {
       }
     };
   
-    const { chatSocket } = websocketStore.getState();
     if (chatSocket) {
       console.log("WebSocket connection established");
       chatSocket.addEventListener("message", handleMessage);
@@ -188,7 +189,7 @@ function UserProfile() {
         chatSocket.removeEventListener("message", handleMessage);
       }
     };
-  }, []);
+  }, [chatSocket]);
   
   
 

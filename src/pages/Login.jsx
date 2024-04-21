@@ -14,8 +14,6 @@ function Login() {
     const updateCategoryStore = categoryStore(state => state);
     const updateTaskStore = taskStore(state => state);
     const fetchUsers = userStore(state => state.fetchUsers);
-    const openNotificationSocket = websocketStore(state => state.openNotificationSocket);
-
 
     const handleChange = (event) => {
         const name = event.target.name;
@@ -117,8 +115,15 @@ function Login() {
 
                 console.log("Login feito com sucesso!");
 
-                openNotificationSocket(user.token); // Abre a notificationSocket após o login bem-sucedido
-
+                const token = user.token;
+                const notificationSocket = new WebSocket(
+                    `ws://localhost:8080/project5/websocket/notifications/${token}`
+                  );
+                    notificationSocket.onopen = () => {
+                        console.log("Conexão com WebSocket aberta!");
+                        websocketStore.getState().setNotificationSocket(notificationSocket);
+                    };
+                
                 await fetchUsers();
                 console.log("Usuários:", updateUserStore.users);
                 navigate('/home', { replace: true });
