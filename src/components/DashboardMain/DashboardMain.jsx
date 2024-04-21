@@ -40,27 +40,16 @@ function DashboardMain() {
     const totalConfirmedUsers = statsStore(state => state.totalConfirmedUsers);
     const totalUnconfirmedUsers = statsStore(state => state.totalUnconfirmedUsers);
     const usersOverTime = statsStore(state => state.usersOverTime);
-    console.log("totalUsers", totalUsers);
-    console.log("totalConfirmedUsers", totalConfirmedUsers);
-    console.log("totalUnconfirmedUsers", totalUnconfirmedUsers);
-    console.log("usersOverTime", usersOverTime);
 
     const totalToDoTasks = statsStore(state => state.totalToDoTasks);
     const totalDoingTasks = statsStore(state => state.totalDoingTasks);
     const totalDoneTasks = statsStore(state => state.totalDoneTasks);
     const tasksCompletedOverTime = statsStore(state => state.tasksCompletedOverTime);
-    console.log("totalToDoTasks", totalToDoTasks);
-    console.log("totalDoingTasks", totalDoingTasks);
-    console.log("totalDoneTasks", totalDoneTasks);
-    console.log("tasksCompletedOverTime", tasksCompletedOverTime);
 
     const tasksPerUser = statsStore(state => state.tasksPerUser);
     const averageTaskTime = statsStore(state => state.averageTaskTime);
-    console.log("tasksPerUser", tasksPerUser);
-    console.log("averageTaskTime", averageTaskTime);
 
     const categoriesListDesc = statsStore(state => state.categoriesListDesc);
-    console.log("categoriesListDesc", categoriesListDesc);
 
     // Convertendo a lista para o formato compatível com o gráfico e ordenando os dados pela data
     const formattedDataUsers = usersOverTime.map(info => ({

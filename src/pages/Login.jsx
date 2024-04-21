@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { userStore } from "../stores/UserStore.jsx";
 import { categoryStore } from "../stores/CategoryStore.jsx";
 import { taskStore } from "../stores/TaskStore.jsx";
+import { websocketStore } from "../stores/WebsocketStore.jsx";
 import "../pages/Login.css";
 
 function Login() {
@@ -13,6 +14,8 @@ function Login() {
     const updateCategoryStore = categoryStore(state => state);
     const updateTaskStore = taskStore(state => state);
     const fetchUsers = userStore(state => state.fetchUsers);
+    const openNotificationSocket = websocketStore(state => state.openNotificationSocket);
+
 
     const handleChange = (event) => {
         const name = event.target.name;
@@ -113,6 +116,9 @@ function Login() {
                 console.log("Tasks:", updateTaskStore.tasks);
 
                 console.log("Login feito com sucesso!");
+
+                openNotificationSocket(user.token); // Abre a notificationSocket após o login bem-sucedido
+
                 await fetchUsers();
                 console.log("Usuários:", updateUserStore.users);
                 navigate('/home', { replace: true });

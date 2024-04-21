@@ -1,19 +1,23 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../Header/Header.css";
 import { userStore } from "../../stores/UserStore";
+import { websocketStore } from "../../stores/WebsocketStore";
 
 function Header() {
   const navigate = useNavigate();
   const updateUserStore = userStore((state) => state);
+  const websocket = websocketStore((state) => state.notificationSocket); // Obtendo a notificationSocket da websocketStore
 
   const firstName = userStore((state) => state.firstName);
   const photoURL = userStore((state) => state.photoURL);
   const typeOfUser = userStore((state) => state.typeOfUser);
-
   const token = userStore((state) => state.token);
 
-  const handleSubmit = async (event) => {
+  const [notificationsArray, setNotificationsArray] = useState([]);
+  const [notificationsCount, setNotificationsCount] = useState(0);
+
+  const processLogout = async (event) => {
     event.preventDefault();
 
     try {
@@ -48,6 +52,37 @@ function Header() {
     event.preventDefault();
     navigate("/edit-profile");
   };
+
+  useEffect(() => {
+    const handleFirstMessage = (event) => {
+      const data = JSON.parse(event.data); // Convertendo a string JSON para um objeto JavaScript
+      const notificationsArray = Object.entries(data).map(([key, value]) => ({
+        sender: key, // String
+        count: value, // Integer
+      }));
+
+      // Agora você tem um array onde cada elemento contém um par chave-valor da hashmap recebida
+      // Você pode fazer o que quiser com esse array, como armazená-lo no estado ou exibi-lo na interface do usuário
+      console.log(notificationsArray);
+      setNotificationsArray(notificationsArray);
+      setNotificationsCount(notificationsArray.length);
+
+      // Removendo a função de manipulação de mensagem após processar a primeira mensagem
+      websocket.removeEventListener('message', handleFirstMessage);
+    };
+
+    // Definindo a função de manipulação de mensagem para a primeira mensagem recebida
+    if (websocket) {
+      websocket.addEventListener('message', handleFirstMessage);
+    }
+
+    // Limpando o ouvinte de mensagem ao desmontar o componente
+    return () => {
+      if (websocket) {
+        websocket.removeEventListener('message', handleFirstMessage);
+      }
+    };
+  }, [websocket]);
 
   return (
     <div className="header" id="header-outer-container">
@@ -84,7 +119,14 @@ function Header() {
           </nav>
         </div>
         <div className="nav-notifications">
-          <label id="notifications-label">5 Notifications</label>
+          <select id="notifications-dropdown">
+              <option value="default" className="dropdown-notifications-defaultValue">{notificationsCount} Notifications</option>
+              {notificationsArray.map((notification, index) => (
+                  <option key={index} value={index} className="dropdown-notifications-otherValues">
+                  <p>You have {notification.count} messages from {notification.sender}</p>
+                </option>
+              ))}
+          </select>
         </div>
         <div className="nav-menu-right">
           <div className="link-edit-profile">
@@ -96,7 +138,7 @@ function Header() {
           <button
             className="logout-button"
             id="logout-button-header"
-            onClick={handleSubmit}
+            onClick={processLogout}
           >
             <img src="/multimedia/logout.png" alt="logout-icon" />
             Logout

@@ -6,6 +6,7 @@ import "react-chat-elements/dist/main.css";
 import { MessageBox } from "react-chat-elements";
 import { Input } from "react-chat-elements";
 import { Button } from "react-chat-elements";
+import { websocketStore } from "../../stores/WebsocketStore";
 
 function UserProfile() {
   const [inputs, setInputs] = useState({});
@@ -13,17 +14,12 @@ function UserProfile() {
   const { username } = useParams();
   const typeOfUser = userStore((state) => state.typeOfUser);
   const fetchUsers = userStore((state) => state.fetchUsers);
-  const [messageText, setMessageText] = useState(""); // Inicializando com uma string vazia
+  const [messageText, setMessageText] = useState("");
   const [messages, setMessages] = useState([]);
-
 
   const sender = userStore((state) => state.username);
   const receiver = username;
   const token = userStore((state) => state.token);
-
-  const websocket = new WebSocket(
-    `ws://localhost:8080/project5/websocket/notifier/${token}/${receiver}`
-  );
 
   const [isChatOpen, setIsChatOpen] = useState(false);
 
@@ -43,7 +39,6 @@ function UserProfile() {
 
         if (response.ok) {
           const userData = await response.json();
-          console.log("userData", userData);
           setInputs(userData);
         } else {
           console.error("Error fetching user data:", response.statusText);
@@ -93,10 +88,9 @@ function UserProfile() {
     navigate("/users-list", { replace: true });
   };
 
-  const handleOpenChat = async (event) => {
+  const handleToggleChat = async (event) => {
     event.preventDefault();
-    console.log("token", token);
-    console.log("username", username);
+  
     try {
       const response = await fetch(
         `http://localhost:8080/project5/rest/users/getAllMessagesBetweenUsers/${username}`,
@@ -111,42 +105,37 @@ function UserProfile() {
   
       if (response.ok) {
         const messagesData = await response.json();
-        console.log("messagesData", messagesData);
-  
-        // Mapeando as propriedades das mensagens
-        const formattedMessages = messagesData.map(message => ({
+        const formattedMessages = messagesData.map((message) => ({
           sender: message.senderUsername,
           receiver: message.receiverUsername,
           text: message.message,
           date: new Date(message.sentAt),
         }));
-  
-        // Definindo as mensagens formatadas no estado
         setMessages(formattedMessages);
-        
       } else {
-        console.error(
-          "Error fetching messages:",
-        );
+        console.error("Error fetching messages:");
       }
     } catch (error) {
       console.error("Error fetching messages:", error);
     }
   
-    setIsChatOpen((prevIsChatOpen) => !prevIsChatOpen); // Inverte o estado do chat
-    const button = event.currentTarget;
-    if (button) { // Verifica se o botão está disponível antes de usá-lo
-      if (isChatOpen) {
-        button.setAttribute("data-text", "Close chat"); // Define o atributo data-text como "Close chat" quando o chat está aberto
-      } else {
-        button.setAttribute("data-text", "Open chat"); // Define o atributo data-text como "Open chat" quando o chat está fechado
+    // Abrir ou fechar o WebSocket chatSocket
+    const { chatSocket, closeChatSocket, openChatSocket } = websocketStore.getState();
+    if (isChatOpen) {
+      // Fechar o WebSocket
+      if (chatSocket) {
+        closeChatSocket();
+      }
+    } else {
+      // Abrir o WebSocket
+      if (!chatSocket) {
+        openChatSocket(token, receiver);
       }
     }
+  
+    setIsChatOpen((prevIsChatOpen) => !prevIsChatOpen);
   };
-
-
-  console.log("Message text:", messageText);
-
+  
   const sendMessage = (message) => {
     const messageObject = {
       sender: sender,
@@ -154,17 +143,14 @@ function UserProfile() {
       text: message,
       date: new Date().toISOString(),
     };
-    console.log("token", token);
-    setMessages(prevMessages => [...prevMessages, messageObject]);
+    setMessages((prevMessages) => [...prevMessages, messageObject]);
     try {
-      // Verifica se a conexão WebSocket está aberta
-      if (websocket.readyState === WebSocket.OPEN) {
-        // Envia a mensagem no formato JSON
-        websocket.send(JSON.stringify(messageObject));
-        console.log("Message sent:", messageObject);
+      const { chatSocket } = websocketStore.getState();
+      if (chatSocket && chatSocket.readyState === WebSocket.OPEN) {
+        chatSocket.send(JSON.stringify(messageObject));
         setMessageText("");
       } else {
-        console.error("WebSocket connection is not open.");
+        console.error("WebSocket chatSocket is not open.");
       }
     } catch (error) {
       console.error("Error sending message:", error);
@@ -173,30 +159,38 @@ function UserProfile() {
 
   useEffect(() => {
     const handleMessage = (event) => {
-      // Parse da mensagem recebida para um objeto JavaScript
-      const messageData = JSON.parse(event.data);
-      console.log("Message received:", messageData);
-      
-      // Cria um novo objeto de mensagem com os dados recebidos
-      const message = {
-        sender: messageData.senderUsername,
-        receiver: messageData.receiverUsername,
-        text: messageData.message,
-        date: new Date(messageData.sentAt), // Convertendo a data para um objeto Date
-      };
-      console.log("Message object:", message);
-      // Adiciona a mensagem à lista de mensagens
-      setMessages(prevMessages => [...prevMessages, message]);
+      try {
+        const messageData = JSON.parse(event.data);
+        console.log("Message received:", messageData);
+        const message = {
+          sender: messageData.senderUsername,
+          receiver: messageData.receiverUsername,
+          text: messageData.message,
+          date: new Date(messageData.sentAt),
+        };
+        setMessages((prevMessages) => [...prevMessages, message]);
+      } catch (error) {
+        console.error("Error parsing message:", error);
+      }
     };
   
-    websocket.addEventListener("message", handleMessage);
+    const { chatSocket } = websocketStore.getState();
+    if (chatSocket) {
+      console.log("WebSocket connection established");
+      chatSocket.addEventListener("message", handleMessage);
+    } else {
+      console.error("WebSocket connection not available");
+    }
   
     return () => {
-      websocket.removeEventListener("message", handleMessage);
+      if (chatSocket) {
+        console.log("Closing WebSocket connection");
+        chatSocket.removeEventListener("message", handleMessage);
+      }
     };
-  }, [websocket]);
-
-
+  }, []);
+  
+  
 
   return (
     <div className="container">
@@ -213,8 +207,8 @@ function UserProfile() {
             <label id="username-title-editProfile">{username}</label>
             <button
               className="open-chat-button"
-              onClick={handleOpenChat}
-              data-text={isChatOpen ? "Close chat" : "Open chat"} // Define o atributo data-text com base no estado do chat
+              onClick={handleToggleChat}
+              data-text={isChatOpen ? "Close chat" : "Open chat"}
             >
               {isChatOpen ? "Close chat" : "Open chat"}
             </button>
@@ -350,7 +344,7 @@ function UserProfile() {
         ))}
         <Input
           type="text"
-          placeholder="Type here..." 
+          placeholder="Type here..."
           value={messageText}
           onChange={(e) => setMessageText(e.target.value)}
           multiline={true}
