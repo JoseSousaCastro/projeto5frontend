@@ -90,7 +90,7 @@ function UserProfile() {
 
   const handleToggleChat = async (event) => {
     event.preventDefault();
-  
+
     try {
       const response = await fetch(
         `http://localhost:8080/project5/rest/users/getAllMessagesBetweenUsers/${username}`,
@@ -102,7 +102,7 @@ function UserProfile() {
           },
         }
       );
-  
+
       if (response.ok) {
         const messagesData = await response.json();
         const formattedMessages = messagesData.map((message) => ({
@@ -118,27 +118,27 @@ function UserProfile() {
     } catch (error) {
       console.error("Error fetching messages:", error);
     }
-  
-      // Abrir o WebSocket
-      if (isChatOpen === false) {
-        const chatSocket = new WebSocket(
-          `ws://localhost:8080/project5/websocket/chat/${token}/${receiver}`
-        );
-        chatSocket.onopen = () => {
-          console.log("Chat socket opened");
-          setChatSocket(chatSocket);
-        }
-     } else {
-        if (chatSocket) {
-          chatSocket.close();
-          console.log("Chat socket closed");
-          setChatSocket(null);
-        }
+
+    // Abrir o WebSocket
+    if (isChatOpen === false) {
+      const chatSocket = new WebSocket(
+        `ws://localhost:8080/project5/websocket/chat/${token}/${receiver}`
+      );
+      chatSocket.onopen = () => {
+        console.log("Chat socket opened");
+        setChatSocket(chatSocket);
+      };
+    } else {
+      if (chatSocket) {
+        chatSocket.close();
+        console.log("Chat socket closed");
+        setChatSocket(null);
       }
-  
+    }
+
     setIsChatOpen((prevIsChatOpen) => !prevIsChatOpen);
   };
-  
+
   const sendMessage = (message) => {
     const messageObject = {
       sender: sender,
@@ -175,14 +175,14 @@ function UserProfile() {
         console.error("Error parsing message:", error);
       }
     };
-  
+
     if (chatSocket) {
       console.log("WebSocket connection established");
       chatSocket.addEventListener("message", handleMessage);
     } else {
       console.error("WebSocket connection not available");
     }
-  
+
     return () => {
       if (chatSocket) {
         console.log("Closing WebSocket connection");
@@ -190,8 +190,6 @@ function UserProfile() {
       }
     };
   }, [chatSocket]);
-  
-  
 
   return (
     <div className="container">

@@ -1,32 +1,31 @@
 import React from "react";
-import '../index.css'
+import "../index.css";
 import Header from "../components/Header/Header";
 import AsideLogo from "../components/AsideLogo/AsideLogo";
 import TasksMainByUser from "../components/TasksMainByUser/TasksMainByUser";
 import Footer from "../components/Footer/Footer";
 
 function TasksByUser() {
-
-    return (
-        <div className="Home" id="home-outer-container">
-            <div className="page-wrap" id="home-page-wrap">
-                <div className="header-home-container">
-                    <Header />
-                </div>
-                <div className="aside-main-home-container">
-                    <div className="aside-home-container">
-                        <AsideLogo />
-                    </div>
-                    <div className="main-home-container">
-                        <TasksMainByUser />
-                    </div>
-                </div>
-                <div className="footer-home-container">
-                    <Footer />
-                </div>
-            </div>
+  return (
+    <div className="Home" id="home-outer-container">
+      <div className="page-wrap" id="home-page-wrap">
+        <div className="header-home-container">
+          <Header />
         </div>
-    );
+        <div className="aside-main-home-container">
+          <div className="aside-home-container">
+            <AsideLogo />
+          </div>
+          <div className="main-home-container">
+            <TasksMainByUser />
+          </div>
+        </div>
+        <div className="footer-home-container">
+          <Footer />
+        </div>
+      </div>
+    </div>
+  );
 }
 
-export default TasksByUser
+export default TasksByUser;
