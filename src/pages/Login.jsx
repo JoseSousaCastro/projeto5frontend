@@ -14,6 +14,7 @@ function Login() {
   const updateCategoryStore = categoryStore((state) => state);
   const updateTaskStore = taskStore((state) => state);
   const fetchUsers = userStore((state) => state.fetchUsers);
+  const [websocketOpen, setWebsocketOpen] = useState(false); // Estado para controlar se o WebSocket está aberto
 
   const handleChange = (event) => {
     const name = event.target.name;
@@ -37,6 +38,16 @@ function Login() {
 
     fetchTasksIfNeeded();
   }, [tasksFetched, updateTaskStore]);
+
+  useEffect(() => {
+    if (websocketOpen) {
+      navigate("/home", { replace: true });
+    }
+  }, [websocketOpen, navigate]);
+
+  const handleWebSocketOpen = () => {
+    setWebsocketOpen(true);
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -133,36 +144,33 @@ function Login() {
         const notificationSocket = new WebSocket(
           `ws://localhost:8080/project5/websocket/notifications/${token}`
         );
-        notificationSocket.onopen = () => {
-          console.log("Conexão com WebSocket aberta!");
 
-          // Definir um listener para lidar com a primeira mensagem recebida do servidor
-          notificationSocket.onmessage = (event) => {
-            const data = JSON.parse(event.data); // Convertendo a string JSON para um objeto JavaScript
-            console.log("Received notification counts:", data);
+        // Definir um listener para lidar com a primeira mensagem recebida do servidor
+        notificationSocket.onmessage = async (event) => {
+          const data = JSON.parse(event.data); // Convertendo a string JSON para um objeto JavaScript
+          console.log("Received notification counts:", data);
 
-            // Convertendo o objeto de contagens de notificações em um array
-            const notificationArray = Object.entries(data).map(
-              ([sender, count]) => ({
-                sender,
-                count,
-              })
-            );
+          // Convertendo o objeto de contagens de notificações em um array
+          const notificationArray = Object.entries(data).map(
+            ([sender, count]) => ({
+              sender,
+              count,
+            })
+          );
+          console.log("Notification array:", notificationArray);
 
-            // Armazenar as contagens de notificações como um array na store websocketStore
-            websocketStore.getState().setNotificationArray(notificationArray);
-            console.log(
-              "Notification array:",
-              websocketStore.getState().notificationArray
-            );
-          };
-
-          websocketStore.getState().setNotificationSocket(notificationSocket);
+          // Armazenar as contagens de notificações como um array na store websocketStore
+          await websocketStore.getState().setNotificationArray(notificationArray);
+          console.log(
+            "Notification array:",
+            websocketStore.getState().notificationArray
+          );
         };
+        websocketStore.getState().setNotificationSocket(notificationSocket);
+        notificationSocket.onopen = handleWebSocketOpen;
 
         await fetchUsers();
         console.log("Usuários:", updateUserStore.users);
-        navigate("/home", { replace: true });
       } else {
         const responseBody = await response.json();
         console.error("Erro no login:", response.statusText, responseBody);

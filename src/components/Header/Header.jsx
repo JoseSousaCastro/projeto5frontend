@@ -8,16 +8,50 @@ function Header() {
   const navigate = useNavigate();
   const updateUserStore = userStore((state) => state);
   const websocket = websocketStore((state) => state.notificationSocket); // Obtendo o WebSocket da websocketStore
-  const notificationsArray = websocketStore((state) => state.notificationArray); // Obtendo o array de notificações da websocketStore
-  const notificationsCount = websocketStore((state) => state.getNotificationArrayLength()); // Obtendo o comprimento do array de notificações da websocketStore
+  const [notificationsArray, setNotificationsArray] = useState(websocketStore.getState().notificationArray);
+  const [notificationsCount, setNotificationsCount] = useState(websocketStore.getState().getNotificationArrayLength());
 
-  console.log("notificationsArray", notificationsArray);
-  console.log("notificationsCount", notificationsCount);
+  console.log("websocket:", websocket);
 
   const firstName = userStore((state) => state.firstName);
   const photoURL = userStore((state) => state.photoURL);
   const typeOfUser = userStore((state) => state.typeOfUser);
   const token = userStore((state) => state.token);
+
+  useEffect(() => {
+    const unsubscribe = websocketStore.subscribe((newState) => {
+      setNotificationsArray(newState.notificationArray);
+      setNotificationsCount(newState.getNotificationArrayLength());
+    });
+
+    if (websocket) {
+      websocket.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        console.log("Received notification:", data);
+        
+        const { senderUsername } = data;
+        const existingNotification = notificationsArray.find(notification => notification.sender === senderUsername);
+        if (existingNotification) {
+          // Se o sender já existe, incrementa o count
+          setNotificationsArray(prevNotifications => prevNotifications.map(notification => {
+            if (notification.sender === senderUsername) {
+              return { ...notification, count: notification.count + 1 };
+            }
+            return notification;
+          }));
+        } else {
+          // Se o sender não existe, adiciona-o ao array
+          setNotificationsArray(prevNotifications => [...prevNotifications, { sender: senderUsername, count: 1 }]);
+          setNotificationsCount(prevCount => prevCount + 1);
+        }
+      };
+    }
+
+    return () => {
+      unsubscribe();
+    };
+  }, [websocket, notificationsArray]);
+  
 
   const processLogout = async (event) => {
     event.preventDefault();
@@ -43,6 +77,7 @@ function Header() {
         sessionStorage.removeItem("categoryStore");
         sessionStorage.removeItem("taskStore");
         sessionStorage.removeItem("userStore");
+        sessionStorage.removeItem("websocketStore");
 
         // Limpar o WebSocket
         if (websocket) {
