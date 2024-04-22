@@ -101,6 +101,38 @@ function Login() {
           return;
         }
 
+        try {
+          const response = await fetch(
+            `http://localhost:8080/project5/rest/users/getALlUnreadNotifications`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                token: user.token,
+              },
+            }
+          );
+          if (response.ok) {
+            const data = await response.json();
+            console.log("Received notification counts:", data);
+            const notificationArray = Object.entries(data).map(
+              ([sender, count]) => ({
+                sender,
+                count,
+              })
+            );
+            console.log("Notification array:", notificationArray);
+            websocketStore.getState().setNotificationArray(notificationArray);
+          } else {
+            console.error(
+              "Failed to fetch notifications:",
+              response.statusText
+            );
+          }
+        } catch (error) {
+          console.error("Error fetching notifications:", error);
+        }
+
         // Fetch das categorias e armazenamento na store de categorias
         try {
           const responseCategories = await fetch(
@@ -145,27 +177,6 @@ function Login() {
           `ws://localhost:8080/project5/websocket/notifications/${token}`
         );
 
-        // Definir um listener para lidar com a primeira mensagem recebida do servidor
-        notificationSocket.onmessage = async (event) => {
-          const data = JSON.parse(event.data); // Convertendo a string JSON para um objeto JavaScript
-          console.log("Received notification counts:", data);
-
-          // Convertendo o objeto de contagens de notificações em um array
-          const notificationArray = Object.entries(data).map(
-            ([sender, count]) => ({
-              sender,
-              count,
-            })
-          );
-          console.log("Notification array:", notificationArray);
-
-          // Armazenar as contagens de notificações como um array na store websocketStore
-          await websocketStore.getState().setNotificationArray(notificationArray);
-          console.log(
-            "Notification array:",
-            websocketStore.getState().notificationArray
-          );
-        };
         websocketStore.getState().setNotificationSocket(notificationSocket);
         notificationSocket.onopen = handleWebSocketOpen;
 
