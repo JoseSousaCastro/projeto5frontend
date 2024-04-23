@@ -37,15 +37,10 @@ function DashboardMain() {
   const [loaded, setLoaded] = useState(false);
   const { fetchGlobalStats } = statsStore();
   const [websocketDashboard, setWebsocketDashboard] = useState(null); // Estado para armazenar o WebSocket do dashboard
+  const [websocketMessageReceived, setWebsocketMessageReceived] = useState(false);
+
 
   const token = userStore((state) => state.token);
-  websocketDashboard = new WebSocket(
-    `ws://localhost:8000/ws/dashboard?token=${token}`
-  );
-  websocketDashboard.onopen = () => {
-    console.log("Dashboard WebSocket connected");
-    setWebsocketDashboard(websocketDashboard);
-  };
 
   useEffect(() => {
     // Use fetchStats para buscar as estatísticas apenas uma vez após a montagem do componente
@@ -53,12 +48,38 @@ function DashboardMain() {
       fetchGlobalStats();
       setLoaded(true);
     }
-
+  
+    // Criação do WebSocket quando o componente monta
+    const websocket = new WebSocket(
+      `ws://localhost:8080/project5/websocket/dashboard/${token}`
+    );
+    websocket.onopen = () => {
+      console.log("Dashboard WebSocket connected");
+      setWebsocketDashboard(() => websocket); // Usando um callback para garantir que o WebSocket seja definido apenas uma vez
+    };
+  
     // Adicionar um listener para lidar com as mensagens recebidas pelo WebSocket
-    websocketDashboard.onmessage = () => {
+    const handleWebSocketMessage = () => {
       fetchGlobalStats();
     };
-  }, [fetchGlobalStats, loaded, websocketDashboard]);
+  
+    // Adicionando o listener apenas se o WebSocket estiver definido
+    if (websocket) {
+      websocket.onmessage = () => {
+        fetchGlobalStats();
+        setWebsocketMessageReceived(true);
+      };
+    }
+    
+  
+    // Retornar uma função de limpeza para remover o listener quando o componente for desmontado
+    return () => {
+      if (websocket) {
+        websocket.close();
+      }
+    };
+  }, [fetchGlobalStats, loaded, token, websocketMessageReceived]); // Removendo websocketDashboard da lista de dependências
+  
 
   const totalUsers = statsStore((state) => state.totalUsers);
   const totalConfirmedUsers = statsStore((state) => state.totalConfirmedUsers);
@@ -78,6 +99,7 @@ function DashboardMain() {
   const averageTaskTime = statsStore((state) => state.averageTaskTime);
 
   const categoriesListDesc = statsStore((state) => state.categoriesListDesc);
+  console.log("categoriesListDesc", categoriesListDesc);
 
   // Convertendo a lista para o formato compatível com o gráfico e ordenando os dados pela data
   const formattedDataUsers = usersOverTime
