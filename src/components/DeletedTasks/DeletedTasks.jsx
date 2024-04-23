@@ -3,11 +3,21 @@ import "../DeletedTasks/DeletedTasks.css";
 import { taskStore } from "../../stores/TaskStore";
 import TaskCard from "../TaskCard/TaskCard";
 
-function TasksMain() {
+function DeletedTasks({ websocket }) {
   // Utilize o hook useState para inicializar as tarefas
   const [tasks, setTasks] = useState([]);
   const [tasksDoing, setTasksDoing] = useState([]);
   const [tasksDone, setTasksDone] = useState([]);
+  const { fetchTasks } = taskStore();
+
+  useEffect(() => {
+    if (websocket) {
+      websocket.onmessage = (event) => {
+        fetchTasks();
+        console.log("Received message:", event.data);
+      };
+    }
+  }, [websocket]);
 
   // UseEffect para atualizar as tarefas com as armazenadas na taskStore
   useEffect(() => {
@@ -38,7 +48,7 @@ function TasksMain() {
           <div className="panel" id="todo">
             {tasks.map((task) => (
               <div className="task-card-taskMain" key={task.id}>
-                <TaskCard task={task} />
+                <TaskCard task={task} websocket={websocket} />
               </div>
             ))}
           </div>
@@ -50,7 +60,7 @@ function TasksMain() {
           <div className="panel" id="doing">
             {tasksDoing.map((task) => (
               <div className="task-card-taskMain" key={task.id}>
-                <TaskCard task={task} />
+                <TaskCard task={task} websocket={websocket} />
               </div>
             ))}
           </div>
@@ -62,7 +72,7 @@ function TasksMain() {
           <div className="panel" id="done">
             {tasksDone.map((task) => (
               <div className="task-card-taskMain" key={task.id}>
-                <TaskCard task={task} />
+                <TaskCard task={task} websocket={websocket} />
               </div>
             ))}
           </div>
@@ -72,4 +82,4 @@ function TasksMain() {
   );
 }
 
-export default TasksMain;
+export default DeletedTasks;

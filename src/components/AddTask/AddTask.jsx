@@ -1,12 +1,11 @@
-import React from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { taskStore } from "../../stores/TaskStore";
 import { userStore } from "../../stores/UserStore";
 import { useNavigate } from "react-router-dom";
 import { categoryStore } from "../../stores/CategoryStore";
 import "../AddTask/AddTask.css";
 
-function AddTask() {
+function AddTask({ websocket }) {
   const navigate = useNavigate();
   const [priority, setPriority] = useState("");
   const { categories } = categoryStore(); // Obtém a lista de categorias
@@ -22,6 +21,15 @@ function AddTask() {
 
   const token = userStore((state) => state.token);
   const username = userStore((state) => state.username);
+
+  useEffect(() => {
+    if (websocket) {
+      websocket.onmessage = (event) => {
+        fetchTasks();
+        console.log("Received message:", event.data);
+      };
+    }
+  }, [websocket]);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;

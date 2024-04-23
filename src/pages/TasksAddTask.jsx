@@ -6,14 +6,21 @@ import Footer from "../components/Footer/Footer";
 import AsideLogo from "../components/AsideLogo/AsideLogo";
 import { userStore } from "../stores/UserStore";
 
-
 function TasksAddTask() {
   const [websocket, setWebsocket] = useState(null);
   const token = userStore((state) => state.token);
 
   useEffect(() => {
-    const websocketTasks = new WebSocket(`ws://localhost:8080/project5/websocket/tasks/${token}`);
+    const websocketTasks = new WebSocket(
+      `ws://localhost:8080/project5/websocket/tasks/${token}`
+    );
     setWebsocket(websocketTasks);
+
+    return () => {
+      if (websocketTasks) {
+        websocketTasks.close();
+      }
+    };
   }, [token]);
 
   return (
@@ -27,7 +34,7 @@ function TasksAddTask() {
             <AsideLogo />
           </div>
           <div className="main-home-container">
-            <AddTask />
+            <AddTask websocket={websocket} />
           </div>
         </div>
         <div className="footer-home-container">

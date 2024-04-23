@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../TasksAside/TasksAside.css";
 import { userStore } from "../../stores/UserStore";
 import { categoryStore } from "../../stores/CategoryStore";
 import { taskStore } from "../../stores/TaskStore";
 
-function TasksAside() {
+function TasksAside({ websocket }) {
   const { users, typeOfUser } = userStore(); // Obtém a lista de usuários
   const { categories } = categoryStore(); // Obtém a lista de categorias
   const navigate = useNavigate();
@@ -18,6 +18,15 @@ function TasksAside() {
 
   const [selectedUser, setSelectedUser] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
+
+  useEffect(() => {
+    if (websocket) {
+      websocket.onmessage = (event) => {
+        fetchTasks();
+        console.log("Received message:", event.data);
+      };
+    }
+  }, [websocket]);
 
   const handleFilterByUser = async () => {
     console.log("selectedUser", selectedUser);

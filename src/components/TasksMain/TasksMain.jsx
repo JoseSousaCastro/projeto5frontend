@@ -5,7 +5,7 @@ import TaskCard from "../TaskCard/TaskCard";
 import { userStore } from "../../stores/UserStore";
 import { useNavigate } from "react-router-dom";
 
-function TasksMain() {
+function TasksMain({ websocket }) {
   // Utilize o hook useState para inicializar as tarefas
   const [tasks, setTasks] = useState([]);
   const [tasksDoing, setTasksDoing] = useState([]);
@@ -15,6 +15,15 @@ function TasksMain() {
   const token = userStore((state) => state.token);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (websocket) {
+      websocket.onmessage = (event) => {
+        fetchTasks();
+        console.log("Received message:", event.data);
+      };
+    }
+  }, [websocket]);
 
   // UseEffect para atualizar as tarefas com as armazenadas na taskStore
   useEffect(() => {
@@ -95,7 +104,7 @@ function TasksMain() {
           >
             {tasks.map((task) => (
               <div className="task-card-taskMain" key={task.id}>
-                <TaskCard task={task} />
+                <TaskCard task={task} websocket={websocket} />
               </div>
             ))}
           </div>
@@ -112,7 +121,7 @@ function TasksMain() {
           >
             {tasksDoing.map((task) => (
               <div className="task-card-taskMain" key={task.id}>
-                <TaskCard task={task} />
+                <TaskCard task={task} websocket={websocket} />
               </div>
             ))}
           </div>
@@ -129,7 +138,7 @@ function TasksMain() {
           >
             {tasksDone.map((task) => (
               <div className="task-card-taskMain" key={task.id}>
-                <TaskCard task={task} />
+                <TaskCard task={task} websocket={websocket} />
               </div>
             ))}
           </div>
