@@ -4,24 +4,21 @@
 
 import React from "react";
 import { userStore } from "../../stores/UserStore";
-import { statsStore } from "../../stores/StatsStore";
+import { useNavigate } from "react-router-dom";
 import "../DashboardAside/DashboardAside.css";
 
 function DashboardAside () {
 	const users = userStore(state => state.users);
-	const fetchUserStats = statsStore(state => state.fetchUserStats);
-
-	const totalUserTasks = statsStore(state => state.totalUserTasks);
-	const totalUserToDoTasks = statsStore(state => state.totalUserToDoTasks);
-	const totalUserDoingTasks = statsStore(state => state.totalUserDoingTasks);
-	const totalUserDoneTasks = statsStore(state => state.totalUserDoneTasks);
-	
+	const navigate = useNavigate();
+	const currentUser = userStore(state => state.username);
 
 	const handleChange = (event) => {
 		const username = event.target.value;
 
-		if (username) {
-			fetchUserStats(username);
+		if (username === currentUser) {
+			navigate("/edit-profile")
+		} else if (username) {
+			navigate(`/user-profile/${username}`);
 		} else {
 			console.error("Please select a user.");
 		}
@@ -31,19 +28,13 @@ function DashboardAside () {
 return (
 	<div className="dashboardAside">
 		<div className="dashboard-aside-container">
-			<label>Task stats by user</label>
+			<label>View task stats by user</label>
 			<select className="dropdown-select-dashboard" id="select-user" onChange={handleChange}>
 				<option value="" disabled selected>Select user</option>
 				{users.map((user) => (
 					<option key={user.username} value={user.username}>{user.firstName} {user.lastName}</option>
 				))}
 			</select>
-			<div className="user-tasks">
-				<p className="dashboardAside-total">Total Tasks: {totalUserTasks}</p>
-				<p className="dashboardAside-total-tasktype">To Do: {totalUserToDoTasks}</p>
-				<p className="dashboardAside-total-tasktype">Doing: {totalUserDoingTasks}</p>
-				<p className="dashboardAside-total-tasktype">Done: {totalUserDoneTasks}</p>
-			</div>
 		</div>
 	</div>
 	)

@@ -40,7 +40,7 @@
 .dashboardAside label {
   display: block;
   margin: 40px 0 20px 0;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
   color: var(--green3);
   text-transform: uppercase;
@@ -59,38 +59,5 @@
   height: 35px;
   margin-bottom: 20px;
   font-weight: bold;
-}
-
-.user-tasks {
-  border: 2px solid var(--green3);
-  background-color: var(--white);
-  margin: 0 50px 30px;
-  padding-inline: 20px;
-  padding-top: 10px;
-  padding-bottom: 15px;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-}
-
-.dashboardAside-total {
-  padding-left: 10px;
-  display: block;
-  margin: 20px 0 20px;
-  font-size: 18px;
-  font-weight: bold;
-  color: var(--green3);
-  text-transform: uppercase;
-  text-align: left;
-}
-
-.dashboardAside-total-tasktype {
-  padding-left: 30px;
-  display: block;
-  margin: 10px 0 10px 0;
-  font-size: 15px;
-  font-weight: bold;
-  color: var(--green2);
-  text-transform: uppercase;
-  text-align: left;
 }
 

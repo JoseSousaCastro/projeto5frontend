@@ -2,15 +2,55 @@ import React from "react";
 import "./UserProfileAside.css";
 import { useParams } from "react-router-dom";
 import { statsStore } from "../../stores/StatsStore";
-import { useEffect } from "react";
+import { userStore } from "../../stores/UserStore";
+import { useEffect, useState } from "react";
 
 function UserProfileAside() {
+  const [loaded, setLoaded] = useState(false);
   const { username } = useParams();
   const { fetchUserStats } = statsStore();
+  const [websocketDashboard, setWebsocketDashboard] = useState(null); // Estado para armazenar o WebSocket do dashboard
+  const [websocketMessageReceived, setWebsocketMessageReceived] = useState(false);
+  const token = userStore((state) => state.token);
+
 
   useEffect(() => {
-    fetchUserStats(username);
-  }, [username]);
+    // Use fetchStats para buscar as estatísticas apenas uma vez após a montagem do componente
+    if (!loaded) {
+      fetchUserStats(username);
+      setLoaded(true);
+    }
+  
+    // Criação do WebSocket quando o componente monta
+    const websocket = new WebSocket(
+      `ws://localhost:8080/project5/websocket/dashboard/${token}`
+    );
+    websocket.onopen = () => {
+      console.log("Dashboard WebSocket connected");
+      setWebsocketDashboard(() => websocket); // Usando um callback para garantir que o WebSocket seja definido apenas uma vez
+    };
+  
+    // Adicionar um listener para lidar com as mensagens recebidas pelo WebSocket
+    const handleWebSocketMessage = () => {
+      fetchUserStats(username);
+    };
+  
+    // Adicionando o listener apenas se o WebSocket estiver definido
+    if (websocket) {
+      websocket.onmessage = () => {
+        fetchUserStats(username);
+        setWebsocketMessageReceived(true);
+      };
+    }
+    
+    // Retornar uma função de limpeza para remover o listener quando o componente for desmontado
+    return () => {
+      if (websocket) {
+        websocket.close();
+      }
+    };
+  }, [fetchUserStats, loaded, token, websocketMessageReceived, username]); // Removendo websocketDashboard da lista de dependências
+
 
   const totalUserTasks = statsStore((state) => state.totalUserTasks);
   const totalUserToDoTasks = statsStore((state) => state.totalUserToDoTasks);

@@ -71,7 +71,6 @@ function DashboardMain() {
       };
     }
     
-  
     // Retornar uma função de limpeza para remover o listener quando o componente for desmontado
     return () => {
       if (websocket) {

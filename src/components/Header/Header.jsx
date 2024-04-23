@@ -108,6 +108,15 @@ function Header() {
     navigate("/edit-profile");
   };
 
+  const handleNotificationSelect = (event) => {
+    const selectedIndex = event.target.value;
+    const selectedNotification = notificationsArray[selectedIndex];
+    if (selectedNotification) {
+      const senderUsername = selectedNotification.sender;
+      navigate(`/user-profile/${senderUsername}`);
+    }
+  };
+
   return (
     <div className="header" id="header-outer-container">
       <div className="page-wrap" id="header-page-wrap">
@@ -143,7 +152,9 @@ function Header() {
           </nav>
         </div>
         <div className="nav-notifications">
-          <select className="notifications-dropdown">
+          <select className="notifications-dropdown"
+          onChange={handleNotificationSelect}
+          >
             <option
               value="default"
               className="dropdown-notifications-defaultValue"
