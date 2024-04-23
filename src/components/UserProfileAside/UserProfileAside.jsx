@@ -30,11 +30,6 @@ function UserProfileAside() {
       setWebsocketDashboard(() => websocket); // Usando um callback para garantir que o WebSocket seja definido apenas uma vez
     };
   
-    // Adicionar um listener para lidar com as mensagens recebidas pelo WebSocket
-    const handleWebSocketMessage = () => {
-      fetchUserStats(username);
-    };
-  
     // Adicionando o listener apenas se o WebSocket estiver definido
     if (websocket) {
       websocket.onmessage = () => {
@@ -49,7 +44,7 @@ function UserProfileAside() {
         websocket.close();
       }
     };
-  }, [fetchUserStats, loaded, token, websocketMessageReceived, username]); // Removendo websocketDashboard da lista de dependências
+  }, [fetchUserStats, loaded, token, websocketMessageReceived, username]);
 
 
   const totalUserTasks = statsStore((state) => state.totalUserTasks);

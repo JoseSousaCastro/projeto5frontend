@@ -58,11 +58,6 @@ function DashboardMain() {
       setWebsocketDashboard(() => websocket); // Usando um callback para garantir que o WebSocket seja definido apenas uma vez
     };
   
-    // Adicionar um listener para lidar com as mensagens recebidas pelo WebSocket
-    const handleWebSocketMessage = () => {
-      fetchGlobalStats();
-    };
-  
     // Adicionando o listener apenas se o WebSocket estiver definido
     if (websocket) {
       websocket.onmessage = () => {
@@ -77,7 +72,7 @@ function DashboardMain() {
         websocket.close();
       }
     };
-  }, [fetchGlobalStats, loaded, token, websocketMessageReceived]); // Removendo websocketDashboard da lista de dependências
+  }, [fetchGlobalStats, loaded, token, websocketMessageReceived]);
   
 
   const totalUsers = statsStore((state) => state.totalUsers);

@@ -2,34 +2,70 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../Header/Header.css";
 import { userStore } from "../../stores/UserStore";
-import { websocketStore } from "../../stores/WebsocketStore";
 
 function Header() {
   const navigate = useNavigate();
   const updateUserStore = userStore((state) => state);
-  const websocket = websocketStore((state) => state.notificationSocket); // Obtendo o WebSocket da websocketStore
-  const [notificationsArray, setNotificationsArray] = useState(
-    websocketStore.getState().notificationArray
-  );
-  const [notificationsCount, setNotificationsCount] = useState(
-    websocketStore.getState().getNotificationArrayLength()
-  );
+  const [notificationsArray, setNotificationsArray] = useState([]);
+  const [notificationsCount, setNotificationsCount] = useState(0);
 
-  console.log("websocket:", websocket);
+  const [websocket, setWebsocket] = useState(null);
 
   const firstName = userStore((state) => state.firstName);
   const photoURL = userStore((state) => state.photoURL);
   const typeOfUser = userStore((state) => state.typeOfUser);
   const token = userStore((state) => state.token);
 
-  useEffect(() => {
-    const unsubscribe = websocketStore.subscribe((newState) => {
-      setNotificationsArray(newState.notificationArray);
-      setNotificationsCount(newState.getNotificationArrayLength());
-    });
+  const fetchNotifications = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:8080/project5/rest/users/getALlUnreadNotifications`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            token: token,
+          },
+        }
+      );
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Received notification counts:", data);
+        const notificationArray = Object.entries(data).map(
+          ([sender, count]) => ({
+            sender,
+            count,
+          })
+        );
+        setNotificationsArray(notificationArray);
+        setNotificationsCount(notificationArray.length);
 
-    if (websocket) {
-      websocket.onmessage = (event) => {
+        console.log("Notification array:", notificationArray);
+      } else {
+        console.error(
+          "Failed to fetch notifications:",
+          response.statusText
+        );
+      }
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
+    }
+  };
+
+  // Chamada da função para buscar as notificações ao iniciar o componente
+  useEffect(() => {
+    fetchNotifications();
+  }, []);
+
+
+  useEffect(() => {
+    const notificationSocket = new WebSocket(
+      `ws://localhost:8080/project5/websocket/notifications/${token}`
+    );
+    setWebsocket(notificationSocket);
+
+    if (notificationSocket) {
+      notificationSocket.onmessage = (event) => {
         const data = JSON.parse(event.data);
         console.log("Received notification:", data);
 
@@ -38,7 +74,6 @@ function Header() {
           (notification) => notification.sender === senderUsername
         );
         if (existingNotification) {
-          // Se o sender já existe, incrementa o count
           setNotificationsArray((prevNotifications) =>
             prevNotifications.map((notification) => {
               if (notification.sender === senderUsername) {
@@ -48,20 +83,15 @@ function Header() {
             })
           );
         } else {
-          // Se o sender não existe, adiciona-o ao array
           setNotificationsArray((prevNotifications) => [
             ...prevNotifications,
             { sender: senderUsername, count: 1 },
           ]);
           setNotificationsCount((prevCount) => prevCount + 1);
         }
-      };
+      }
     }
-
-    return () => {
-      unsubscribe();
-    };
-  }, [websocket, notificationsArray]);
+  }, [token]);
 
   const processLogout = async (event) => {
     event.preventDefault();
@@ -92,7 +122,6 @@ function Header() {
         // Limpar o WebSocket
         if (websocket) {
           websocket.close();
-          websocketStore.getState().setNotificationSocket(null);
         }
         console.log("WebSocket closed");
 

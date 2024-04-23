@@ -4,7 +4,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { userStore } from "../stores/UserStore.jsx";
 import { categoryStore } from "../stores/CategoryStore.jsx";
 import { taskStore } from "../stores/TaskStore.jsx";
-import { websocketStore } from "../stores/WebsocketStore.jsx";
 import "../pages/Login.css";
 
 function Login() {
@@ -14,7 +13,6 @@ function Login() {
   const updateCategoryStore = categoryStore((state) => state);
   const updateTaskStore = taskStore((state) => state);
   const fetchUsers = userStore((state) => state.fetchUsers);
-  const [websocketOpen, setWebsocketOpen] = useState(false); // Estado para controlar se o WebSocket está aberto
 
   const handleChange = (event) => {
     const name = event.target.name;
@@ -39,15 +37,6 @@ function Login() {
     fetchTasksIfNeeded();
   }, [tasksFetched, updateTaskStore]);
 
-  useEffect(() => {
-    if (websocketOpen) {
-      navigate("/home", { replace: true });
-    }
-  }, [websocketOpen, navigate]);
-
-  const handleWebSocketOpen = () => {
-    setWebsocketOpen(true);
-  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -101,37 +90,6 @@ function Login() {
           return;
         }
 
-        try {
-          const response = await fetch(
-            `http://localhost:8080/project5/rest/users/getALlUnreadNotifications`,
-            {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-                token: user.token,
-              },
-            }
-          );
-          if (response.ok) {
-            const data = await response.json();
-            console.log("Received notification counts:", data);
-            const notificationArray = Object.entries(data).map(
-              ([sender, count]) => ({
-                sender,
-                count,
-              })
-            );
-            console.log("Notification array:", notificationArray);
-            websocketStore.getState().setNotificationArray(notificationArray);
-          } else {
-            console.error(
-              "Failed to fetch notifications:",
-              response.statusText
-            );
-          }
-        } catch (error) {
-          console.error("Error fetching notifications:", error);
-        }
 
         // Fetch das categorias e armazenamento na store de categorias
         try {
@@ -172,15 +130,9 @@ function Login() {
 
         console.log("Login feito com sucesso!");
 
-        const token = user.token;
-        const notificationSocket = new WebSocket(
-          `ws://localhost:8080/project5/websocket/notifications/${token}`
-        );
-
-        websocketStore.getState().setNotificationSocket(notificationSocket);
-        notificationSocket.onopen = handleWebSocketOpen;
-
         await fetchUsers();
+        navigate("/home", { replace: true });
+
         console.log("Usuários:", updateUserStore.users);
       } else {
         const responseBody = await response.json();
