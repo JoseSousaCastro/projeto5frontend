@@ -5,16 +5,23 @@ import AddTask from "../components/AddTask/AddTask";
 import Footer from "../components/Footer/Footer";
 import AsideLogo from "../components/AsideLogo/AsideLogo";
 import { userStore } from "../stores/UserStore";
+import { taskStore } from "../stores/TaskStore";
 
 function TasksAddTask() {
   const [websocket, setWebsocket] = useState(null);
   const token = userStore((state) => state.token);
+  const fetchTasks = taskStore((state) => state.fetchTasks);
 
   useEffect(() => {
     const websocketTasks = new WebSocket(
       `ws://localhost:8080/project5/websocket/tasks/${token}`
     );
     setWebsocket(websocketTasks);
+
+    websocketTasks.onmessage = (event) => {
+      console.log("TasksAddTask - onmessage", event.data);
+      fetchTasks();
+    };
 
     return () => {
       if (websocketTasks) {
@@ -34,7 +41,8 @@ function TasksAddTask() {
             <AsideLogo />
           </div>
           <div className="main-home-container">
-            <AddTask websocket={websocket} />
+            {/* Adicione a chave de renderização ao componente AddTask */}
+            <AddTask />
           </div>
         </div>
         <div className="footer-home-container">

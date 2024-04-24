@@ -23,7 +23,7 @@ export const taskStore = create(
       updatePriority: (priority) => set({ priority }),
       updateStartDate: (startDate) => set({ startDate }),
       updateLimitDate: (limitDate) => set({ limitDate }),
-      updateCategory: (category) => set({ category }), // Atualiza apenas o atributo category
+      updateCategory: (category) => set({ category }),
       updateErased: (erased) => set({ erased }),
 
       tasks: [],

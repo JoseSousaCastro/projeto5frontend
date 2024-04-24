@@ -196,10 +196,8 @@ function Header() {
                 value={index}
                 className="dropdown-notifications-otherValues"
               >
-                <p>
                   You have {notification.count} messages from{" "}
                   {notification.sender}
-                </p>
               </option>
             ))}
           </select>

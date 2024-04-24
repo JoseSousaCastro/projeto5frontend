@@ -32,9 +32,7 @@ function EditTask() {
   const [stateId, setStateId] = useState("");
   const [priority, setPriority] = useState("");
 
-  
   useEffect(() => {
-  
     if (task) {
       setTaskDetails({
         title: task.title || "",
@@ -50,7 +48,6 @@ function EditTask() {
       setPriority(task.priority || "");
     }
   }, [task]);
-  
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;

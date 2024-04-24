@@ -13,8 +13,7 @@ function TasksEditTask() {
   const task = taskStore((state) =>
     state.tasks.find((task) => task.id === taskId)
   );
-  console.log("Task da store:", task);
-  console.log("ID da tarefa:", taskId);
+  const fetchTasks = taskStore((state) => state.fetchTasks);
 
   const [websocket, setWebsocket] = useState(null);
   const token = userStore((state) => state.token);
@@ -24,6 +23,11 @@ function TasksEditTask() {
       `ws://localhost:8080/project5/websocket/tasks/${token}`
     );
     setWebsocket(websocketTasks);
+
+    websocketTasks.onmessage = (event) => {
+      console.log("TasksAddTask - onmessage", event.data);
+      fetchTasks();
+    };
 
     return () => {
       if (websocketTasks) {
@@ -43,7 +47,7 @@ function TasksEditTask() {
             <AsideLogo />
           </div>
           <div className="main-home-container">
-            <EditTask task={task} websocket={websocket} />
+            <EditTask task={task} />
           </div>
         </div>
         <div className="footer-home-container">

@@ -5,16 +5,23 @@ import AsideLogo from "../components/AsideLogo/AsideLogo";
 import TasksMainByUser from "../components/TasksMainByUser/TasksMainByUser";
 import Footer from "../components/Footer/Footer";
 import { userStore } from "../stores/UserStore";
+import { taskStore } from "../stores/TaskStore";
 
 function TasksByUser() {
   const [websocket, setWebsocket] = useState(null);
   const token = userStore((state) => state.token);
+  const fetchTasks = taskStore((state) => state.fetchTasks);
 
   useEffect(() => {
     const websocketTasks = new WebSocket(
       `ws://localhost:8080/project5/websocket/tasks/${token}`
     );
     setWebsocket(websocketTasks);
+
+    websocketTasks.onmessage = (event) => {
+      console.log("TasksAddTask - onmessage", event.data);
+      fetchTasks();
+    };
 
     return () => {
       if (websocketTasks) {
@@ -34,7 +41,7 @@ function TasksByUser() {
             <AsideLogo />
           </div>
           <div className="main-home-container">
-            <TasksMainByUser websocket={websocket} />
+            <TasksMainByUser />
           </div>
         </div>
         <div className="footer-home-container">

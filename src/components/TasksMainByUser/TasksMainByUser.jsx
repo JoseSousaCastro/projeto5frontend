@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "../TasksMainByUser/TasksMainByUser.css";
 import { taskStore } from "../../stores/TaskStore";
 import TaskCard from "../TaskCard/TaskCard";
@@ -6,37 +6,27 @@ import { userStore } from "../../stores/UserStore";
 import { useNavigate, useParams } from "react-router-dom";
 
 function TasksMainByUser() {
-  // Utilize o hook useState para inicializar as tarefas
-  const [tasks, setTasks] = useState([]);
-  const [tasksDoing, setTasksDoing] = useState([]);
-  const [tasksDone, setTasksDone] = useState([]);
-  const { fetchTasksByUser } = taskStore();
-  const usernameURL = useParams().username;
   const navigate = useNavigate();
+  const usernameURL = useParams().username;
 
-  console.log("usernameURL", usernameURL);
-
+  const tasks = taskStore((state) => state.tasks);
+  const { fetchTasksByUser } = taskStore();
   const token = userStore((state) => state.token);
 
-  useEffect(() => {
+  const erasedTasks = tasks.filter((task) => !task.erased);
+  
+console.log("usernameURL", usernameURL);
+console.log("tasks", erasedTasks);
+  const userTasks = erasedTasks.filter((task) => task.owner.username === usernameURL);
+  console.log("tasks", userTasks);
 
-    // Use uma função para acessar o estado atual da taskStore
-    const tasksFromStore = taskStore.getState().tasks;
+  const todoTasks = userTasks.filter((task) => task.stateId === 100);
+  const doingTasks = userTasks.filter((task) => task.stateId === 200);
+  const doneTasks = userTasks.filter((task) => task.stateId === 300);
 
-    // Filtre as tarefas cujo atributo erased seja false
-    const filteredTasks = tasksFromStore.filter((task) => !task.erased);
-
-    // Filtre as tarefas de acordo com o stateId
-    const todoTasks = filteredTasks.filter((task) => task.stateId === 100);
-    const doingTasks = filteredTasks.filter((task) => task.stateId === 200);
-    const doneTasks = filteredTasks.filter((task) => task.stateId === 300);
-
-    // Atualize o estado das tarefas com os valores filtrados
-    setTasks(todoTasks);
-    setTasksDoing(doingTasks);
-    setTasksDone(doneTasks);
-  }, []);
-
+  const setTasks = taskStore((state) => state.setTasks);
+  const setTasksDoing = taskStore((state) => state.setTasksDoing);
+  const setTasksDone = taskStore((state) => state.setTasksDone);
 
   async function handleTaskDrop(e, newStateId) {
     e.preventDefault();
@@ -97,7 +87,7 @@ function TasksMainByUser() {
             onDragOver={(e) => e.preventDefault()}
             onDrop={(e) => handleTaskDrop(e, 100)}
           >
-            {tasks.map((task) => (
+            {todoTasks.map((task) => (
               <div className="task-card-taskMain" key={task.id}>
                 <TaskCard task={task} />
               </div>
@@ -114,7 +104,7 @@ function TasksMainByUser() {
             onDragOver={(e) => e.preventDefault()}
             onDrop={(e) => handleTaskDrop(e, 200)}
           >
-            {tasksDoing.map((task) => (
+            {doingTasks.map((task) => (
               <div className="task-card-taskMain" key={task.id}>
                 <TaskCard task={task} />
               </div>
@@ -131,7 +121,7 @@ function TasksMainByUser() {
             onDragOver={(e) => e.preventDefault()}
             onDrop={(e) => handleTaskDrop(e, 300)}
           >
-            {tasksDone.map((task) => (
+            {doneTasks.map((task) => (
               <div className="task-card-taskMain" key={task.id}>
                 <TaskCard task={task} />
               </div>

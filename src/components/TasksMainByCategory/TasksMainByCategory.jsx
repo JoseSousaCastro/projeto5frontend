@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "../TasksMainByCategory/TasksMainByCategory.css";
 import { taskStore } from "../../stores/TaskStore";
 import TaskCard from "../TaskCard/TaskCard";
@@ -6,41 +6,29 @@ import { userStore } from "../../stores/UserStore";
 import { useNavigate, useParams } from "react-router-dom";
 
 function TasksMainByCategory() {
-  // Utilize o hook useState para inicializar as tarefas
-  const [tasks, setTasks] = useState([]);
-  const [tasksDoing, setTasksDoing] = useState([]);
-  const [tasksDone, setTasksDone] = useState([]);
   const navigate = useNavigate();
-
   const categoryURL = useParams().category;
 
+  const tasks = taskStore((state) => state.tasks);
   const { fetchTasksByCategory } = taskStore();
   const token = userStore((state) => state.token);
 
+  const erasedTasks = tasks.filter((task) => !task.erased);
+  const categoryTasks = erasedTasks.filter(
+    (task) => task.category.name === categoryURL
+  );
 
-  useEffect(() => {
+  const todoTasks = categoryTasks.filter((task) => task.stateId === 100);
+  const doingTasks = categoryTasks.filter((task) => task.stateId === 200);
+  const doneTasks = categoryTasks.filter((task) => task.stateId === 300);
 
-    const filteredTasks = taskStore
-      .getState()
-      .tasks.filter((task) => !task.erased);
-    console.log("filteredTasks", filteredTasks);
-
-    // Filtre as tarefas de acordo com o stateId
-    const todoTasks = filteredTasks.filter((task) => task.stateId === 100);
-    const doingTasks = filteredTasks.filter((task) => task.stateId === 200);
-    const doneTasks = filteredTasks.filter((task) => task.stateId === 300);
-
-    // Atualize o estado das tarefas com os valores filtrados
-    setTasks(todoTasks);
-    setTasksDoing(doingTasks);
-    setTasksDone(doneTasks);
-  }, []);
-
+  const setTasks = taskStore((state) => state.setTasks);
+  const setTasksDoing = taskStore((state) => state.setTasksDoing);
+  const setTasksDone = taskStore((state) => state.setTasksDone);
 
   async function handleTaskDrop(e, newStateId) {
     e.preventDefault();
     const taskId = e.dataTransfer.getData("text/plain");
-    console.log("token:", token);
 
     try {
       const response = await fetch(
@@ -98,7 +86,7 @@ function TasksMainByCategory() {
             onDragOver={(e) => e.preventDefault()}
             onDrop={(e) => handleTaskDrop(e, 100)}
           >
-            {tasks.map((task) => (
+            {todoTasks.map((task) => (
               <div className="task-card-taskMain" key={task.id}>
                 <TaskCard task={task} />
               </div>
@@ -115,7 +103,7 @@ function TasksMainByCategory() {
             onDragOver={(e) => e.preventDefault()}
             onDrop={(e) => handleTaskDrop(e, 200)}
           >
-            {tasksDoing.map((task) => (
+            {doingTasks.map((task) => (
               <div className="task-card-taskMain" key={task.id}>
                 <TaskCard task={task} />
               </div>
@@ -132,7 +120,7 @@ function TasksMainByCategory() {
             onDragOver={(e) => e.preventDefault()}
             onDrop={(e) => handleTaskDrop(e, 300)}
           >
-            {tasksDone.map((task) => (
+            {doneTasks.map((task) => (
               <div className="task-card-taskMain" key={task.id}>
                 <TaskCard task={task} />
               </div>

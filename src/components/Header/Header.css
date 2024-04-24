@@ -154,4 +154,16 @@
   border: 2px solid var(--green1);
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
+  opacity: 0; /* Começa com opacidade 0 */
+  animation: fadeIn 0.5s ease-in forwards; /* Aplica a animação de fadeIn */
+}
+
+/* Define a animação de fadeIn */
+@keyframes fadeIn {
+  from {
+    opacity: 0; /* Começa com opacidade 0 */
+  }
+  to {
+    opacity: 1; /* Termina com opacidade 1 */
+  }
 }

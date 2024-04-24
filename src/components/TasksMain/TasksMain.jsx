@@ -6,31 +6,22 @@ import { userStore } from "../../stores/UserStore";
 import { useNavigate } from "react-router-dom";
 
 function TasksMain() {
-  // Utilize o hook useState para inicializar as tarefas
-  const [tasks, setTasks] = useState([]);
-  const [tasksDoing, setTasksDoing] = useState([]);
-  const [tasksDone, setTasksDone] = useState([]);
-  const { fetchTasks } = taskStore();
   const navigate = useNavigate();
+  const tasks = taskStore((state) => state.tasks);
+  const { fetchTasks } = taskStore();
 
   const token = userStore((state) => state.token);
 
-  useEffect(() => {
-      const tasksFromStore = taskStore.getState().tasks;
+  const erasedTasks = tasks.filter((task) => !task.erased);
 
-      // Filtre as tarefas cujo atributo erased seja false
-      const filteredTasks = tasksFromStore.filter((task) => !task.erased);
+  const todoTasks = erasedTasks.filter((task) => task.stateId === 100);
+  const doingTasks = erasedTasks.filter((task) => task.stateId === 200);
+  const doneTasks = erasedTasks.filter((task) => task.stateId === 300);
 
-      // Filtre as tarefas de acordo com o stateId
-      const todoTasks = filteredTasks.filter((task) => task.stateId === 100);
-      const doingTasks = filteredTasks.filter((task) => task.stateId === 200);
-      const doneTasks = filteredTasks.filter((task) => task.stateId === 300);
+  const setTasksTodo = taskStore((state) => state.setTasksTodo);
+  const setTasksDoing = taskStore((state) => state.setTasksDoing);
+  const setTasksDone = taskStore((state) => state.setTasksDone);
 
-      // Atualize o estado das tarefas com os valores filtrados
-      setTasks(todoTasks);
-      setTasksDoing(doingTasks);
-      setTasksDone(doneTasks);
-  }, []);
 
   async function handleTaskDrop(e, newStateId) {
     e.preventDefault();
@@ -53,7 +44,7 @@ function TasksMain() {
         const responseBody = await response.text();
         console.log("Response:", responseBody);
         await fetchTasks();
-        setTasks(
+        setTasksTodo(
           taskStore
             .getState()
             .tasks.filter((task) => task.stateId === 100 && !task.erased)
@@ -90,7 +81,7 @@ function TasksMain() {
             onDragOver={(e) => e.preventDefault()}
             onDrop={(e) => handleTaskDrop(e, 100)}
           >
-            {tasks.map((task) => (
+            {todoTasks.map((task) => (
               <div className="task-card-taskMain" key={task.id}>
                 <TaskCard task={task} />
               </div>
@@ -107,7 +98,7 @@ function TasksMain() {
             onDragOver={(e) => e.preventDefault()}
             onDrop={(e) => handleTaskDrop(e, 200)}
           >
-            {tasksDoing.map((task) => (
+            {doingTasks.map((task) => (
               <div className="task-card-taskMain" key={task.id}>
                 <TaskCard task={task} />
               </div>
@@ -124,7 +115,7 @@ function TasksMain() {
             onDragOver={(e) => e.preventDefault()}
             onDrop={(e) => handleTaskDrop(e, 300)}
           >
-            {tasksDone.map((task) => (
+            {doneTasks.map((task) => (
               <div className="task-card-taskMain" key={task.id}>
                 <TaskCard task={task} />
               </div>
