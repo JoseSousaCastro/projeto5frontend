@@ -5,44 +5,32 @@ import TaskCard from "../TaskCard/TaskCard";
 import { userStore } from "../../stores/UserStore";
 import { useNavigate } from "react-router-dom";
 
-function TasksMain({ websocket }) {
+function TasksMain() {
   // Utilize o hook useState para inicializar as tarefas
   const [tasks, setTasks] = useState([]);
   const [tasksDoing, setTasksDoing] = useState([]);
   const [tasksDone, setTasksDone] = useState([]);
   const { fetchTasks } = taskStore();
+  const navigate = useNavigate();
 
   const token = userStore((state) => state.token);
 
-  const navigate = useNavigate();
-
   useEffect(() => {
-    if (websocket) {
-      websocket.onmessage = (event) => {
-        fetchTasks();
-        console.log("Received message:", event.data);
-      };
-    }
-  }, [websocket]);
+      const tasksFromStore = taskStore.getState().tasks;
 
-  // UseEffect para atualizar as tarefas com as armazenadas na taskStore
-  useEffect(() => {
-    // Use uma função para acessar o estado atual da taskStore
-    const tasksFromStore = taskStore.getState().tasks;
+      // Filtre as tarefas cujo atributo erased seja false
+      const filteredTasks = tasksFromStore.filter((task) => !task.erased);
 
-    // Filtre as tarefas cujo atributo erased seja false
-    const filteredTasks = tasksFromStore.filter((task) => !task.erased);
+      // Filtre as tarefas de acordo com o stateId
+      const todoTasks = filteredTasks.filter((task) => task.stateId === 100);
+      const doingTasks = filteredTasks.filter((task) => task.stateId === 200);
+      const doneTasks = filteredTasks.filter((task) => task.stateId === 300);
 
-    // Filtre as tarefas de acordo com o stateId
-    const todoTasks = filteredTasks.filter((task) => task.stateId === 100);
-    const doingTasks = filteredTasks.filter((task) => task.stateId === 200);
-    const doneTasks = filteredTasks.filter((task) => task.stateId === 300);
-
-    // Atualize o estado das tarefas com os valores filtrados
-    setTasks(todoTasks);
-    setTasksDoing(doingTasks);
-    setTasksDone(doneTasks);
-  }, []); // Certifique-se de passar um array vazio como segundo argumento para executar o useEffect apenas uma vez
+      // Atualize o estado das tarefas com os valores filtrados
+      setTasks(todoTasks);
+      setTasksDoing(doingTasks);
+      setTasksDone(doneTasks);
+  }, []);
 
   async function handleTaskDrop(e, newStateId) {
     e.preventDefault();
@@ -104,7 +92,7 @@ function TasksMain({ websocket }) {
           >
             {tasks.map((task) => (
               <div className="task-card-taskMain" key={task.id}>
-                <TaskCard task={task} websocket={websocket} />
+                <TaskCard task={task} />
               </div>
             ))}
           </div>
@@ -121,7 +109,7 @@ function TasksMain({ websocket }) {
           >
             {tasksDoing.map((task) => (
               <div className="task-card-taskMain" key={task.id}>
-                <TaskCard task={task} websocket={websocket} />
+                <TaskCard task={task} />
               </div>
             ))}
           </div>
@@ -138,7 +126,7 @@ function TasksMain({ websocket }) {
           >
             {tasksDone.map((task) => (
               <div className="task-card-taskMain" key={task.id}>
-                <TaskCard task={task} websocket={websocket} />
+                <TaskCard task={task} />
               </div>
             ))}
           </div>

@@ -14,7 +14,6 @@ function EditTask() {
     state.tasks.find((task) => task.id === taskId)
   );
   const fetchTasks = taskStore((state) => state.fetchTasks);
-
   const typeOfUser = userStore((state) => state.typeOfUser);
 
   const [taskDetails, setTaskDetails] = useState({
@@ -33,9 +32,9 @@ function EditTask() {
   const [stateId, setStateId] = useState("");
   const [priority, setPriority] = useState("");
 
-  console.log("selected category inicial", selectedCategory);
-
+  
   useEffect(() => {
+  
     if (task) {
       setTaskDetails({
         title: task.title || "",
@@ -51,6 +50,7 @@ function EditTask() {
       setPriority(task.priority || "");
     }
   }, [task]);
+  
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;

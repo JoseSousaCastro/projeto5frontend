@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "../TaskCard/TaskCard.css";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -7,7 +7,7 @@ import { taskStore } from "../../stores/TaskStore";
 import deleteIcon from "/AoR/42.Projeto5/projeto5frontend/projeto5frontend/src/dark-cross.png";
 import restoreIcon from "/AoR/42.Projeto5/projeto5frontend/projeto5frontend/src/reload.png";
 
-export default function TaskCard({ task, websocket }) {
+export default function TaskCard({ task }) {
   const navigate = useNavigate();
   const { fetchTasks } = taskStore();
   const taskId = task.id;
@@ -15,14 +15,6 @@ export default function TaskCard({ task, websocket }) {
   const token = userStore((state) => state.token);
   const typeOfUser = userStore((state) => state.typeOfUser);
 
-  useEffect(() => {
-    if (websocket) {
-      websocket.onmessage = (event) => {
-        fetchTasks();
-        console.log("Received message:", event.data);
-      };
-    }
-  }, [websocket]);
 
   // Traduzindo a prioridade de int para string
   const translatePriority = (priorityInt) => {
@@ -154,7 +146,7 @@ export default function TaskCard({ task, websocket }) {
       {erased ? (
         <div className="task-title-solo task-title-solo-erased">{title}</div>
       ) : (
-        <Link to={`/edit-task/${id}`} className="task-title-solo">
+        <Link to={`/edit-task/${id}`} className="task-title-solo" >
           {title}
         </Link>
       )}

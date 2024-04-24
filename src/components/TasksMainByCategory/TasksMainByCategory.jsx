@@ -5,31 +5,21 @@ import TaskCard from "../TaskCard/TaskCard";
 import { userStore } from "../../stores/UserStore";
 import { useNavigate, useParams } from "react-router-dom";
 
-function TasksMainByCategory({ websocket }) {
+function TasksMainByCategory() {
   // Utilize o hook useState para inicializar as tarefas
   const [tasks, setTasks] = useState([]);
   const [tasksDoing, setTasksDoing] = useState([]);
   const [tasksDone, setTasksDone] = useState([]);
-  const { fetchTasks } = taskStore();
+  const navigate = useNavigate();
 
   const categoryURL = useParams().category;
 
   const { fetchTasksByCategory } = taskStore();
   const token = userStore((state) => state.token);
 
-  const navigate = useNavigate();
 
   useEffect(() => {
-    if (websocket) {
-      websocket.onmessage = (event) => {
-        fetchTasks();
-        console.log("Received message:", event.data);
-      };
-    }
-  }, [websocket]);
 
-  // UseEffect para atualizar as tarefas com as armazenadas na taskStore
-  useEffect(() => {
     const filteredTasks = taskStore
       .getState()
       .tasks.filter((task) => !task.erased);
@@ -44,7 +34,8 @@ function TasksMainByCategory({ websocket }) {
     setTasks(todoTasks);
     setTasksDoing(doingTasks);
     setTasksDone(doneTasks);
-  }, []); // Certifique-se de passar um array vazio como segundo argumento para executar o useEffect apenas uma vez
+  }, []);
+
 
   async function handleTaskDrop(e, newStateId) {
     e.preventDefault();
@@ -109,7 +100,7 @@ function TasksMainByCategory({ websocket }) {
           >
             {tasks.map((task) => (
               <div className="task-card-taskMain" key={task.id}>
-                <TaskCard task={task} websocket={websocket} />
+                <TaskCard task={task} />
               </div>
             ))}
           </div>
@@ -126,7 +117,7 @@ function TasksMainByCategory({ websocket }) {
           >
             {tasksDoing.map((task) => (
               <div className="task-card-taskMain" key={task.id}>
-                <TaskCard task={task} websocket={websocket} />
+                <TaskCard task={task} />
               </div>
             ))}
           </div>
@@ -143,7 +134,7 @@ function TasksMainByCategory({ websocket }) {
           >
             {tasksDone.map((task) => (
               <div className="task-card-taskMain" key={task.id}>
-                <TaskCard task={task} websocket={websocket} />
+                <TaskCard task={task} />
               </div>
             ))}
           </div>
