@@ -2,12 +2,16 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../Header/Header.css";
 import { userStore } from "../../stores/UserStore";
+import { websocketStore } from "../../stores/WebsocketStore";
 
 function Header() {
   const navigate = useNavigate();
   const updateUserStore = userStore((state) => state);
   const [notificationsArray, setNotificationsArray] = useState([]);
   const [notificationsCount, setNotificationsCount] = useState(0);
+  const [unreadCounts, setUnreadCounts] = useState({});
+  const [notificationCounts, setNotificationCounts] = useState({});
+  const [selectedOption, setSelectedOption] = useState("default");
 
   const [websocket, setWebsocket] = useState(null);
 
@@ -19,7 +23,7 @@ function Header() {
   const fetchNotifications = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8080/project5/rest/users/getALlUnreadNotifications`,
+        `http://localhost:8080/project5/rest/users/getAllNotifications`,
         {
           method: "GET",
           headers: {
@@ -29,34 +33,53 @@ function Header() {
         }
       );
       if (response.ok) {
-        const data = await response.json();
-        console.log("Received notification counts:", data);
-        const notificationArray = Object.entries(data).map(
-          ([sender, count]) => ({
-            sender,
-            count,
-          })
-        );
-        setNotificationsArray(notificationArray);
-        setNotificationsCount(notificationArray.length);
-
-        console.log("Notification array:", notificationArray);
+        const notifications = await response.json();
+        console.log("Notifications:", notifications);
+        processNotifications(notifications);
       } else {
-        console.error(
-          "Failed to fetch notifications:",
-          response.statusText
-        );
+        console.error("Failed to fetch notifications:", response.statusText);
       }
     } catch (error) {
       console.error("Error fetching notifications:", error);
     }
   };
 
+  const processNotifications = (notifications) => {
+    const newNotificationCounts = {};
+    const newUnreadCounts = {};
+
+    // Iterar sobre as notificações para contar e armazenar as contagens
+    notifications.forEach((notification) => {
+      const { senderUsername, read } = notification;
+
+      // Contar as notificações por senderUsername
+      newNotificationCounts[senderUsername] =
+        (newNotificationCounts[senderUsername] || 0) + 1;
+
+      // Contar as notificações não lidas por senderUsername
+      if (!read) {
+        newUnreadCounts[senderUsername] =
+          (newUnreadCounts[senderUsername] || 0) + 1;
+      }
+    });
+
+    // Atualizar o estado local com as contagens de notificações
+    setNotificationCounts(newNotificationCounts);
+    setUnreadCounts(newUnreadCounts);
+
+    // Calcular o total de senderUsername com pelo menos uma notificação não lida
+    const unreadSenderUsernames = Object.keys(newUnreadCounts);
+    const totalSenderUsernamesWithUnreadNotifications =
+      unreadSenderUsernames.length;
+
+    // Definir o total de notificações não lidas
+    setNotificationsCount(totalSenderUsernamesWithUnreadNotifications);
+  };
+
   // Chamada da função para buscar as notificações ao iniciar o componente
   useEffect(() => {
     fetchNotifications();
   }, []);
-
 
   useEffect(() => {
     const notificationSocket = new WebSocket(
@@ -70,26 +93,23 @@ function Header() {
         console.log("Received notification:", data);
 
         const { senderUsername } = data;
-        const existingNotification = notificationsArray.find(
-          (notification) => notification.sender === senderUsername
-        );
-        if (existingNotification) {
-          setNotificationsArray((prevNotifications) =>
-            prevNotifications.map((notification) => {
-              if (notification.sender === senderUsername) {
-                return { ...notification, count: notification.count + 1 };
-              }
-              return notification;
-            })
+        // Atualizar contadores ao receber uma nova mensagem
+        setNotificationsArray((prevNotifications) => {
+          const existingNotificationIndex = prevNotifications.findIndex(
+            (notification) => notification.sender === senderUsername
           );
-        } else {
-          setNotificationsArray((prevNotifications) => [
-            ...prevNotifications,
-            { sender: senderUsername, count: 1 },
-          ]);
-          setNotificationsCount((prevCount) => prevCount + 1);
-        }
-      }
+          if (existingNotificationIndex !== -1) {
+            // Se o remetente já estiver na lista de notificações, atualize os contadores
+            const updatedNotifications = [...prevNotifications];
+            updatedNotifications[existingNotificationIndex].count += 1;
+            return updatedNotifications;
+          } else {
+            // Se o remetente ainda não estiver na lista de notificações, adicione-o
+            return [...prevNotifications, { sender: senderUsername, count: 1 }];
+          }
+        });
+        setNotificationsCount((prevCount) => prevCount + 1); // Incrementar a contagem total de notificações
+      };
     }
   }, [token]);
 
@@ -137,12 +157,52 @@ function Header() {
     navigate("/edit-profile");
   };
 
-  const handleNotificationSelect = (event) => {
-    const selectedIndex = event.target.value;
-    const selectedNotification = notificationsArray[selectedIndex];
-    if (selectedNotification) {
-      const senderUsername = selectedNotification.sender;
-      navigate(`/user-profile/${senderUsername}`);
+  const handleSelectChange = async (event) => {
+    const senderUsername = event.target.value;
+    console.log("Selected sender:", senderUsername);
+    setSelectedOption(senderUsername);
+    console.log("token", token);
+
+    // Marcar notificações como lidas
+    try {
+      const response = await fetch(
+        `http://localhost:8080/project5/rest/users/markNotificationsAsRead/${senderUsername}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            token: token,
+          },
+        }
+      );
+      const data = await response.text();
+      console.log("Response:", data);
+      if (!response.ok) {
+        console.error(
+          "Failed to mark notifications as read:",
+          response.statusText
+        );
+      } else {
+        console.log("Notifications marked as read for sender:", senderUsername);
+        // Atualizar contadores após marcar as notificações como lidas
+        fetchNotifications();
+      }
+    } catch (error) {
+      console.error("Error marking notifications as read:", error);
+    }
+
+    // Redirecionar para a página do perfil do usuário selecionado
+    navigate(`/user-profile/${senderUsername}`);
+  };
+
+  // Adicione uma função para determinar a classe com base nas condições
+  const getOptionClassName = (unreadCount, notificationCount) => {
+    if (unreadCount === 0 && notificationCount > 0) {
+      return "notifications-dropdown";
+    } else if (unreadCount > 0 && notificationCount > 0) {
+      return "bold-green3"; // Classe a ser definida no CSS com os estilos específicos
+    } else {
+      return ""; // Se nenhuma condição for atendida, não aplique nenhuma classe
     }
   };
 
@@ -181,8 +241,10 @@ function Header() {
           </nav>
         </div>
         <div className="nav-notifications">
-          <select className="notifications-dropdown"
-          onChange={handleNotificationSelect}
+          <select
+            className="notifications-dropdown"
+            value={selectedOption}
+            onChange={handleSelectChange}
           >
             <option
               value="default"
@@ -190,14 +252,18 @@ function Header() {
             >
               {notificationsCount} Notifications
             </option>
-            {notificationsArray.map((notification, index) => (
+            {Object.keys(notificationCounts).map((senderUsername) => (
               <option
-                key={index}
-                value={index}
-                className="dropdown-notifications-otherValues"
+                key={senderUsername}
+                value={senderUsername}
+                className={getOptionClassName(
+                  unreadCounts[senderUsername] || 0,
+                  notificationCounts[senderUsername]
+                )}
               >
-                  You have {notification.count} messages from{" "}
-                  {notification.sender}
+                {unreadCounts[senderUsername] || 0} /{" "}
+                {notificationCounts[senderUsername]} unread messages from{" "}
+                {senderUsername}
               </option>
             ))}
           </select>

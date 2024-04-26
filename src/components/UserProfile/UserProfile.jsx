@@ -3,7 +3,7 @@ import "./UserProfile.css";
 import { userStore } from "../../stores/UserStore";
 import { useNavigate, useParams } from "react-router-dom";
 import "react-chat-elements/dist/main.css";
-import { MessageBox } from "react-chat-elements";
+import { MessageList } from "react-chat-elements";
 import { Input } from "react-chat-elements";
 import { Button } from "react-chat-elements";
 
@@ -22,6 +22,11 @@ function UserProfile() {
 
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [chatSocket, setChatSocket] = useState(null);
+
+  console.log("messages antes de tudo", messages)
+
+
+  // Código do usuário
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -83,10 +88,13 @@ function UserProfile() {
     }
   };
 
+
   const handleCancel = (event) => {
     event.preventDefault();
     navigate("/users-list", { replace: true });
   };
+
+  // Código do chat
 
   const handleToggleChat = async (event) => {
     event.preventDefault();
@@ -105,13 +113,23 @@ function UserProfile() {
 
       if (response.ok) {
         const messagesData = await response.json();
+        console.log("Messages fetched:", messagesData);
         const formattedMessages = messagesData.map((message) => ({
           sender: message.senderUsername,
           receiver: message.receiverUsername,
           text: message.message,
           date: new Date(message.sentAt),
+          status: {
+            status:
+              message.senderUsername === sender && message.read === true
+                ? "read"
+                : "sent",
+          },
         }));
+        console.log("Formatted messages:", formattedMessages);
         setMessages(formattedMessages);
+        console.log("messages depois do handleToggleChat", messages)
+
       } else {
         console.error("Error fetching messages:");
       }
@@ -139,18 +157,24 @@ function UserProfile() {
     setIsChatOpen((prevIsChatOpen) => !prevIsChatOpen);
   };
 
+  console.log("messages depois do handleToggleChat 2", messages)
+
+
   const sendMessage = (message) => {
     const messageObject = {
       sender: sender,
       receiver: receiver,
       text: message,
       date: new Date().toISOString(),
+      status: "sent",
     };
     setMessages((prevMessages) => [...prevMessages, messageObject]);
+    console.log("messages depois do sendMessages 1", messages)
+
     try {
       if (chatSocket && chatSocket.readyState === WebSocket.OPEN) {
         chatSocket.send(JSON.stringify(messageObject));
-        setMessageText("");
+        document.getElementsByClassName("rce-input")[0].value = "";
       } else {
         console.error("WebSocket chatSocket is not open.");
       }
@@ -158,6 +182,9 @@ function UserProfile() {
       console.error("Error sending message:", error);
     }
   };
+
+  console.log("messages depois do sendMessages 2", messages)
+
 
   useEffect(() => {
     const handleMessage = (event) => {
@@ -169,8 +196,14 @@ function UserProfile() {
           receiver: messageData.receiverUsername,
           text: messageData.message,
           date: new Date(messageData.sentAt),
+          status: {
+            status: messageData.senderUsername === sender ? "read" : "sent",
+          },
         };
+        console.log("Message parsed:", message);
         setMessages((prevMessages) => [...prevMessages, message]);
+        console.log("messages depois do handleMessage 1", messages)
+
       } catch (error) {
         console.error("Error parsing message:", error);
       }
@@ -190,6 +223,9 @@ function UserProfile() {
       }
     };
   }, [chatSocket]);
+
+  console.log("messages depois do handleMessage 2", messages)
+
 
   return (
     <div className="container">
@@ -331,29 +367,40 @@ function UserProfile() {
         className="chatPanel"
         style={{ display: isChatOpen ? "block" : "none" }}
       >
-        {messages.map((messageObject, index) => (
-          <MessageBox
-            key={index}
-            position={messageObject.sender === sender ? "right" : "left"}
-            title={messageObject.sender === sender ? "You" : receiver}
-            type="text"
-            text={messageObject.text}
-            date={messageObject.date}
+        <div className="chat-list">
+          <MessageList
+            className="message-list"
+            lockable={true}
+            toBottomHeight={"100%"}
+            dataSource={messages.map((messageObject, index) => ({
+              position: messageObject.sender === sender ? "right" : "left",
+              type: "text",
+              text: messageObject.text,
+              date: messageObject.date,
+              title: messageObject.sender === sender ? "You" : receiver,
+              status: messageObject.status,
+              key: index, // Chave única para cada item na lista
+            }))}
           />
-        ))}
-        <Input
-          type="text"
-          placeholder="Type here..."
-          value={messageText}
-          onChange={(e) => setMessageText(e.target.value)}
-          multiline={true}
-          autofocus={true}
-        />
-        <Button
-          text={"Send"}
-          onClick={() => sendMessage(messageText)}
-          title="Send"
-        />
+        </div>
+        <div className="chat-input">
+          <Input
+            type="text"
+            placeholder="Type here..."
+            value={messageText}
+            onChange={(e) => setMessageText(e.target.value)}
+            multiline={true}
+            autofocus={true}
+            rightButtons={
+              <Button
+                color="#2CCCD3"
+                backgroundColor="#223C4A"
+                text={"SEND"}
+                onClick={() => sendMessage(messageText)}
+              />
+            }
+          />
+        </div>
       </div>
     </div>
   );

@@ -31,19 +31,7 @@
     display: flex;
 }
 
-.editProfilePanel {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    z-index: 2;
-    padding-left: 100px;
-    font-size: 15px;
-    text-align: left;
-    color: var(--green3);
-    border-radius: 10px;
-    width: 300px;
-    height: 30px;
-}
+
 .editProfile-title-photo {
     margin-top: 40px;
     display: flex; /* Usa flexbox para alinhar os elementos lado a lado */
@@ -70,6 +58,14 @@
     width: 250px;
     height: 50px;
     vertical-align: top;
+}
+
+.editProfile-fieldsContainer {
+    width: 500px;
+}
+
+.editProfile-register {
+    width: 500px;
 }
 
 .label-username-editProfile {
@@ -174,65 +170,91 @@
     border: solid var(--green3) 2px;
   }
 
+.chat-panel {
+    display: flex;
+    flex-direction: column;
+}
 
-.chatPanel {
+.rce-container-mlist {
+    margin-left: 200px;
+    width: 500px;
+    margin-top: 120px;
+}
+
+.rce-mlist {
     flex: 1;
     display: flex;
     flex-direction: column;
-    margin-top: 150px;
+    overflow: auto;
     font-size: 15px;
     text-align: left;
     color: var(--green3);
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-    width: 400px;
     height: 400px;
     border: 2px solid var(--green2);
     padding: 20px;
     position: relative; /* Define o .chatPanel como um elemento de posição relativa */
+    scrollbar-width: thin;
+    scrollbar-color: var(--green2) var(--white);
 }
 
-.message-box {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto; /* Adiciona uma barra de rolagem vertical ao .message-box */
-    padding: 10px;
-    background-color: var(--todo);
+.rce-mlist::-webkit-scrollbar {
+  width: 13px;
+}
+/* Cor da barra */
+.rce-mlist::-webkit-scrollbar-thumb {
+  background-color: var(--green2);
+  border-top-right-radius: 8px;
+}
+/* Distância à direita a que a barra fica da border, cor do trilho e arredondamento para fazerstrengths
+match ao arredondamento do painel (home.html) */
+.rce-mlist::-webkit-scrollbar-track {
+  margin-right: 1px;
+  background-color: var(--white);
+  border-top-right-radius: 9px;
+}
+/* Altura da scroll bar */
+.rce-mlist::-webkit-scrollbar {
+    padding-top: 5px;
+    height: calc(100% - 2px);
+    padding-right: 1px;
+}
+
+.chat-input {
+    width: 500px;
+}
+
+.rce-container-input {
+    z-index: 3;
+    margin-left: 200px;
+    margin-top: 20px;
+    padding-left: 10px;
+    font-size: 15px;
+    text-align: left;
+    color: var(--green3);
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    width: 100px;
+    height: 40px;
     border: 1px solid var(--green2);
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    width: 400px;
-    height: 330px;
-    margin-left: 5px;
+}
+.rce-input {
+    width: 500px;
 }
 
-.chatPanel-footer {
-    display: flex;
-    flex-direction: row;
-    align-self: flex-end; /* Alinha o rodapé à parte inferior do .chatPanel */
-    position: absolute; /* Coloca o rodapé em posição absoluta */
-    bottom: 0; /* Alinha o rodapé ao final do .chatPanel */
-    margin-bottom: 15px;
-    margin-left: 5px;
+.rce-input-textarea {
+    padding-inline: 10px;
+    border: 3px solid var(--green2);
+    font-size: 15px;
+    color: var(--green3);
 }
 
-.message-input {
-    padding-inline: 3px;
-    border: 1px solid var(--green2);
-    border-radius: 5px;
-    width: 200px;
-    margin-right: 10px;
-}
-
-.send-button {
-    text-transform: uppercase;
-    font-size: 12px;
+.rce-button {
+    width: 70px;
     font-weight: bold;
-    color: var(--white);
+}
+
+.rce-box-right {
     background-color: var(--green3);
-    border: solid var(--green3) 2px;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 80px;
 }

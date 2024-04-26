@@ -146,6 +146,8 @@
 
 .notifications-dropdown {
   background-color: transparent;
+  width: 150px; /* Largura máxima quando fechado */
+  overflow-y: auto; /* Adiciona scroll quando houver mais de 5 linhas */
   padding-block: 5px;
   padding-inline: 10px;
   color: var(--green1);
@@ -157,6 +159,17 @@
   opacity: 0; /* Começa com opacidade 0 */
   animation: fadeIn 0.5s ease-in forwards; /* Aplica a animação de fadeIn */
 }
+.bold-green3 {
+  font-weight: bold;
+  color: var(--green3);
+}
+
+
+.dropdown-notifications-otherValues {
+  white-space: nowrap; /* Evita que o texto das opções seja quebrado */
+}
+
+
 
 /* Define a animação de fadeIn */
 @keyframes fadeIn {
