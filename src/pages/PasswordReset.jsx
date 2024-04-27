@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../pages/PasswordReset.css";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function PasswordReset() {
   const [inputs, setInputs] = useState({});
@@ -22,7 +23,7 @@ function PasswordReset() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (inputs.password !== inputs.passwordConfirm) {
-      alert("Passwords do not match");
+      toast.warn("Passwords do not match");
       return;
     } else {
       const password = inputs.password;
@@ -40,7 +41,7 @@ function PasswordReset() {
         );
 
         if (response.ok) {
-          console.log("Password reset successfully!");
+          toast.success("Password reset successfully!");
           console.log("Passord", password);
           navigate("/", { replace: true });
         } else {

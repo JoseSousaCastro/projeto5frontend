@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "../pages/RegisterConfirmation.css";
+import { toast } from "react-toastify";
 
 function RegisterConfirmation() {
   const [inputs, setInputs] = useState({});
@@ -20,7 +21,7 @@ function RegisterConfirmation() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (inputs.password !== inputs.passwordConfirm) {
-      alert("Passwords do not match");
+      toast.warn("Passwords do not match");
       return;
     }
     console.log("usernameURL", usernameURL);
@@ -40,10 +41,12 @@ function RegisterConfirmation() {
       if (response.ok) {
         // Registro bem-sucedido
         console.log("Password definida com sucesso!");
+        toast.success("Password successfully set!");
         navigate("/", { replace: true });
       } else {
         const responseBody = await response.text();
         console.error("Erro no registo:", response.statusText, responseBody);
+        toast.warn("Error setting password");
         // Pode exibir uma mensagem de erro para o usuário
       }
     } catch (error) {

@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import "../pages/RecoverPass.css";
+import { toast } from "react-toastify";
 
 function RecoverPass() {
   const [inputs, setInputs] = useState({});
@@ -30,11 +31,12 @@ function RecoverPass() {
       if (response.ok) {
         console.log("Email sent!");
         // alerta para o utilizador a indicar que foi enviado um email para recuperar a password
-        alert("An email was sent to you to recover the password.");
+        toast.warn("An email was sent to you to recover the password.");
       } else {
         const responseBody = await response.text();
         console.error(
           "Email not send, error:",
+          toast.warn("Something went wrong, please try again."),
           response.statusText,
           responseBody
         );
