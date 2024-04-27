@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 
 function UsersAside() {
+  const { t } = useTranslation();
   const { users, fetchUsers } = userStore();
   const navigate = useNavigate();
 
@@ -16,10 +17,9 @@ function UsersAside() {
   const [username, setUsername] = useState("");
   const [username2, setUsername2] = useState("");
   const [username3, setUsername3] = useState("");
-  const [updatedTypeOfUser, setUpdatedTypeOfUser] = useState(""); // Tipo de usuário atualizado localmente
+  const [updatedTypeOfUser, setUpdatedTypeOfUser] = useState("");
 
   const typeOfUser = userStore((state) => state.typeOfUser);
-
   const token = userStore((state) => state.token);
 
   useEffect(() => {
@@ -52,11 +52,10 @@ function UsersAside() {
     setSelectedUser(newUsername);
     const selectedUserObj = users.find((user) => user.username === newUsername);
     setUsername(selectedUserObj.username);
-    setUpdatedTypeOfUser(selectedUserObj.typeOfUser); // Atualizar o tipo de usuário localmente
+    setUpdatedTypeOfUser(selectedUserObj.typeOfUser);
     console.log("Selected user:", selectedUserObj);
   };
 
-  // Função para atualizar o tipo de usuário quando um botão de função de usuário é clicado
   const handleRoleButtonClick = (typeOfUser) => {
     setUpdatedTypeOfUser(typeOfUser);
     console.log("Updated type of user:", typeOfUser);
@@ -88,7 +87,6 @@ function UsersAside() {
     }
   };
 
-  // Função para enviar a atualização do tipo de usuário para o backend
   const handleTypeOfUser = async () => {
     try {
       console.log("username:", username);
@@ -101,7 +99,7 @@ function UsersAside() {
           headers: {
             "Content-Type": "application/json",
             token: token,
-            typeOfUser: updatedTypeOfUser, // Enviar o tipo de usuário atualizado como cabeçalho
+            typeOfUser: updatedTypeOfUser,
           },
           body: JSON.stringify({
             typeOfUser: updatedTypeOfUser,
@@ -113,16 +111,15 @@ function UsersAside() {
         setSelectedUser("");
         setUpdatedTypeOfUser("");
 
-        // Exibir toast informativo com base no tipo de usuário atualizado
         switch (updatedTypeOfUser) {
           case 100:
-            toast.info("User is now Developer");
+            toast.info(t("developerRoleToast"));
             break;
           case 200:
-            toast.info("User is now Scrum Master");
+            toast.info(t("scrumMasterRoleToast"));
             break;
           case 300:
-            toast.info("User is now Product Owner");
+            toast.info(t("productOwnerRoleToast"));
             break;
           default:
             break;
@@ -166,17 +163,17 @@ function UsersAside() {
         {typeOfUser === 300 && (
           <div className="buttons-top">
             <Link to="/register-user">
-              <button className="aside-button">Add User</button>
+              <button className="aside-button">{t("addUserButton")}</button>
             </Link>
             <Link to="/deleted-users">
               <button className="aside-button" id="deleted-users-button">
-                Deleted Users
+                {t("deletedUsersButton")}
               </button>
             </Link>
           </div>
         )}
         {typeOfUser === 300 && (
-          <label className="dropdown-label">Change user role</label>
+          <label className="dropdown-label">{t("changeUserRoleLabel")}</label>
         )}
         {typeOfUser === 300 && (
           <div className="dropdown">
@@ -185,7 +182,7 @@ function UsersAside() {
               onChange={(e) => handleUserSelect(e.target)}
               value={selectedUser}
             >
-              <option value="">Choose user</option>
+              <option value="">{t("chooseUserOption")}</option>
               {users &&
                 users.map((user) => (
                   <option key={user.username} value={user.username}>
@@ -200,7 +197,7 @@ function UsersAside() {
                 }`}
                 onClick={() => handleRoleButtonClick(100)}
               >
-                Developer
+                {t("developerRoleButton")}
               </button>
               <br />
               <button
@@ -209,7 +206,7 @@ function UsersAside() {
                 }`}
                 onClick={() => handleRoleButtonClick(200)}
               >
-                Scrum Master
+                {t("scrumMasterRoleButton")}
               </button>
               <br />
               <button
@@ -218,25 +215,27 @@ function UsersAside() {
                 }`}
                 onClick={() => handleRoleButtonClick(300)}
               >
-                Product Owner
+                {t("productOwnerRoleButton")}
               </button>
               <br />
             </div>
             <div>
               <button className="filter-button" onClick={handleTypeOfUser}>
-                Change role
+                {t("changeRoleButton")}
               </button>
             </div>
           </div>
         )}
-        <label className="dropdown-label">Filter by username or email</label>
+        <label className="dropdown-label">
+          {t("filterByUsernameOrEmailLabel")}
+        </label>
         <div className="dropdown">
           <select
             className="dropdown-goto-username"
             onChange={(e) => handleUserSelect2(e.target)}
             value={selectedUser2}
           >
-            <option value="">Choose user</option>
+            <option value="">{t("chooseUserOption")}</option>
             {users &&
               users.map((user) => (
                 <option key={user.username} value={user.username}>
@@ -249,7 +248,7 @@ function UsersAside() {
             onChange={(e) => handleUserSelect3(e.target)}
             value={selectedUser3}
           >
-            <option value="">Choose email</option>
+            <option value="">{t("chooseEmailOption")}</option>
             {users &&
               users.map((user) => (
                 <option key={user.username} value={user.username}>
@@ -259,7 +258,7 @@ function UsersAside() {
           </select>
           <div>
             <button className="filter-button" onClick={handleGoToProfile}>
-              Go to profile
+              {t("goToProfileButton")}
             </button>
           </div>
         </div>

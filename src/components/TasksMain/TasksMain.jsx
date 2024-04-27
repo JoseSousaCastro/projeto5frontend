@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 
 function TasksMain() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const tasks = taskStore((state) => state.tasks);
   const { fetchTasks } = taskStore();
@@ -27,7 +28,6 @@ function TasksMain() {
   async function handleTaskDrop(e, newStateId) {
     e.preventDefault();
     const taskId = e.dataTransfer.getData("text/plain");
-    console.log("token:", token);
 
     try {
       const response = await fetch(
@@ -43,19 +43,18 @@ function TasksMain() {
 
       if (response.ok) {
         const responseBody = await response.text();
-        console.log("Response:", responseBody);
         await fetchTasks();
 
         // Adicione os toasts de acordo com o newStateId
         switch (newStateId) {
           case 100:
-            toast.info("Task moved to To Do");
+            toast.info(t("taskMovedToDo"));
             break;
           case 200:
-            toast.info("Task moved to Doing");
+            toast.info(t("taskMovedToDoing"));
             break;
           case 300:
-            toast.info("Task moved to Done");
+            toast.info(t("taskMovedToDone"));
             break;
           default:
             break;
@@ -78,7 +77,7 @@ function TasksMain() {
         );
         navigate("/home");
       } else {
-        throw new Error("Failed to update task state");
+        throw new Error(t("failedToUpdateTaskState"));
       }
     } catch (error) {
       console.error("Error updating task state:", error);
@@ -90,7 +89,7 @@ function TasksMain() {
       <div className="page-wrap-task-list" id="tasks-users-list-page-wrap">
         <div className="task-section">
           <div className="titulo-main">
-            <h2 className="main-home">To do</h2>
+            <h2 className="main-home">{t("todo")}</h2>
           </div>
           <div
             className="panel"
@@ -107,7 +106,7 @@ function TasksMain() {
         </div>
         <div className="task-section">
           <div className="titulo-main">
-            <h2 className="main-home">Doing</h2>
+            <h2 className="main-home">{t("doing")}</h2>
           </div>
           <div
             className="panel"
@@ -124,7 +123,7 @@ function TasksMain() {
         </div>
         <div className="task-section">
           <div className="titulo-main">
-            <h2 className="main-home">Done</h2>
+            <h2 className="main-home">{t("done")}</h2>
           </div>
           <div
             className="panel"

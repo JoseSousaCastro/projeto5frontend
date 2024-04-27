@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 
 export default function UserCard({ user }) {
+  const { t } = useTranslation();
   const { fetchUsers } = userStore();
   const navigate = useNavigate();
   const token = userStore((state) => state.token);
@@ -31,14 +32,14 @@ export default function UserCard({ user }) {
 
       if (response.ok) {
         await fetchUsers();
-        toast.warn("User deleted")
+        toast.warn(t("userDeleted"));
         navigate("/users-list", { replace: true });
       } else {
         const responseBody = await response.text();
-        console.error("Erro ao apagar usuário:", responseBody);
+        console.error("Error deleting user:", responseBody);
       }
     } catch (error) {
-      console.error("Erro ao apagar usuário:", error);
+      console.error("Error deleting user:", error);
     }
   };
 
@@ -57,14 +58,14 @@ export default function UserCard({ user }) {
 
       if (response.ok) {
         await fetchUsers();
-        toast.warn("User deleted permanently")
+        toast.warn(t("userDeletedPermanently"));
         navigate("/deleted-users", { replace: true });
       } else {
         const responseBody = await response.text();
-        console.error("Erro ao apagar usuário:", responseBody);
+        console.error("Error deleting user:", responseBody);
       }
     } catch (error) {
-      console.error("Erro ao apagar usuário:", error);
+      console.error("Error deleting user:", error);
     }
   };
 
@@ -83,14 +84,14 @@ export default function UserCard({ user }) {
 
       if (response.ok) {
         await fetchUsers();
-        toast.info("User restored")
+        toast.info(t("userRestored"));
         navigate("/users-list", { replace: true });
       } else {
         const responseBody = await response.text();
-        console.error("Erro ao apagar usuário:", responseBody);
+        console.error("Error restoring user:", responseBody);
       }
     } catch (error) {
-      console.error("Erro ao apagar usuário:", error);
+      console.error("Error restoring user:", error);
     }
   };
 

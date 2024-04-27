@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 
 function UserProfile() {
+  const { t } = useTranslation();
   const [inputs, setInputs] = useState({});
   const navigate = useNavigate();
   const { username } = useParams();
@@ -25,10 +26,9 @@ function UserProfile() {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [chatSocket, setChatSocket] = useState(null);
 
-  console.log("messages antes de tudo", messages)
+  console.log("messages before everything", messages);
 
-
-  // Código do usuário
+  // User code
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -76,7 +76,7 @@ function UserProfile() {
 
       if (response.ok) {
         await fetchUsers();
-        toast.info("Profile updated");
+        toast.info(t("profileUpdated"));
 
         navigate("/users-list", { replace: true });
       } else {
@@ -92,13 +92,12 @@ function UserProfile() {
     }
   };
 
-
   const handleCancel = (event) => {
     event.preventDefault();
     navigate("/users-list", { replace: true });
   };
 
-  // Código do chat
+  // Chat code
 
   const handleToggleChat = async (event) => {
     event.preventDefault();
@@ -132,8 +131,7 @@ function UserProfile() {
         }));
         console.log("Formatted messages:", formattedMessages);
         setMessages(formattedMessages);
-        console.log("messages depois do handleToggleChat", messages)
-
+        console.log("messages after handleToggleChat", messages);
       } else {
         console.error("Error fetching messages:");
       }
@@ -141,7 +139,7 @@ function UserProfile() {
       console.error("Error fetching messages:", error);
     }
 
-    // Abrir o WebSocket
+    // Open WebSocket
     if (isChatOpen === false) {
       const chatSocket = new WebSocket(
         `ws://localhost:8080/project5/websocket/chat/${token}/${receiver}`
@@ -161,8 +159,7 @@ function UserProfile() {
     setIsChatOpen((prevIsChatOpen) => !prevIsChatOpen);
   };
 
-  console.log("messages depois do handleToggleChat 2", messages)
-
+  console.log("messages after handleToggleChat 2", messages);
 
   const sendMessage = (message) => {
     const messageObject = {
@@ -173,7 +170,7 @@ function UserProfile() {
       status: "sent",
     };
     setMessages((prevMessages) => [...prevMessages, messageObject]);
-    console.log("messages depois do sendMessages 1", messages)
+    console.log("messages after sendMessage 1", messages);
 
     try {
       if (chatSocket && chatSocket.readyState === WebSocket.OPEN) {
@@ -187,8 +184,7 @@ function UserProfile() {
     }
   };
 
-  console.log("messages depois do sendMessages 2", messages)
-
+  console.log("messages after sendMessage 2", messages);
 
   useEffect(() => {
     const handleMessage = (event) => {
@@ -206,8 +202,7 @@ function UserProfile() {
         };
         console.log("Message parsed:", message);
         setMessages((prevMessages) => [...prevMessages, message]);
-        console.log("messages depois do handleMessage 1", messages)
-
+        console.log("messages after handleMessage 1", messages);
       } catch (error) {
         console.error("Error parsing message:", error);
       }
@@ -228,8 +223,7 @@ function UserProfile() {
     };
   }, [chatSocket]);
 
-  console.log("messages depois do handleMessage 2", messages)
-
+  console.log("messages after handleMessage 2", messages);
 
   return (
     <div className="container">
@@ -247,9 +241,9 @@ function UserProfile() {
             <button
               className="open-chat-button"
               onClick={handleToggleChat}
-              data-text={isChatOpen ? "Close chat" : "Open chat"}
+              data-text={isChatOpen ? t("closeChat") : t("openChat")}
             >
-              {isChatOpen ? "Close chat" : "Open chat"}
+              {isChatOpen ? t("closeChat") : t("openChat")}
             </button>
           </div>
         </div>
@@ -264,7 +258,7 @@ function UserProfile() {
                 className="labels-edit-profile"
                 id="email-editProfile-label"
               >
-                Email
+                {t("email")}
               </label>
               <input
                 type="email"
@@ -281,7 +275,7 @@ function UserProfile() {
                 className="labels-edit-profile"
                 id="firstName-editProfile-label"
               >
-                First Name
+                {t("firstName")}
               </label>
               <input
                 type="text"
@@ -299,7 +293,7 @@ function UserProfile() {
                 className="labels-edit-profile"
                 id="lastName-editProfile-label"
               >
-                Last Name
+                {t("lastName")}
               </label>
               <input
                 type="text"
@@ -317,7 +311,7 @@ function UserProfile() {
                 className="labels-edit-profile"
                 id="phone-editProfile-label"
               >
-                Phone
+                {t("phone")}
               </label>
               <input
                 type="text"
@@ -335,7 +329,7 @@ function UserProfile() {
                 className="labels-edit-profile"
                 id="photoURL-editProfile-label"
               >
-                Photo URL
+                {t("photoURL")}
               </label>
               <input
                 type="url"
@@ -354,14 +348,14 @@ function UserProfile() {
           {typeOfUser === 300 && (
             <div className="editProfile-Buttons">
               <button type="submit" id="profile-save-button">
-                Save
+                {t("save")}
               </button>
               <button
                 type="reset"
                 id="profile-cancel-button"
                 onClick={handleCancel}
               >
-                Cancel
+                {t("cancel")}
               </button>
             </div>
           )}
@@ -383,14 +377,14 @@ function UserProfile() {
               date: messageObject.date,
               title: messageObject.sender === sender ? "You" : receiver,
               status: messageObject.status,
-              key: index, // Chave única para cada item na lista
+              key: index, // Unique key for each item in the list
             }))}
           />
         </div>
         <div className="chat-input">
           <Input
             type="text"
-            placeholder="Type here..."
+            placeholder={t("typeHere")}
             value={messageText}
             onChange={(e) => setMessageText(e.target.value)}
             multiline={true}
@@ -399,7 +393,7 @@ function UserProfile() {
               <Button
                 color="#2CCCD3"
                 backgroundColor="#223C4A"
-                text={"SEND"}
+                text={t("send")}
                 onClick={() => sendMessage(messageText)}
               />
             }

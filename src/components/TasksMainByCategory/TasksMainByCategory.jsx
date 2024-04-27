@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 
 function TasksMainByCategory() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const categoryURL = useParams().category;
 
@@ -46,19 +47,18 @@ function TasksMainByCategory() {
 
       if (response.ok) {
         const responseBody = await response.text();
-        console.log("Response:", responseBody);
         await fetchTasksByCategory(categoryURL);
 
         // Adicione os toasts de acordo com o newStateId
         switch (newStateId) {
           case 100:
-            toast.info("Task moved to To Do");
+            toast.info(t("taskMovedToDo"));
             break;
           case 200:
-            toast.info("Task moved to Doing");
+            toast.info(t("taskMovedToDoing"));
             break;
           case 300:
-            toast.info("Task moved to Done");
+            toast.info(t("taskMovedToDone"));
             break;
           default:
             break;
@@ -81,7 +81,7 @@ function TasksMainByCategory() {
         );
         navigate(`/tasksbc/${categoryURL}`);
       } else {
-        throw new Error("Failed to update task state");
+        throw new Error(t("failedToUpdateTaskState"));
       }
     } catch (error) {
       console.error("Error updating task state:", error);
@@ -96,7 +96,7 @@ function TasksMainByCategory() {
       <div className="page-wrap-task-list" id="tasks-categories-list-page-wrap">
         <div className="task-section">
           <div className="titulo-main">
-            <h2 className="main-home">To do</h2>
+            <h2 className="main-home">{t("todo")}</h2>
           </div>
           <div
             className="panel"
@@ -113,7 +113,7 @@ function TasksMainByCategory() {
         </div>
         <div className="task-section">
           <div className="titulo-main">
-            <h2 className="main-home">Doing</h2>
+            <h2 className="main-home">{t("doing")}</h2>
           </div>
           <div
             className="panel"
@@ -130,7 +130,7 @@ function TasksMainByCategory() {
         </div>
         <div className="task-section">
           <div className="titulo-main">
-            <h2 className="main-home">Done</h2>
+            <h2 className="main-home">{t("done")}</h2>
           </div>
           <div
             className="panel"

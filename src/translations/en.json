@@ -133,18 +133,37 @@
     "deleteAllTasks": "Delete All Tasks",
     "filterByCategory": "Filter by category",
     "chooseCategory": "Choose category",
-    "allTasksDeletedSuccessfully": "All tasks from {{username}} deleted successfully!"
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-
+    "allTasksDeletedSuccessfully": "All tasks from {{username}} deleted successfully!",
+    "taskMovedToDo": "Task moved to To Do",
+    "taskMovedToDoing": "Task moved to Doing",
+    "taskMovedToDone": "Task moved to Done",
+    "failedToUpdateTaskState": "Failed to update task state",
+    "userDeleted": "User deleted",
+    "userDeletedPermanently": "User deleted permanently",
+    "userRestored": "User restored",
+    "profileUpdated": "Profile updated",
+    "closeChat": "Close chat",
+    "openChat": "Open chat",
+    "email": "Email",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "phone": "Phone",
+    "photoURL": "Photo URL",
+    "typeHere": "Type here...",
+    "addUserButton": "Add User",
+    "deletedUsersButton": "Deleted Users",
+    "changeUserRoleLabel": "Change user role",
+    "chooseUserOption": "Choose user",
+    "developerRoleButton": "Developer",
+    "scrumMasterRoleButton": "Scrum Master",
+    "productOwnerRoleButton": "Product Owner",
+    "changeRoleButton": "Change role",
+    "filterByUsernameOrEmailLabel": "Filter by username or email",
+    "chooseEmailOption": "Choose email",
+    "goToProfileButton": "Go to profile",
+    "loadingText": "Loading...",
+    "developerTitle": "Developer",
+    "scrumMasterTitle": "Scrum Master",
+    "productOwnerTitle": "Product Owner"
+          
 }

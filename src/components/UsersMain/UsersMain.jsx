@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 function UsersMain() {
   const { fetchUsers, users } = userStore();
   const [loaded, setLoaded] = useState(false);
+  const { t } = useTranslation(); // Adicionando useTranslation para tradução
 
   useEffect(() => {
     // Use fetchUsers para buscar os usuários apenas uma vez após a montagem do componente
@@ -18,7 +19,7 @@ function UsersMain() {
 
   // Verifica se os usuários já foram carregados
   if (!loaded) {
-    return <div>Loading...</div>;
+    return <div>{t("loadingText")}</div>; // Traduzindo texto de carregamento
   }
 
   // Filtra o user que está logado
@@ -42,7 +43,7 @@ function UsersMain() {
       <div className="page-wrap-user-list" id="users-users-list-page-wrap">
         <div className="user-section">
           <div className="titulo-main">
-            <h2 className="main-home">Developer</h2>
+            <h2 className="main-home">{t("developerTitle")}</h2> {/* Traduzindo título */}
           </div>
           <div className="panel" id="developer">
             {usersDeveloper.map((user) => (
@@ -54,7 +55,7 @@ function UsersMain() {
         </div>
         <div className="user-section">
           <div className="titulo-main">
-            <h2 className="main-home">Scrum Master</h2>
+            <h2 className="main-home">{t("scrumMasterTitle")}</h2> {/* Traduzindo título */}
           </div>
           <div className="panel" id="scrum-master">
             {usersScrumMaster.map((user) => (
@@ -66,7 +67,7 @@ function UsersMain() {
         </div>
         <div className="user-section">
           <div className="titulo-main">
-            <h2 className="main-home">Product Owner</h2>
+            <h2 className="main-home">{t("productOwnerTitle")}</h2> {/* Traduzindo título */}
           </div>
           <div className="panel" id="product-owner">
             {usersProductOwner.map((user) => (
