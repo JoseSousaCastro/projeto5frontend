@@ -1,3 +1,23 @@
 {
-    
+    "passwordRequired": "Senha é necessária",
+    "loginSuccess": "Login bem-sucedido",
+    "loginFailed": "Login falhou",
+    "usernamePlaceholder": "Nome de usuário",
+    "forgetPassword": "Esqueceu a senha",
+    "recoverPassword": "Recuperar senha",
+    "passwordResetSuccess": "Senha redefinida com sucesso!",
+    "passwordResetFailed": "Falha ao redefinir a senha",
+    "resetPassword": "Redefinir senha",
+    "emailSent": "Um email foi enviado para você para recuperar a senha.",
+    "somethingWentWrong": "Algo deu errado, por favor, tente novamente.",
+    "emailPlaceholder": "Email",
+    "recover": "Recuperar",
+    "rememberedPassword": "Lembrou sua senha?",
+    "signIn": "Entrar",
+    "passwordsDoNotMatch": "As senhas não coincidem",
+    "passwordSuccessfullySet": "Senha definida com sucesso!",
+    "errorSettingPassword": "Erro ao definir a senha",
+    "passwordPlaceholder": "Senha",
+    "confirmPasswordPlaceholder": "Confirmar Senha",
+    "confirmRegistration": "Confirmar registro"
 }

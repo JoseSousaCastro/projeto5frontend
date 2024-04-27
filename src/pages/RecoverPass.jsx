@@ -1,5 +1,4 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "../pages/RecoverPass.css";
 import { toast } from "react-toastify";
@@ -7,6 +6,8 @@ import { useTranslation } from "react-i18next";
 
 function RecoverPass() {
   const [inputs, setInputs] = useState({});
+  const { t } = useTranslation();
+
   const handleChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -16,7 +17,7 @@ function RecoverPass() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const email = inputs.email;
-    console.log("inputs.email", inputs.email);
+
     try {
       const response = await fetch(
         "http://localhost:8080/project5/rest/users/recover-password",
@@ -30,14 +31,12 @@ function RecoverPass() {
       );
 
       if (response.ok) {
-        console.log("Email sent!");
-        // alerta para o utilizador a indicar que foi enviado um email para recuperar a password
-        toast.warn("An email was sent to you to recover the password.");
+        toast.warn(t("emailSent")); // Tradução da mensagem de aviso
       } else {
         const responseBody = await response.text();
         console.error(
-          "Email not send, error:",
-          toast.warn("Something went wrong, please try again."),
+          "Email not sent, error:",
+          toast.error(t("somethingWentWrong")), // Tradução da mensagem de erro
           response.statusText,
           responseBody
         );
@@ -66,18 +65,18 @@ function RecoverPass() {
               type="email"
               id="email"
               name="email"
-              placeholder="email"
+              placeholder={t("emailPlaceholder")} // Tradução do placeholder
               onChange={handleChange}
               required
             />
             <button type="submit" id="recoverButton">
-              Recover
+              {t("recover")} {/* Tradução do texto do botão */}
             </button>
             <div className="login-link">
               <p>
-                Remembered your password?{" "}
+                {t("rememberedPassword")}{" "}
                 <Link to="/" id="login-link">
-                  Sign in
+                  {t("signIn")}
                 </Link>
               </p>
             </div>

@@ -1,5 +1,4 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "../pages/RegisterConfirmation.css";
 import { toast } from "react-toastify";
@@ -8,28 +7,24 @@ import { useTranslation } from "react-i18next";
 function RegisterConfirmation() {
   const [inputs, setInputs] = useState({});
   const navigate = useNavigate();
-  const usernameURL = useParams().username;
-
-  console.log("usernameURL", usernameURL);
+  const { username } = useParams();
+  const { t } = useTranslation();
 
   const handleChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
-
     setInputs((values) => ({ ...values, [name]: value }));
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (inputs.password !== inputs.passwordConfirm) {
-      toast.warn("Passwords do not match");
+      toast.warn(t("passwordsDoNotMatch")); // Tradução da mensagem de aviso
       return;
     }
-    console.log("usernameURL", usernameURL);
-    console.log("inputs.password", inputs.password);
     try {
       const response = await fetch(
-        `http://localhost:8080/project5/rest/users/${usernameURL}/password`,
+        `http://localhost:8080/project5/rest/users/${username}/password`,
         {
           method: "PUT",
           headers: {
@@ -40,18 +35,16 @@ function RegisterConfirmation() {
       );
 
       if (response.ok) {
-        // Registro bem-sucedido
-        console.log("Password definida com sucesso!");
-        toast.success("Password successfully set!");
+        console.log("Password successfully set!");
+        toast.success(t("passwordSuccessfullySet")); // Tradução da mensagem de sucesso
         navigate("/", { replace: true });
       } else {
         const responseBody = await response.text();
-        console.error("Erro no registo:", response.statusText, responseBody);
-        toast.warn("Error setting password");
-        // Pode exibir uma mensagem de erro para o usuário
+        console.error("Registration error:", response.statusText, responseBody);
+        toast.warn(t("errorSettingPassword")); // Tradução da mensagem de erro
       }
     } catch (error) {
-      console.error("Erro na requisição:", error);
+      console.error("Request error:", error);
     }
   };
 
@@ -75,7 +68,7 @@ function RegisterConfirmation() {
               className="inputRegister-password"
               id="password-register-confirm"
               name="password"
-              placeholder="Password"
+              placeholder={t("passwordPlaceholder")} // Tradução do placeholder
               onChange={handleChange}
               required
             />
@@ -84,12 +77,12 @@ function RegisterConfirmation() {
               className="inputRegister-password"
               id="passwordConfirm-register-confirm"
               name="passwordConfirm"
-              placeholder="Confirm Password"
+              placeholder={t("confirmPasswordPlaceholder")} // Tradução do placeholder
               onChange={handleChange}
               required
             />
             <button type="submit" id="registerButton-register-confirm">
-              Confirm registration
+              {t("confirmRegistration")} {/* Tradução do texto do botão */}
             </button>
           </form>
         </div>

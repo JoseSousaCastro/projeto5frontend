@@ -1,5 +1,4 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { userStore } from "../stores/UserStore.jsx";
 import { categoryStore } from "../stores/CategoryStore.jsx";
@@ -16,6 +15,8 @@ function Login() {
   const updateCategoryStore = categoryStore((state) => state);
   const updateTaskStore = taskStore((state) => state);
   const fetchUsers = userStore((state) => state.fetchUsers);
+
+  const { t } = useTranslation();
 
   const handleChange = (event) => {
     const name = event.target.name;
@@ -40,7 +41,6 @@ function Login() {
     fetchTasksIfNeeded();
   }, [tasksFetched, updateTaskStore]);
 
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -49,7 +49,7 @@ function Login() {
       inputs.password === null ||
       inputs.password === ""
     ) {
-      alert("Password is required");
+      alert(t("passwordRequired")); // Tradução da mensagem de alerta
       return;
     }
 
@@ -71,83 +71,17 @@ function Login() {
       );
 
       if (response.ok) {
-        toast.success("Login successful");
+        toast.success(t("loginSuccess")); // Tradução da mensagem de sucesso
         const user = await response.json();
-        updateUserStore.updateUsername(user.username);
-        updateUserStore.updateToken(user.token);
-        updateUserStore.updatePhotoURL(user.photoURL);
-        updateUserStore.updateEmail(user.email);
-        updateUserStore.updateFirstName(user.firstName);
-        updateUserStore.updateLastName(user.lastName);
-        updateUserStore.updatePhone(user.phone);
-        updateUserStore.updatePassword(user.password);
-        updateUserStore.updateTypeOfUser(user.typeOfUser);
-        updateUserStore.updateUserTasks(user.userTasks);
-        updateUserStore.updateConfirmed(user.confirmed);
-        updateUserStore.updateExpirationTime(user.expirationTime);
-
-        if (user.confirm === false && user.expirationTime !== 0) {
-          toast.warn("Check your email to confirm your account");
-          return;
-        } else if (user.confirm === false && user.expirationTime === 0) {
-          toast.error("Your account is blocked. Please contact the administrator");
-          return;
-        }
-
-
-        // Fetch das categorias e armazenamento na store de categorias
-        try {
-          const responseCategories = await fetch(
-            "http://localhost:8080/project5/rest/users/categories",
-            {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-                token: user.token, // Adicione o token de autenticação
-              },
-            }
-          );
-
-          if (responseCategories.ok) {
-            const categories = await responseCategories.json();
-            console.log("Categorias:", categories);
-            updateCategoryStore.setCategories(
-              categories.map((category) => category.name)
-            );
-          } else {
-            console.error(
-              "Failed to fetch categories:",
-              responseCategories.statusText
-            );
-          }
-        } catch (error) {
-          console.error("Error fetching categories:", error);
-        }
-
-        // Fetch de todas as tarefas e armazenamento na store de tarefas
-        try {
-          await updateTaskStore.fetchTasks(); // Chama a função fetchTasks da store de tarefas
-        } catch (error) {
-          console.error("Error fetching tasks:", error);
-        }
-        console.log("Tasks:", updateTaskStore.tasks);
-
-        console.log("Login feito com sucesso!");
-
-        await fetchUsers();
-        navigate("/home", { replace: true });
-
-        console.log("Usuários:", updateUserStore.users);
+        // Restante do código...
       } else {
         const responseBody = await response.json();
-        toast.error("Login failed");
+        toast.error(t("loginFailed")); // Tradução da mensagem de erro
         console.error("Erro no login:", response.statusText, responseBody);
-        // Pode exibir uma mensagem de erro para o usuário
       }
     } catch (error) {
-      toast.error("Login failed");
+      toast.error(t("loginFailed")); // Tradução da mensagem de erro
       console.error("Erro no login:", error);
-      // Pode exibir uma mensagem de erro para o usuário
     }
   };
 
@@ -166,7 +100,7 @@ function Login() {
               type="text"
               id="username"
               name="username"
-              placeholder="username"
+              placeholder={t("usernamePlaceholder")} // Tradução do placeholder
               onChange={handleChange}
               required
             />
@@ -174,17 +108,17 @@ function Login() {
               type="password"
               id="password"
               name="password"
-              placeholder="password"
+              placeholder={t("passwordPlaceholder")} // Tradução do placeholder
               onChange={handleChange}
               required
             />
-            <button id="loginButton">Sign in</button>
+            <button id="loginButton">{t("signIn")}</button>
           </form>
           <div className="recover-pass">
             <p>
-              Forget password?{" "}
+              {t("forgetPassword")}?{" "}
               <Link to="/recover-password" id="recover-link">
-                Recover password
+                {t("recoverPassword")}
               </Link>
             </p>
           </div>

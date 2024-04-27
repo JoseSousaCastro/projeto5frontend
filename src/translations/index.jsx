@@ -3,7 +3,7 @@ import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import translationEN from './en.json';
 import translationPT from './pt.json';
-import useLanguageStore from './path/to/your/useLanguageStore'; 
+import useLanguageStore from '../stores/UseLanguageStore';
 
 const store = useLanguageStore.getState(); 
 

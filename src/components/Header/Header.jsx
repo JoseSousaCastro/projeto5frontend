@@ -4,7 +4,7 @@ import "../Header/Header.css";
 import { userStore } from "../../stores/UserStore";
 import { websocketStore } from "../../stores/WebsocketStore";
 import { toast } from "react-toastify";
-import { useLanguageStore } from "../../stores/LanguageStore";
+import useLanguageStore from "../../stores/UseLanguageStore";
 import { useTranslation } from "react-i18next";
 
 function Header() {

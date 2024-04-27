@@ -1,19 +1,15 @@
-import React from "react";
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import "../pages/PasswordReset.css";
-import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 
 function PasswordReset() {
   const [inputs, setInputs] = useState({});
   const navigate = useNavigate();
-  const usernameURL = useParams().username;
+  const { username } = useParams();
 
-  console.log("usernameURL", usernameURL);
-  console.log("inputs.password", inputs.password);
-  console.log("inputs.passwordConfirm", inputs.passwordConfirm);
+  const { t } = useTranslation();
 
   const handleChange = (event) => {
     const name = event.target.name;
@@ -24,14 +20,14 @@ function PasswordReset() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (inputs.password !== inputs.passwordConfirm) {
-      toast.warn("Passwords do not match");
+      toast.warn(t("passwordsDoNotMatch")); // Tradução da mensagem de aviso
       return;
     } else {
       const password = inputs.password;
 
       try {
         const response = await fetch(
-          `http://localhost:8080/project5/rest/users/${usernameURL}/reset-password`,
+          `http://localhost:8080/project5/rest/users/${username}/reset-password`,
           {
             method: "PUT",
             headers: {
@@ -42,8 +38,7 @@ function PasswordReset() {
         );
 
         if (response.ok) {
-          toast.success("Password reset successfully!");
-          console.log("Passord", password);
+          toast.success(t("passwordResetSuccess")); // Tradução da mensagem de sucesso
           navigate("/", { replace: true });
         } else {
           const responseBody = await response.text();
@@ -52,9 +47,11 @@ function PasswordReset() {
             response.statusText,
             responseBody
           );
+          toast.error(t("passwordResetFailed")); // Tradução da mensagem de erro
         }
       } catch (error) {
         console.error("Request error:", error);
+        toast.error(t("passwordResetFailed")); // Tradução da mensagem de erro
       }
     }
   };
@@ -78,7 +75,7 @@ function PasswordReset() {
               type="password"
               id="password"
               name="password"
-              placeholder="password"
+              placeholder={t("passwordPlaceholder")} // Tradução do placeholder
               onChange={handleChange}
               required
             />
@@ -86,18 +83,18 @@ function PasswordReset() {
               type="password"
               id="passwordConfirm"
               name="passwordConfirm"
-              placeholder="confirm password"
+              placeholder={t("confirmPasswordPlaceholder")} // Tradução do placeholder
               onChange={handleChange}
               required
             />
             <button type="submit" id="resetButton">
-              Reset password
+              {t("resetPassword")} // Tradução do botão
             </button>
             <div className="login-link">
               <p>
-                Remembered your password?{" "}
+                {t("rememberedPassword")}{" "}
                 <Link to="/" id="login-link">
-                  Sign in
+                  {t("signIn")}
                 </Link>
               </p>
             </div>

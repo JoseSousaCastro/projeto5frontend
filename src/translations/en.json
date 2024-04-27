@@ -1,3 +1,24 @@
 {
-    
+    "passwordRequired": "Password is required",
+    "loginSuccess": "Login successful",
+    "loginFailed": "Login failed",
+    "usernamePlaceholder": "Username",
+    "forgetPassword": "Forget password",
+    "recoverPassword": "Recover password",
+    "passwordResetSuccess": "Password reset successfully!",
+    "passwordResetFailed": "Failed to reset password",
+    "resetPassword": "Reset password",
+    "emailSent": "An email was sent to you to recover the password.",
+    "somethingWentWrong": "Something went wrong, please try again.",
+    "emailPlaceholder": "Email",
+    "recover": "Recover",
+    "rememberedPassword": "Remembered your password?",
+    "signIn": "Sign in",
+    "passwordsDoNotMatch": "Passwords do not match",
+    "passwordSuccessfullySet": "Password successfully set!",
+    "errorSettingPassword": "Error setting password",
+    "passwordPlaceholder": "Password",
+    "confirmPasswordPlaceholder": "Confirm Password",
+    "confirmRegistration": "Confirm registration"
+
 }
