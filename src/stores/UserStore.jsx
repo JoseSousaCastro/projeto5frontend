@@ -33,6 +33,9 @@ export const userStore = create(
       deleteAllUserTasks: () => set({ userTasks: [] }),
       updateExpirationTime: (expirationTime) => set({ expirationTime }),
       updateConfirmed: (confirmed) => set({ confirmed }),
+      
+      locale: "en",
+      updateLocale: (locale) => set({ locale }),
 
       fetchUsers: async () => {
         try {

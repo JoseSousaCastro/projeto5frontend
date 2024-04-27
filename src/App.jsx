@@ -20,14 +20,13 @@ import PasswordReset from "./pages/PasswordReset";
 import Dashboard from "./pages/Dashboard";
 import UsersListAll from "./pages/UsersListAll";
 import { IntlProvider } from "react-intl";
-//import messages from "./locales";
 import { ToastContainer } from "react-toastify"; // Importe o ToastContainer aqui
 import "react-toastify/dist/ReactToastify.css"; // Importe o estilo CSS do react-toastify
 
 function App() {
   return (
     <IntlProvider
-      locale="en" //messages={messages.en}
+      //locale="en" locales={locales.en}
     >
       <ToastContainer /> {/* Adicione o ToastContainer aqui */}
       <Routes>

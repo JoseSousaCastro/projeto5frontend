@@ -13,6 +13,7 @@ function Header() {
   const [unreadCounts, setUnreadCounts] = useState({});
   const [notificationCounts, setNotificationCounts] = useState({});
   const [selectedOption, setSelectedOption] = useState("default");
+  const [selectedLanguage, setSelectedLanguage] = useState("en");
 
   const [websocket, setWebsocket] = useState(null);
 
@@ -208,6 +209,7 @@ function Header() {
     }
   };
 
+
   return (
     <div className="header" id="header-outer-container">
       <div className="page-wrap" id="header-page-wrap">
@@ -218,6 +220,18 @@ function Header() {
             height="50"
             alt="Agile-Scrum-logo"
           />
+        </div>
+        <div className="language-selector">
+          {/* Botão para selecionar o idioma EN */}
+          <button
+            className={`language-button ${selectedOption === "en" ? "selected" : ""}`} >
+
+          </button>
+          {/* Botão para selecionar o idioma PT */}
+          <button
+            className={`language-button ${selectedOption === "pt" ? "selected" : ""}`}
+          >
+          </button>
         </div>
         <div className="nav-left-container">
           <nav className="nav-menu-left">
