@@ -4,6 +4,7 @@ import { taskStore } from "../../stores/TaskStore";
 import { userStore } from "../../stores/UserStore";
 import { categoryStore } from "../../stores/CategoryStore";
 import "../EditTask/EditTask.css";
+import { toast } from "react-toastify";
 
 function EditTask() {
   const navigate = useNavigate();
@@ -118,6 +119,7 @@ function EditTask() {
 
       if (response.ok) {
         await fetchTasks();
+        toast.success("Task updated successfully!");
         navigate("/home", { replace: true });
       } else {
         const responseBody = await response.text();

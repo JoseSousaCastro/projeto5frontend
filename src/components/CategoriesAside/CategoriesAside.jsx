@@ -5,6 +5,7 @@ import { userStore } from "../../stores/UserStore";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function CategoriesAside() {
   const { categories, fetchCategories } = categoryStore();
@@ -43,6 +44,8 @@ function CategoriesAside() {
         setSelectedEditCategory("");
         setEditCategoryName("");
         setSelectedDeleteCategory("");
+        toast.info("Category created");
+
         navigate("/tasks-categories", { replace: true });
       } else {
         const responseBody = await response.text();
@@ -96,6 +99,8 @@ function CategoriesAside() {
         setSelectedEditCategory("");
         setEditCategoryName("");
         setSelectedDeleteCategory("");
+        toast.info("Category has been changed");
+
         navigate("/tasks-categories", { replace: true });
       } else {
         const responseBody = await response.text();
@@ -132,6 +137,8 @@ function CategoriesAside() {
         setSelectedEditCategory("");
         setEditCategoryName("");
         setSelectedDeleteCategory("");
+        toast.info("Category has been deleted");
+
         navigate("/tasks-categories", { replace: true });
       } else {
         const responseBody = await response.text();

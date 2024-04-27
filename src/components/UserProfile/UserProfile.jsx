@@ -6,6 +6,7 @@ import "react-chat-elements/dist/main.css";
 import { MessageList } from "react-chat-elements";
 import { Input } from "react-chat-elements";
 import { Button } from "react-chat-elements";
+import { toast } from "react-toastify";
 
 function UserProfile() {
   const [inputs, setInputs] = useState({});
@@ -74,6 +75,8 @@ function UserProfile() {
 
       if (response.ok) {
         await fetchUsers();
+        toast.info("Profile updated");
+
         navigate("/users-list", { replace: true });
       } else {
         const responseBody = await response.text();

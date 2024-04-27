@@ -4,6 +4,7 @@ import "../TasksAside/TasksAside.css";
 import { userStore } from "../../stores/UserStore";
 import { categoryStore } from "../../stores/CategoryStore";
 import { taskStore } from "../../stores/TaskStore";
+import { toast } from "react-toastify";
 
 function TasksAside() {
   const { users, typeOfUser } = userStore(); // Obtém a lista de usuários
@@ -43,6 +44,7 @@ function TasksAside() {
     if (selectedUser) {
       await deleteAllUserTasks(selectedUser);
       await fetchTasks();
+      toast.success("All tasks from ${selectedUser} deleted successfully!");
       navigate("/tasks-deleted", { replace: true });
     }
   };

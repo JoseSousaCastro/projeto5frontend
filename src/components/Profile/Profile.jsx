@@ -4,6 +4,7 @@ import { userStore } from "../../stores/UserStore";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { statsStore } from "../../stores/StatsStore";
+import { toast } from "react-toastify";
 
 function Profile() {
   const [inputs] = useState("");
@@ -66,6 +67,7 @@ function Profile() {
         await updateLastName(user.lastName);
         await updatePhone(user.phone);
         await updatePhotoURL(user.photoURL);
+        toast.success("Profile updated successfully!");
 
         navigate("/home", { replace: true });
       } else {

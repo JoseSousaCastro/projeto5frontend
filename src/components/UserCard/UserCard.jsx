@@ -3,6 +3,7 @@ import "../UserCard/UserCard.css";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { userStore } from "../../stores/UserStore";
+import { toast } from "react-toastify";
 
 export default function UserCard({ user }) {
   const { fetchUsers } = userStore();
@@ -29,6 +30,7 @@ export default function UserCard({ user }) {
 
       if (response.ok) {
         await fetchUsers();
+        toast.warn("User deleted")
         navigate("/users-list", { replace: true });
       } else {
         const responseBody = await response.text();
@@ -54,6 +56,7 @@ export default function UserCard({ user }) {
 
       if (response.ok) {
         await fetchUsers();
+        toast.warn("User deleted permanently")
         navigate("/deleted-users", { replace: true });
       } else {
         const responseBody = await response.text();
@@ -79,6 +82,7 @@ export default function UserCard({ user }) {
 
       if (response.ok) {
         await fetchUsers();
+        toast.info("User restored")
         navigate("/users-list", { replace: true });
       } else {
         const responseBody = await response.text();

@@ -6,6 +6,7 @@ import { userStore } from "../../stores/UserStore";
 import { taskStore } from "../../stores/TaskStore";
 import deleteIcon from "/AoR/42.Projeto5/projeto5frontend/projeto5frontend/src/dark-cross.png";
 import restoreIcon from "/AoR/42.Projeto5/projeto5frontend/projeto5frontend/src/reload.png";
+import { toast } from "react-toastify";
 
 export default function TaskCard({ task }) {
   const navigate = useNavigate();
@@ -62,6 +63,7 @@ export default function TaskCard({ task }) {
 
       if (response.ok) {
         await fetchTasks();
+        toast.warn("Task deleted");
         navigate("/tasks-deleted", { replace: true });
       } else {
         const responseBody = await response.text();
@@ -91,6 +93,7 @@ export default function TaskCard({ task }) {
 
       if (response.ok) {
         await fetchTasks();
+        toast.warn("Task deleted permanently");
         navigate("/home", { replace: true });
       } else {
         const responseBody = await response.text();
@@ -120,6 +123,7 @@ export default function TaskCard({ task }) {
 
       if (response.ok) {
         await fetchTasks();
+        toast.info("Task restored");
         navigate("/home", { replace: true });
       } else {
         const responseBody = await response.text();

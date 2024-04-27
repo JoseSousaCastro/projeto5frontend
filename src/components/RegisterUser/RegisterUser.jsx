@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../RegisterUser/RegisterUser.css";
 import { userStore } from "../../stores/UserStore";
+import { toast } from "react-toastify";
 
 function RegisterUser() {
   const [inputs, setInputs] = useState({});
@@ -44,6 +45,7 @@ function RegisterUser() {
         await fetchUsers();
         // Registro bem-sucedido
         console.log("Registo feito com sucesso!");
+        toast.success("User registered successfully!");
         navigate("/users-list", { replace: true });
       } else {
         const responseBody = await response.text();

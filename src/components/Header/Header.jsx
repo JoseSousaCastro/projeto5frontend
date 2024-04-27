@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "../Header/Header.css";
 import { userStore } from "../../stores/UserStore";
 import { websocketStore } from "../../stores/WebsocketStore";
+import { toast } from "react-toastify";
 
 function Header() {
   const navigate = useNavigate();
@@ -144,6 +145,7 @@ function Header() {
           websocket.close();
         }
         console.log("WebSocket closed");
+        toast.success("Logout with success"); // Adicionar o toast de sucesso
 
         navigate("/", { replace: true });
       }

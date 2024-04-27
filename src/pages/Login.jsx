@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { userStore } from "../stores/UserStore.jsx";
 import { categoryStore } from "../stores/CategoryStore.jsx";
 import { taskStore } from "../stores/TaskStore.jsx";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 import "../pages/Login.css";
 
 function Login() {
@@ -68,6 +70,7 @@ function Login() {
       );
 
       if (response.ok) {
+        toast.success("Login successful");
         const user = await response.json();
         updateUserStore.updateUsername(user.username);
         updateUserStore.updateToken(user.token);
@@ -83,10 +86,10 @@ function Login() {
         updateUserStore.updateExpirationTime(user.expirationTime);
 
         if (user.confirm === false && user.expirationTime !== 0) {
-          alert("Check your email to confirm your account");
+          toast.warn("Check your email to confirm your account");
           return;
         } else if (user.confirm === false && user.expirationTime === 0) {
-          alert("Your account is blocked. Please contact the administrator");
+          toast.error("Your account is blocked. Please contact the administrator");
           return;
         }
 
@@ -136,10 +139,12 @@ function Login() {
         console.log("Usuários:", updateUserStore.users);
       } else {
         const responseBody = await response.json();
+        toast.error("Login failed");
         console.error("Erro no login:", response.statusText, responseBody);
         // Pode exibir uma mensagem de erro para o usuário
       }
     } catch (error) {
+      toast.error("Login failed");
       console.error("Erro no login:", error);
       // Pode exibir uma mensagem de erro para o usuário
     }

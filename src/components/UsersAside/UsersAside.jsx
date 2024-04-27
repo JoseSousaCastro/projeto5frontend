@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../UsersAside/UsersAside.css";
 import { userStore } from "../../stores/UserStore";
+import { toast } from "react-toastify";
 
 function UsersAside() {
   const { users, fetchUsers } = userStore();
@@ -110,6 +111,22 @@ function UsersAside() {
         await fetchUsers();
         setSelectedUser("");
         setUpdatedTypeOfUser("");
+
+        // Exibir toast informativo com base no tipo de usuário atualizado
+        switch (updatedTypeOfUser) {
+          case 100:
+            toast.info("User is now Developer");
+            break;
+          case 200:
+            toast.info("User is now Scrum Master");
+            break;
+          case 300:
+            toast.info("User is now Product Owner");
+            break;
+          default:
+            break;
+        }
+
         navigate("/users-list", { replace: true });
       } else {
         const responseBody = await response.text();

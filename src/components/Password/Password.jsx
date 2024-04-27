@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../Password/Password.css";
 import { userStore } from "../../stores/UserStore";
+import { toast } from "react-toastify";
 
 function Password() {
   const [inputs, setInputs] = useState({
@@ -21,7 +22,7 @@ function Password() {
     const { currentPassword, newPassword, newPasswordConfirm } = inputs;
 
     if (newPassword !== newPasswordConfirm) {
-      alert("Passwords do not match");
+      toast.warn("Passwords do not match");
       return;
     }
 
@@ -40,7 +41,7 @@ function Password() {
       );
 
       if (response.ok) {
-        alert("Password updated successfully");
+        toast.success("Password updated successfully");
       } else {
         const responseBody = await response.text();
         console.error(

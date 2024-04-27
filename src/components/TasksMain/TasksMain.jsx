@@ -4,6 +4,7 @@ import { taskStore } from "../../stores/TaskStore";
 import TaskCard from "../TaskCard/TaskCard";
 import { userStore } from "../../stores/UserStore";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function TasksMain() {
   const navigate = useNavigate();
@@ -21,7 +22,6 @@ function TasksMain() {
   const setTasksTodo = taskStore((state) => state.setTasksTodo);
   const setTasksDoing = taskStore((state) => state.setTasksDoing);
   const setTasksDone = taskStore((state) => state.setTasksDone);
-
 
   async function handleTaskDrop(e, newStateId) {
     e.preventDefault();
@@ -44,6 +44,22 @@ function TasksMain() {
         const responseBody = await response.text();
         console.log("Response:", responseBody);
         await fetchTasks();
+
+        // Adicione os toasts de acordo com o newStateId
+        switch (newStateId) {
+          case 100:
+            toast.info("Task moved to To Do");
+            break;
+          case 200:
+            toast.info("Task moved to Doing");
+            break;
+          case 300:
+            toast.info("Task moved to Done");
+            break;
+          default:
+            break;
+        }
+
         setTasksTodo(
           taskStore
             .getState()

@@ -19,33 +19,42 @@ import RecoverPass from "./pages/RecoverPass";
 import PasswordReset from "./pages/PasswordReset";
 import Dashboard from "./pages/Dashboard";
 import UsersListAll from "./pages/UsersListAll";
+import { IntlProvider } from "react-intl";
+//import messages from "./locales";
+import { ToastContainer } from "react-toastify"; // Importe o ToastContainer aqui
+import "react-toastify/dist/ReactToastify.css"; // Importe o estilo CSS do react-toastify
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/home/" element={<Home />} />
-      <Route path="/edit-profile" element={<EditProfile />} />
-      <Route path="/add-task" element={<TasksAddTask />} />
-      <Route path="/tasks-deleted" element={<TasksDeleted />} />
-      <Route path="/tasks-categories" element={<TasksCategories />} />
-      <Route path="/edit-task/:taskId" element={<TasksEditTask />} />
-      <Route path="/register-user" element={<RegisterUserPage />} />
-      <Route path="/deleted-users" element={<UsersDeleted />} />
-      <Route path="/user-profile/:username" element={<UsersEditUser />} />
-      <Route path="/users-list" element={<UsersList />} />
-      <Route path="/tasksbu/:username" element={<TasksByUser />} />
-      <Route path="/tasksbc/:category" element={<TasksByCategory />} />
-      <Route
-        path="/register-confirmation/:username"
-        element={<RegisterConfirmation />}
-      />
-      <Route path="/recover-password" element={<RecoverPass />} />
-      <Route path="/reset-password/:username" element={<PasswordReset />} />
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/users-list-all" element={<UsersListAll />} />
-    </Routes>
+    <IntlProvider
+      locale="en" //messages={messages.en}
+    >
+      <ToastContainer /> {/* Adicione o ToastContainer aqui */}
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/home/" element={<Home />} />
+        <Route path="/edit-profile" element={<EditProfile />} />
+        <Route path="/add-task" element={<TasksAddTask />} />
+        <Route path="/tasks-deleted" element={<TasksDeleted />} />
+        <Route path="/tasks-categories" element={<TasksCategories />} />
+        <Route path="/edit-task/:taskId" element={<TasksEditTask />} />
+        <Route path="/register-user" element={<RegisterUserPage />} />
+        <Route path="/deleted-users" element={<UsersDeleted />} />
+        <Route path="/user-profile/:username" element={<UsersEditUser />} />
+        <Route path="/users-list" element={<UsersList />} />
+        <Route path="/tasksbu/:username" element={<TasksByUser />} />
+        <Route path="/tasksbc/:category" element={<TasksByCategory />} />
+        <Route
+          path="/register-confirmation/:username"
+          element={<RegisterConfirmation />}
+        />
+        <Route path="/recover-password" element={<RecoverPass />} />
+        <Route path="/reset-password/:username" element={<PasswordReset />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/users-list-all" element={<UsersListAll />} />
+      </Routes>
+    </IntlProvider>
   );
 }
 
