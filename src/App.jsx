@@ -19,16 +19,13 @@ import RecoverPass from "./pages/RecoverPass";
 import PasswordReset from "./pages/PasswordReset";
 import Dashboard from "./pages/Dashboard";
 import UsersListAll from "./pages/UsersListAll";
-import { IntlProvider } from "react-intl";
 import { ToastContainer } from "react-toastify"; // Importe o ToastContainer aqui
 import "react-toastify/dist/ReactToastify.css"; // Importe o estilo CSS do react-toastify
 
 function App() {
   return (
-    <IntlProvider
-      //locale="en" locales={locales.en}
-    >
-      <ToastContainer /> {/* Adicione o ToastContainer aqui */}
+    <>
+      <ToastContainer />
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
@@ -53,7 +50,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/users-list-all" element={<UsersListAll />} />
       </Routes>
-    </IntlProvider>
+    </>
   );
 }
 

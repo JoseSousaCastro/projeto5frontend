@@ -164,6 +164,22 @@
   color: var(--green3);
 }
 
+.language-button {
+  background-color: transparent;
+  color: var(--light-grey);
+  border: none;
+  font-size: 17px;
+  cursor: pointer;
+  align-items: center;
+  gap: 5px;
+}
+
+.language-button.selected {
+  font-weight: bold;
+  border: 2px solid var(--green1);
+  color: var(--green1);
+}
+
 
 .dropdown-notifications-otherValues {
   white-space: nowrap; /* Evita que o texto das opções seja quebrado */

@@ -5,8 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { categoryStore } from "../../stores/CategoryStore";
 import { toast } from "react-toastify";
 import "../AddTask/AddTask.css";
-import languages from "../../locales";
-import { IntlProvider, FormattedMessage } from "react-intl";
 
 function AddTask() {
   const navigate = useNavigate();

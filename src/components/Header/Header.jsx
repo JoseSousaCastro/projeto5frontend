@@ -209,6 +209,9 @@ function Header() {
     }
   };
 
+  const handleLanguageClick = (lang) => {
+    setSelectedLanguage(lang);
+  };
 
   return (
     <div className="header" id="header-outer-container">
@@ -222,15 +225,21 @@ function Header() {
           />
         </div>
         <div className="language-selector">
-          {/* Botão para selecionar o idioma EN */}
           <button
-            className={`language-button ${selectedOption === "en" ? "selected" : ""}`} >
-
-          </button>
-          {/* Botão para selecionar o idioma PT */}
-          <button
-            className={`language-button ${selectedOption === "pt" ? "selected" : ""}`}
+            className={`language-button ${
+              selectedLanguage === "en" ? "selected" : ""
+            }`}
+            onClick={() => handleLanguageClick("en")}
           >
+            EN
+          </button>
+          <button
+            className={`language-button ${
+              selectedLanguage === "pt" ? "selected" : ""
+            }`}
+            onClick={() => handleLanguageClick("pt")}
+          >
+            PT
           </button>
         </div>
         <div className="nav-left-container">

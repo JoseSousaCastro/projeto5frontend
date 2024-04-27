@@ -34,8 +34,6 @@ export const userStore = create(
       updateExpirationTime: (expirationTime) => set({ expirationTime }),
       updateConfirmed: (confirmed) => set({ confirmed }),
       
-      locale: "en",
-      updateLocale: (locale) => set({ locale }),
 
       fetchUsers: async () => {
         try {
