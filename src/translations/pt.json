@@ -164,5 +164,10 @@
     "loadingText": "A carregar...",
     "developerTitle": "Programador",
     "scrumMasterTitle": "Scrum Master",
-    "productOwnerTitle": "Product Owner"  
+    "productOwnerTitle": "Product Owner",
+    "checkEmailToConfirmAccount": "Verifique o seu e-mail para confirmar a sua conta",
+    "accountBlockedContactAdmin": "A sua conta está bloqueada. Por favor, entre em contacto com o administrador de sistemas",
+    "failedFetchCategories": "Falha ao carregar categorias",
+    "errorFetchingCategories": "Erro ao carregar categorias",
+    "errorFetchingTasks": "Erro ao carregar tarefas"  
 }

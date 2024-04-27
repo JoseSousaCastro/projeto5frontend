@@ -164,6 +164,10 @@
     "loadingText": "Loading...",
     "developerTitle": "Developer",
     "scrumMasterTitle": "Scrum Master",
-    "productOwnerTitle": "Product Owner"
-          
+    "productOwnerTitle": "Product Owner",
+    "checkEmailToConfirmAccount": "Check your email to confirm your account",
+    "accountBlockedContactAdmin": "Your account is blocked. Please contact the administrator",
+    "failedFetchCategories": "Failed to fetch categories",
+    "errorFetchingCategories": "Error fetching categories",
+    "errorFetchingTasks": "Error fetching tasks"          
 }

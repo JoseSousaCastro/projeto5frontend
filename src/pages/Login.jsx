@@ -15,8 +15,7 @@ function Login() {
   const updateCategoryStore = categoryStore((state) => state);
   const updateTaskStore = taskStore((state) => state);
   const fetchUsers = userStore((state) => state.fetchUsers);
-
-  const { t } = useTranslation();
+  const { t } = useTranslation(); // Hook de tradução
 
   const handleChange = (event) => {
     const name = event.target.name;
@@ -33,13 +32,13 @@ function Login() {
           await updateTaskStore.fetchTasks();
           setTasksFetched(true);
         } catch (error) {
-          console.error("Error fetching tasks:", error);
+          console.error(t("errorFetchingTasks"), error); // Tradução do erro
         }
       }
     };
 
     fetchTasksIfNeeded();
-  }, [tasksFetched, updateTaskStore]);
+  }, [tasksFetched, updateTaskStore, t]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -73,15 +72,80 @@ function Login() {
       if (response.ok) {
         toast.success(t("loginSuccess")); // Tradução da mensagem de sucesso
         const user = await response.json();
-        // Restante do código...
+        updateUserStore.updateUsername(user.username);
+        updateUserStore.updateToken(user.token);
+        updateUserStore.updatePhotoURL(user.photoURL);
+        updateUserStore.updateEmail(user.email);
+        updateUserStore.updateFirstName(user.firstName);
+        updateUserStore.updateLastName(user.lastName);
+        updateUserStore.updatePhone(user.phone);
+        updateUserStore.updatePassword(user.password);
+        updateUserStore.updateTypeOfUser(user.typeOfUser);
+        updateUserStore.updateUserTasks(user.userTasks);
+        updateUserStore.updateConfirmed(user.confirmed);
+        updateUserStore.updateExpirationTime(user.expirationTime);
+
+        if (user.confirm === false && user.expirationTime !== 0) {
+          toast.warn(t("checkEmailToConfirmAccount")); // Tradução da mensagem de aviso
+          return;
+        } else if (user.confirm === false && user.expirationTime === 0) {
+          toast.error(t("accountBlockedContactAdmin")); // Tradução da mensagem de erro
+          return;
+        }
+
+        // Fetch das categorias e armazenamento na store de categorias
+        try {
+          const responseCategories = await fetch(
+            "http://localhost:8080/project5/rest/users/categories",
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                token: user.token, // Adicione o token de autenticação
+              },
+            }
+          );
+
+          if (responseCategories.ok) {
+            const categories = await responseCategories.json();
+            console.log("Categorias:", categories);
+            updateCategoryStore.setCategories(
+              categories.map((category) => category.name)
+            );
+          } else {
+            console.error(
+              t("failedFetchCategories"), // Tradução da mensagem de erro
+              responseCategories.statusText
+            );
+          }
+        } catch (error) {
+          console.error(t("errorFetchingCategories"), error); // Tradução do erro
+        }
+
+        // Fetch de todas as tarefas e armazenamento na store de tarefas
+        try {
+          await updateTaskStore.fetchTasks(); // Chama a função fetchTasks da store de tarefas
+        } catch (error) {
+          console.error(t("errorFetchingTasks"), error); // Tradução do erro
+        }
+        console.log("Tasks:", updateTaskStore.tasks);
+
+        console.log("Login feito com sucesso!");
+
+        await fetchUsers();
+        navigate("/home", { replace: true });
+
+        console.log("Usuários:", updateUserStore.users);
       } else {
         const responseBody = await response.json();
         toast.error(t("loginFailed")); // Tradução da mensagem de erro
         console.error("Erro no login:", response.statusText, responseBody);
+        // Pode exibir uma mensagem de erro para o usuário
       }
     } catch (error) {
       toast.error(t("loginFailed")); // Tradução da mensagem de erro
       console.error("Erro no login:", error);
+      // Pode exibir uma mensagem de erro para o usuário
     }
   };
 
