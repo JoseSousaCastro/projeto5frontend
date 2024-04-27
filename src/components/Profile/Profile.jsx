@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 
 function Profile() {
+  const { t } = useTranslation(); // Hook para tradução
   const [inputs] = useState("");
   const navigate = useNavigate();
 
@@ -68,7 +69,7 @@ function Profile() {
         await updateLastName(user.lastName);
         await updatePhone(user.phone);
         await updatePhotoURL(user.photoURL);
-        toast.success("Profile updated successfully!");
+        toast.success(t("profileUpdateSuccess"));
 
         navigate("/home", { replace: true });
       } else {
@@ -109,7 +110,7 @@ function Profile() {
                 className="labels-edit-profile"
                 id="email-editProfile-label"
               >
-                Email
+                {t("emailLabel")}
               </label>
               <input
                 type="email"
@@ -123,7 +124,7 @@ function Profile() {
                 className="labels-edit-profile"
                 id="firstName-editProfile-label"
               >
-                First Name
+                {t("firstNameLabel")}
               </label>
               <input
                 type="text"
@@ -138,7 +139,7 @@ function Profile() {
                 className="labels-edit-profile"
                 id="lastName-editProfile-label"
               >
-                Last Name
+                {t("lastNameLabel")}
               </label>
               <input
                 type="text"
@@ -153,7 +154,7 @@ function Profile() {
                 className="labels-edit-profile"
                 id="phone-editProfile-label"
               >
-                Phone
+                {t("phoneLabel")}
               </label>
               <input
                 type="text"
@@ -168,7 +169,7 @@ function Profile() {
                 className="labels-edit-profile"
                 id="photoURL-editProfile-label"
               >
-                Photo URL
+                {t("photoURLLabel")}
               </label>
               <input
                 type="url"
@@ -183,27 +184,35 @@ function Profile() {
           </div>
           <div className="editProfile-Buttons">
             <button type="submit" id="profile-save-button">
-              Save
+              {t("save")}
             </button>
             <button
               type="reset"
               id="profile-cancel-button"
               onClick={handleCancel}
             >
-              Cancel
+              {t("cancel")}
             </button>
           </div>
         </form>
       </div>
       <div className="stats-own-profile-div">
-        <h1 className="stats-own-profile-title">Stats</h1>
-        <label className="stats-own-profile-labels">Total tasks</label>
+        <h1 className="stats-own-profile-title">{t("statsTitle")}</h1>
+        <label className="stats-own-profile-labels">
+          {t("totalTasksLabel")}
+        </label>
         <p className="stats-own-profile-infos">{totalUserTasks}</p>
-        <label className="stats-own-profile-labels">To do tasks</label>
+        <label className="stats-own-profile-labels">
+          {t("toDoTasksLabel")}
+        </label>
         <p className="stats-own-profile-infos">{totalUserToDoTasks}</p>
-        <label className="stats-own-profile-labels">Doing tasks</label>
+        <label className="stats-own-profile-labels">
+          {t("doingTasksLabel")}
+        </label>
         <p className="stats-own-profile-infos">{totalUserDoingTasks}</p>
-        <label className="stats-own-profile-labels">Done tasks</label>
+        <label className="stats-own-profile-labels">
+          {t("doneTasksLabel")}
+        </label>
         <p className="stats-own-profile-infos">{totalUserDoneTasks}</p>
       </div>
     </div>

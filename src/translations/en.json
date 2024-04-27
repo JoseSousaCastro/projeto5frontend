@@ -104,7 +104,40 @@
     "changePassword": "Change Password",
     "currentPassword": "Current password",
     "newPassword": "New password",
-    "confirmNewPassword": "Confirm new password"
+    "confirmNewPassword": "Confirm new password",
+    "emailLabel": "Email",
+    "firstNameLabel": "First Name",
+    "lastNameLabel": "Last Name",
+    "phoneLabel": "Phone",
+    "photoURLLabel": "Photo URL",
+    "profileUpdateSuccess": "Profile updated successfully",
+    "statsTitle": "Stats",
+    "totalTasksLabel": "Total tasks",
+    "toDoTasksLabel": "To do tasks",
+    "doingTasksLabel": "Doing tasks",
+    "doneTasksLabel": "Done tasks",
+    "userRegistered": "User registered successfully!",
+    "photoURLPlaceholder": "Photo URL",
+    "firstNamePlaceholder": "First Name",
+    "lastNamePlaceholder": "Last Name",
+    "phonePlaceholder": "Phone",
+    "addNewUser": "Add new user",
+    "taskDeleted": "Task deleted",
+    "taskDeletedPermanently": "Task deleted permanently",
+    "taskRestored": "Task restored",
+    "addTask": "Add Task",
+    "deletedTasks": "Deleted Tasks",
+    "filterByUser": "Filter by user",
+    "chooseUser": "Choose user",
+    "filter": "Filter",
+    "deleteAllTasks": "Delete All Tasks",
+    "filterByCategory": "Filter by category",
+    "chooseCategory": "Choose category",
+    "allTasksDeletedSuccessfully": "All tasks from {{username}} deleted successfully!"
+  
+  
+  
+  
   
   
   

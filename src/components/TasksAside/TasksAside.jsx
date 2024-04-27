@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 
 function TasksAside() {
+  const { t } = useTranslation();
   const { users, typeOfUser } = userStore(); // Obtém a lista de usuários
   const { categories } = categoryStore(); // Obtém a lista de categorias
   const navigate = useNavigate();
@@ -21,9 +22,7 @@ function TasksAside() {
   const [selectedUser, setSelectedUser] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
 
-
   const handleFilterByUser = async () => {
-    console.log("selectedUser", selectedUser);
     if (selectedUser) {
       await fetchTasksByUser(selectedUser);
       navigate(`/tasksbu/${selectedUser}`, { replace: true });
@@ -32,20 +31,17 @@ function TasksAside() {
 
   const handleFilterByCategory = async (e) => {
     e.preventDefault(); // Impede o comportamento padrão do formulário
-    console.log("selectedCategory", selectedCategory);
     if (selectedCategory) {
       await fetchTasksByCategory(selectedCategory);
-      console.log("selectedCategory2", selectedCategory);
       navigate(`/tasksbc/${selectedCategory}`, { replace: true });
     }
   };
 
   const handleDeleteAllUserTasks = async () => {
-    console.log("selectedUser", selectedUser);
     if (selectedUser) {
       await deleteAllUserTasks(selectedUser);
       await fetchTasks();
-      toast.success("All tasks from ${selectedUser} deleted successfully!");
+      toast.success(t("allTasksDeletedSuccessfully", { username: selectedUser }));
       navigate("/tasks-deleted", { replace: true });
     }
   };
@@ -56,26 +52,26 @@ function TasksAside() {
         <div className="buttons-top">
           {/* Botão para adicionar tarefa que leva à página Add Task */}
           <Link to="/add-task">
-            <button className="aside-button">Add Task</button>
+            <button className="aside-button">{t("addTask")}</button>
           </Link>
           {typeOfUser === 300 && (
             <Link to="/tasks-categories">
               <button className="aside-button" id="categories-button">
-                Categories
+                {t("categories")}
               </button>
             </Link>
           )}
           {(typeOfUser === 300 || typeOfUser === 200) && (
             <Link to="/tasks-deleted">
               <button className="aside-button" id="deleted-tasks-button">
-                Deleted Tasks
+                {t("deletedTasks")}
               </button>
             </Link>
           )}
         </div>
         {/* Dropdown menu para filtrar tarefas por usuário */}
         {(typeOfUser === 300 || typeOfUser === 200) && (
-          <label className="dropdown-label">Filter by user</label>
+          <label className="dropdown-label">{t("filterByUser")}</label>
         )}
         {(typeOfUser === 300 || typeOfUser === 200) && (
           <div className="dropdown">
@@ -83,7 +79,7 @@ function TasksAside() {
               className="dropdown-select"
               onChange={(e) => setSelectedUser(e.target.value)}
             >
-              <option value="">Choose user</option>
+              <option value="">{t("chooseUser")}</option>
               {users &&
                 users.map((user) => (
                   <option key={user.username} value={user.username}>
@@ -98,7 +94,7 @@ function TasksAside() {
                 id="filter-button-byUser"
                 onClick={handleFilterByUser}
               >
-                Filter
+                {t("filter")}
               </button>
             </div>
             {/* Botão para deletar todas as tarefas do usuário selecionado */}
@@ -108,7 +104,7 @@ function TasksAside() {
                   className="delete-all-user-tasks"
                   onClick={handleDeleteAllUserTasks}
                 >
-                  Delete All Tasks
+                  {t("deleteAllTasks")}
                 </button>
               </div>
             )}
@@ -116,7 +112,7 @@ function TasksAside() {
         )}
         {/* Dropdown menu para filtrar tarefas por categoria */}
         {(typeOfUser === 300 || typeOfUser === 200) && (
-          <label className="dropdown-label">Filter by category</label>
+          <label className="dropdown-label">{t("filterByCategory")}</label>
         )}
         {(typeOfUser === 300 || typeOfUser === 200) && (
           <div className="dropdown">
@@ -124,7 +120,7 @@ function TasksAside() {
               className="dropdown-select"
               onChange={(e) => setSelectedCategory(e.target.value)}
             >
-              <option value="">Choose category</option>
+              <option value="">{t("chooseCategory")}</option>
               {categories &&
                 categories.map((category) => (
                   <option key={category} value={category}>
@@ -139,7 +135,7 @@ function TasksAside() {
                 id="filter-button-byCat"
                 onClick={handleFilterByCategory}
               >
-                Filter
+                {t("filter")}
               </button>
             </div>
           </div>

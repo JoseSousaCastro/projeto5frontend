@@ -16,17 +16,17 @@ export default function TaskCard({ task }) {
   const { id, title, description, priority, erased } = task;
   const token = userStore((state) => state.token);
   const typeOfUser = userStore((state) => state.typeOfUser);
-
+  const { t } = useTranslation(); // Adicionando hook useTranslation
 
   // Traduzindo a prioridade de int para string
   const translatePriority = (priorityInt) => {
     switch (priorityInt) {
       case 100:
-        return "Low";
+        return t("lowPriority");
       case 200:
-        return "Medium";
+        return t("mediumPriority");
       case 300:
-        return "High";
+        return t("highPriority");
       default:
         return "";
     }
@@ -36,11 +36,11 @@ export default function TaskCard({ task }) {
 
   const getPriorityBorderClass = () => {
     switch (priorityString) {
-      case "High":
+      case t("highPriority"):
         return "border-red";
-      case "Medium":
+      case t("mediumPriority"):
         return "border-yellow";
-      case "Low":
+      case t("lowPriority"):
         return "border-green";
       default:
         return "";
@@ -64,7 +64,7 @@ export default function TaskCard({ task }) {
 
       if (response.ok) {
         await fetchTasks();
-        toast.warn("Task deleted");
+        toast.warn(t("taskDeleted"));
         navigate("/tasks-deleted", { replace: true });
       } else {
         const responseBody = await response.text();
@@ -94,7 +94,7 @@ export default function TaskCard({ task }) {
 
       if (response.ok) {
         await fetchTasks();
-        toast.warn("Task deleted permanently");
+        toast.warn(t("taskDeletedPermanently"));
         navigate("/home", { replace: true });
       } else {
         const responseBody = await response.text();
@@ -124,7 +124,7 @@ export default function TaskCard({ task }) {
 
       if (response.ok) {
         await fetchTasks();
-        toast.info("Task restored");
+        toast.info(t("taskRestored"));
         navigate("/home", { replace: true });
       } else {
         const responseBody = await response.text();
@@ -151,7 +151,7 @@ export default function TaskCard({ task }) {
       {erased ? (
         <div className="task-title-solo task-title-solo-erased">{title}</div>
       ) : (
-        <Link to={`/edit-task/${id}`} className="task-title-solo" >
+        <Link to={`/edit-task/${id}`} className="task-title-solo">
           {title}
         </Link>
       )}

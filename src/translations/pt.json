@@ -104,7 +104,40 @@
     "changePassword": "Alterar Senha",
     "currentPassword": "Senha atual",
     "newPassword": "Nova senha",
-    "confirmNewPassword": "Confirmar nova senha"  
+    "confirmNewPassword": "Confirmar nova senha",
+    "emailLabel": "Email",
+    "firstNameLabel": "Nome",
+    "lastNameLabel": "Sobrenome",
+    "phoneLabel": "Telefone",
+    "photoURLLabel": "URL da Foto",
+    "profileUpdateSuccess": "Perfil atualizado com sucesso",
+    "statsTitle": "Estatísticas",
+    "totalTasksLabel": "Total de tarefas",
+    "toDoTasksLabel": "Tarefas a fazer",
+    "doingTasksLabel": "Tarefas em execução",
+    "doneTasksLabel": "Tarefas concluídas",
+    "userRegistered": "Utilizador registado com sucesso!",
+    "photoURLPlaceholder": "URL da Foto",
+    "firstNamePlaceholder": "Primeiro Nome",
+    "lastNamePlaceholder": "Apelido",
+    "phonePlaceholder": "Telefone",
+    "addNewUser": "Adicionar novo utilizador",
+    "taskDeleted": "Tarefa excluída",
+    "taskDeletedPermanently": "Tarefa excluída permanentemente",
+    "taskRestored": "Tarefa restaurada",
+    "addTask": "Adicionar Tarefa",
+    "deletedTasks": "Tarefas Excluídas",
+    "filterByUser": "Filtrar por usuário",
+    "chooseUser": "Escolher usuário",
+    "filter": "Filtrar",
+    "deleteAllTasks": "Excluir Todas as Tarefas",
+    "filterByCategory": "Filtrar por categoria",
+    "chooseCategory": "Escolher categoria",
+    "allTasksDeletedSuccessfully": "Todas as tarefas de {{username}} excluídas com sucesso!"
+  
+  
+  
+    
   
   
   

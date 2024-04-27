@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 
 function RegisterUser() {
+  const { t } = useTranslation();
   const [inputs, setInputs] = useState({});
   const navigate = useNavigate();
   const fetchUsers = userStore((state) => state.fetchUsers);
@@ -46,7 +47,7 @@ function RegisterUser() {
         await fetchUsers();
         // Registro bem-sucedido
         console.log("Registo feito com sucesso!");
-        toast.success("User registered successfully!");
+        toast.success(t("userRegistered"));
         navigate("/users-list", { replace: true });
       } else {
         const responseBody = await response.text();
@@ -74,7 +75,7 @@ function RegisterUser() {
                   className="inputRegister-fields"
                   id="username-register"
                   name="username"
-                  placeholder="Username"
+                  placeholder={t("usernamePlaceholder")}
                   onChange={handleChange}
                   required
                 />
@@ -83,7 +84,7 @@ function RegisterUser() {
                   className="inputRegister-fields"
                   id="email-register"
                   name="email"
-                  placeholder="Email"
+                  placeholder={t("emailPlaceholder")}
                   onChange={handleChange}
                   required
                 />
@@ -92,7 +93,7 @@ function RegisterUser() {
                   className="inputRegister-fields"
                   id="photoURL-register"
                   name="photoURL"
-                  placeholder="Photo URL"
+                  placeholder={t("photoURLPlaceholder")}
                   onChange={handleChange}
                   required
                 />
@@ -103,7 +104,7 @@ function RegisterUser() {
                   className="inputRegister-fields"
                   id="firstName-register"
                   name="firstName"
-                  placeholder="First Name"
+                  placeholder={t("firstNamePlaceholder")}
                   onChange={handleChange}
                   required
                 />
@@ -112,7 +113,7 @@ function RegisterUser() {
                   className="inputRegister-fields"
                   id="lastName-register"
                   name="lastName"
-                  placeholder="Last Name"
+                  placeholder={t("lastNamePlaceholder")}
                   onChange={handleChange}
                   required
                 />
@@ -121,14 +122,14 @@ function RegisterUser() {
                   className="inputRegister-fields"
                   id="phone-register"
                   name="phone"
-                  placeholder="Phone"
+                  placeholder={t("phonePlaceholder")}
                   onChange={handleChange}
                   required
                 />
               </div>
               <div className="submitButton">
                 <button type="submit" id="registerButton-register">
-                  Add new user
+                  {t("addNewUser")}
                 </button>
               </div>
             </form>
