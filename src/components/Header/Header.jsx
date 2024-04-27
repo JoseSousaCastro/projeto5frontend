@@ -17,6 +17,7 @@ function Header() {
   const [selectedOption, setSelectedOption] = useState("default");
   const [selectedLanguage, setSelectedLanguage] = useState("en");
   const { language, setLanguage } = useLanguageStore();
+  const { t } = useTranslation();
 
   const [websocket, setWebsocket] = useState(null);
 
@@ -149,7 +150,7 @@ function Header() {
           websocket.close();
         }
         console.log("WebSocket closed");
-        toast.success("Logout with success"); // Adicionar o toast de sucesso
+        toast.success(t("logoutSuccess")); // Adicionar o toast de sucesso
 
         navigate("/", { replace: true });
       }
@@ -255,20 +256,20 @@ function Header() {
           <nav className="nav-menu-left">
             <ul id="menu">
               <li id="nav-tasks">
-                <Link to="/home">Tasks</Link>
+                <Link to="/home">{t("tasks")}</Link>
               </li>
               {typeOfUser === 300 ? (
                 <li id="nav-users">
-                  <Link to="/users-list">Users</Link>
+                  <Link to="/users-list">{t("users")}</Link>
                 </li>
               ) : (
                 <li id="nav-users">
-                  <Link to="/users-list-all">Users</Link>
+                  <Link to="/users-list-all">{t("users")}</Link>
                 </li>
               )}
               {typeOfUser === 300 ? (
                 <li id="nav-dashboard">
-                  <Link to="/dashboard">Dashboard</Link>
+                  <Link to="/dashboard">{t("dashboard")}</Link>
                 </li>
               ) : null}
             </ul>
@@ -284,7 +285,7 @@ function Header() {
               value="default"
               className="dropdown-notifications-defaultValue"
             >
-              {notificationsCount} Notifications
+              {notificationsCount} {t("notifications")}
             </option>
             {Object.keys(notificationCounts).map((senderUsername) => (
               <option
@@ -296,7 +297,7 @@ function Header() {
                 )}
               >
                 {unreadCounts[senderUsername] || 0} /{" "}
-                {notificationCounts[senderUsername]} unread messages from{" "}
+                {notificationCounts[senderUsername]} {t("unreadMessagesFrom")}{" "}
                 {senderUsername}
               </option>
             ))}
@@ -315,7 +316,7 @@ function Header() {
             onClick={processLogout}
           >
             <img src="/multimedia/logout.png" alt="logout-icon" />
-            Logout
+            {t("logout")}
           </button>
         </div>
       </div>

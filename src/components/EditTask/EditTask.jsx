@@ -17,6 +17,7 @@ function EditTask() {
   );
   const fetchTasks = taskStore((state) => state.fetchTasks);
   const typeOfUser = userStore((state) => state.typeOfUser);
+  const { t } = useTranslation();
 
   const [taskDetails, setTaskDetails] = useState({
     title: "",
@@ -120,7 +121,7 @@ function EditTask() {
 
       if (response.ok) {
         await fetchTasks();
-        toast.success("Task updated successfully!");
+        toast.success(t("taskUpdatedSuccess"));
         navigate("/home", { replace: true });
       } else {
         const responseBody = await response.text();
@@ -139,7 +140,7 @@ function EditTask() {
     <div className="edit-task">
       <div className="editTask-title">
         <div className="labels-editTask-top">
-          <label htmlFor="titulo-task">Title</label>
+          <label htmlFor="titulo-task">{t("title")}</label>
         </div>
         <div className="input-editTask-title">
           <input
@@ -153,7 +154,7 @@ function EditTask() {
       </div>
       <div className="editTask-description">
         <div className="labels-editTask-top">
-          <label htmlFor="descricao-task">Description</label>
+          <label htmlFor="descricao-task">{t("description")}</label>
         </div>
         <div className="input-editTask-description">
           <textarea
@@ -167,7 +168,7 @@ function EditTask() {
       <div className="task-state">
         <div className="field-titles">
           <h4 className="taskH4" id="state-h4">
-            Status
+            {t("status")}
           </h4>
         </div>
         <div className="state-buttons">
@@ -176,7 +177,7 @@ function EditTask() {
             id="todo-button"
             onClick={() => handlestateClick(100)}
           >
-            To Do
+            {t("todo")}
           </button>
           <button
             className={`state-button doing ${
@@ -185,21 +186,21 @@ function EditTask() {
             id="doing-button"
             onClick={() => handlestateClick(200)}
           >
-            Doing
+            {t("doing")}
           </button>
           <button
             className={`state-button done ${stateId === 300 ? "selected" : ""}`}
             id="done-button"
             onClick={() => handlestateClick(300)}
           >
-            Done
+            {t("done")}
           </button>
         </div>
       </div>
       <div className="task-priority">
         <div className="field-titles">
           <h4 className="taskH4" id="priority-h4">
-            Priority
+            {t("priority")}
           </h4>
         </div>
         <div className="priority-buttons">
@@ -210,7 +211,7 @@ function EditTask() {
             id="low-button"
             onClick={() => handlePriorityClick(100)}
           >
-            Low
+            {t("low")}
           </button>
           <button
             className={`priority-button medium ${
@@ -219,7 +220,7 @@ function EditTask() {
             id="medium-button"
             onClick={() => handlePriorityClick(200)}
           >
-            Medium
+            {t("medium")}
           </button>
           <button
             className={`priority-button high ${
@@ -228,19 +229,19 @@ function EditTask() {
             id="high-button"
             onClick={() => handlePriorityClick(300)}
           >
-            High
+            {t("high")}
           </button>
         </div>
       </div>
       <div className="dates">
         <div className="field-titles">
           <h4 className="taskH4" id="dates-h4">
-            Dates
+            {t("dates")}
           </h4>
         </div>
         <div className="label-dates-edit">
           <label htmlFor="startDate-editTask" className="label-start-date">
-            Start date:
+            {t("startDate")}:
           </label>
         </div>
         <div className="input-dates">
@@ -253,7 +254,7 @@ function EditTask() {
           />
         </div>
         <div className="label-dates-edit">
-          <label htmlFor="endDate-editTask">End date:</label>
+          <label htmlFor="endDate-editTask">{t("endDate")}</label>
         </div>
         <div className="input-dates">
           <input
@@ -267,7 +268,7 @@ function EditTask() {
       </div>
       <div className="category">
         <div className="field-titles">
-          <h4 className="taskH4">Category</h4>
+          <h4 className="taskH4">{t("category")}</h4>
         </div>
         <div className="div-dropdown">
           <select
@@ -278,7 +279,7 @@ function EditTask() {
             required
           >
             <option value="" disabled>
-              Choose an option
+              {t("chooseOption")}
             </option>
             {categories.map((category, index) => (
               <option key={index} value={category.name}>
@@ -294,14 +295,14 @@ function EditTask() {
           id="save-button"
           onClick={handleSaveTask}
         >
-          Edit Task
+          {t("editTask")}
         </button>
         <button
           className="cancel-button"
           id="cancel-button"
           onClick={() => navigate("/home")}
         >
-          Cancel
+          {t("cancel")}
         </button>
       </div>
     </div>

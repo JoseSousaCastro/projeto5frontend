@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 
 function Password() {
+  const { t } = useTranslation();
   const [inputs, setInputs] = useState({
     currentPassword: "",
     newPassword: "",
@@ -23,7 +24,7 @@ function Password() {
     const { currentPassword, newPassword, newPasswordConfirm } = inputs;
 
     if (newPassword !== newPasswordConfirm) {
-      toast.warn("Passwords do not match");
+      toast.warn(t("passwordsDoNotMatch"));
       return;
     }
 
@@ -42,7 +43,7 @@ function Password() {
       );
 
       if (response.ok) {
-        toast.success("Password updated successfully");
+        toast.success(t("passwordUpdateSuccess"));
       } else {
         const responseBody = await response.text();
         console.error(
@@ -50,11 +51,11 @@ function Password() {
           response.statusText,
           responseBody
         );
-        alert("Failed to update password");
+        alert(t("passwordUpdateFailed"));
       }
     } catch (error) {
       console.error("Error updating password:", error);
-      alert("Failed to update password");
+      alert(t("passwordUpdateFailed"));
     }
   };
 
@@ -71,10 +72,10 @@ function Password() {
       >
         <div className="password-fieldsContainer">
           <label className="labels-password" id="change-password-label">
-            Change Password
+            {t("changePassword")}
           </label>
           <label className="labels-password" id="currentPass-password-label">
-            Current password
+            {t("currentPassword")}
           </label>
           <input
             type="password"
@@ -85,7 +86,7 @@ function Password() {
             onChange={handleChange}
           />
           <label className="labels-password" id="newPass-password-label">
-            New password
+            {t("newPassword")}
           </label>
           <input
             type="password"
@@ -96,7 +97,7 @@ function Password() {
             onChange={handleChange}
           />
           <label className="labels-password" id="newPassConfirm-password-label">
-            Confirm new password
+            {t("confirmNewPassword")}
           </label>
           <input
             type="password"
@@ -109,14 +110,14 @@ function Password() {
         </div>
         <div className="password-Buttons">
           <button type="submit" id="password-save-button">
-            Save
+            {t("save")}
           </button>
           <button
             type="button"
             id="password-cancel-button"
             onClick={handleCancel}
           >
-            Cancel
+            {t("cancel")}
           </button>
         </div>
       </form>

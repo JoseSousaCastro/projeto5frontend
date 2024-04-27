@@ -9,25 +9,22 @@ import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 
 function CategoriesAside() {
+  const { t } = useTranslation();
   const { categories, fetchCategories } = categoryStore();
-  const [newCategoryName, setNewCategoryName] = useState(""); // Estado para o novo nome da categoria
-  const [editCategoryName, setEditCategoryName] = useState(""); // Estado para o novo nome da categoria
-  const [selectedEditCategory, setSelectedEditCategory] = useState(""); // Estado para a categoria selecionada no select de edição
-  const [selectedDeleteCategory, setSelectedDeleteCategory] = useState(""); // Estado para a categoria selecionada no select de exclusão
+  const [newCategoryName, setNewCategoryName] = useState("");
+  const [editCategoryName, setEditCategoryName] = useState("");
+  const [selectedEditCategory, setSelectedEditCategory] = useState("");
+  const [selectedDeleteCategory, setSelectedDeleteCategory] = useState("");
   const navigate = useNavigate();
 
   const token = userStore((state) => state.token);
-  console.log("Token:", token);
 
-  // Função para lidar com a adição de uma nova categoria
   const handleAddCategory = async () => {
-    // Verifica se já existe uma categoria com o mesmo nome
     if (categories.find((category) => category.name === newCategoryName)) {
-      console.error("Category with this name already exists");
+      toast.error(t("categoryExists"));
       return;
     }
     try {
-      console.log({ name: newCategoryName });
       const response = await fetch(
         "http://localhost:8080/project5/rest/users/newCategory/",
         {
@@ -45,39 +42,30 @@ function CategoriesAside() {
         setSelectedEditCategory("");
         setEditCategoryName("");
         setSelectedDeleteCategory("");
-        toast.info("Category created");
-
+        toast.info(t("categoryCreated"));
         navigate("/tasks-categories", { replace: true });
       } else {
         const responseBody = await response.text();
-        console.error(
-          "Error adding category:",
-          response.statusText,
-          responseBody
-        );
+        console.error("Error adding category:", response.statusText, responseBody);
       }
     } catch (error) {
       console.error("Error adding category:", error);
     }
   };
 
-  // Função para lidar com a edição de uma categoria
   const handleEditCategory = async () => {
-    // Verificar se uma categoria foi selecionada
     if (!selectedEditCategory) {
-      console.error("Please select a category to edit");
+      toast.error(t("selectCategoryEdit"));
       return;
     }
 
-    // Verificar se o novo nome da categoria foi fornecido
     if (!editCategoryName.trim()) {
-      console.error("Please provide a new name for the category");
+      toast.error(t("provideNewName"));
       return;
     }
 
-    // Verificar se o novo nome é diferente do nome atual da categoria
     if (editCategoryName.trim() === selectedEditCategory) {
-      console.error("New category name cannot be the same as the current name");
+      toast.error(t("sameCategoryName"));
       return;
     }
 
@@ -89,9 +77,9 @@ function CategoriesAside() {
           headers: {
             "Content-Type": "application/json",
             token: token,
-            newCategoryName: editCategoryName, // Enviar newCategoryName como um cabeçalho de requisição
+            newCategoryName: editCategoryName,
           },
-          body: JSON.stringify({}), // O corpo da requisição pode ser vazio neste caso
+          body: JSON.stringify({}),
         }
       );
       if (response.ok) {
@@ -100,26 +88,20 @@ function CategoriesAside() {
         setSelectedEditCategory("");
         setEditCategoryName("");
         setSelectedDeleteCategory("");
-        toast.info("Category has been changed");
-
+        toast.info(t("categoryChanged"));
         navigate("/tasks-categories", { replace: true });
       } else {
         const responseBody = await response.text();
-        console.error(
-          "Error editing category:",
-          response.statusText,
-          responseBody
-        );
+        console.error("Error editing category:", response.statusText, responseBody);
       }
     } catch (error) {
       console.error("Error editing category:", error);
     }
   };
 
-  // Função para lidar com a exclusão de uma categoria
   const handleDeleteCategory = async () => {
     if (!selectedDeleteCategory) {
-      console.error("Selected category not found");
+      toast.error(t("selectCategoryDelete"));
       return;
     }
     try {
@@ -138,16 +120,11 @@ function CategoriesAside() {
         setSelectedEditCategory("");
         setEditCategoryName("");
         setSelectedDeleteCategory("");
-        toast.info("Category has been deleted");
-
+        toast.info(t("categoryDeleted"));
         navigate("/tasks-categories", { replace: true });
       } else {
         const responseBody = await response.text();
-        console.error(
-          "Error deleting category:",
-          response.statusText,
-          responseBody
-        );
+        console.error("Error deleting category:", response.statusText, responseBody);
       }
     } catch (error) {
       console.error("Error deleting category:", error);
@@ -159,18 +136,18 @@ function CategoriesAside() {
       <div className="aside">
         <div className="div-back-home">
           <Link to="/home" className="link-to-home">
-            Back to tasks
+            {t("backToTasks")}
           </Link>
         </div>
         <div className="add-category">
           <label className="add-category-label" htmlFor="add-category-button">
-            Add Category
+            {t("addCategory")}
           </label>
           <div className="add-category-input-container">
             <input
               className="aside-input"
               type="text"
-              placeholder="New category"
+              placeholder={t("newCategory")}
               value={newCategoryName}
               onChange={(e) => setNewCategoryName(e.target.value)}
             />
@@ -180,7 +157,7 @@ function CategoriesAside() {
             id="add-category-button"
             onClick={handleAddCategory}
           >
-            Add
+            {t("add")}
           </button>
         </div>
         <hr />
@@ -189,7 +166,7 @@ function CategoriesAside() {
             className="edit-category-label"
             htmlFor="edit-category-dropdown"
           >
-            Edit Category
+            {t("editCategory")}
           </label>
           <select
             className="dropdown-select"
@@ -198,9 +175,8 @@ function CategoriesAside() {
             onChange={(e) => setSelectedEditCategory(e.target.value)}
           >
             <option value="" disabled selected>
-              Choose an option
+              {t("chooseOption")}
             </option>
-            {/* Mapeando as categorias para criar as opções do dropdown */}
             {categories.map((category) => (
               <option key={category} value={category}>
                 {category}
@@ -212,13 +188,13 @@ function CategoriesAside() {
               className="aside-input"
               id="edit-category-name-input"
               type="text"
-              placeholder="New name"
+              placeholder={t("newName")}
               value={editCategoryName}
               onChange={(e) => setEditCategoryName(e.target.value)}
             />
           </div>
           <button className="action-button" onClick={handleEditCategory}>
-            Save
+            {t("save")}
           </button>
         </div>
         <hr />
@@ -227,7 +203,7 @@ function CategoriesAside() {
             className="delete-category-label"
             htmlFor="delete-category-dropdown"
           >
-            Delete Category
+            {t("deleteCategory")}
           </label>
           <select
             className="dropdown-select"
@@ -236,9 +212,8 @@ function CategoriesAside() {
             onChange={(e) => setSelectedDeleteCategory(e.target.value)}
           >
             <option value="" disabled selected>
-              Choose an option
+              {t("chooseOption")}
             </option>
-            {/* Mapeando as categorias para criar as opções do dropdown */}
             {categories.map((category) => (
               <option key={category} value={category}>
                 {category}
@@ -247,7 +222,7 @@ function CategoriesAside() {
           </select>
           <div className="delete-category-button-container">
             <button className="action-button" onClick={handleDeleteCategory}>
-              Delete
+              {t("delete")}
             </button>
           </div>
         </div>

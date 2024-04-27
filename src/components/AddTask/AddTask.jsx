@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { taskStore } from "../../stores/TaskStore";
-import { userStore } from "../../stores/UserStore";
 import { useNavigate } from "react-router-dom";
 import { categoryStore } from "../../stores/CategoryStore";
+import { taskStore } from "../../stores/TaskStore";
+import { userStore } from "../../stores/UserStore";
 import { toast } from "react-toastify";
 import "../AddTask/AddTask.css";
 import { useTranslation } from "react-i18next";
@@ -10,8 +10,9 @@ import { useTranslation } from "react-i18next";
 function AddTask() {
   const navigate = useNavigate();
   const [priority, setPriority] = useState("");
-  const { categories } = categoryStore(); // Obtém a lista de categorias
-  const { fetchTasks } = taskStore(); // Obtém a lista de tarefas
+  const { categories } = categoryStore();
+  const { fetchTasks } = taskStore();
+  const { t } = useTranslation();
 
   const [taskDetails, setTaskDetails] = useState({
     title: "",
@@ -30,7 +31,6 @@ function AddTask() {
   };
 
   const handlePriorityClick = (priorityValue) => {
-    console.log("priorityValue", priorityValue);
     setPriority(priorityValue);
   };
 
@@ -38,7 +38,6 @@ function AddTask() {
     const { name, value } = event.target;
     setTaskDetails({ ...taskDetails, [name]: value });
 
-    // Verifica se a data final é posterior à data inicial
     if (
       name === "startDate" &&
       taskDetails.limitDate &&
@@ -55,7 +54,6 @@ function AddTask() {
   };
 
   const handleSaveTask = async () => {
-    console.log("priority", priority);
     const category = {
       name: taskDetails.category,
     };
@@ -67,7 +65,6 @@ function AddTask() {
       limitDate: taskDetails.limitDate,
       category: category,
     };
-    console.log("newTask", newTask);
 
     try {
       const response = await fetch(
@@ -88,9 +85,11 @@ function AddTask() {
       } else {
         const responseBody = await response.text();
         console.error("Error adding task:", response.statusText, responseBody);
+        toast.error(t("errorAddingTask"));
       }
     } catch (error) {
       console.error("Error adding task:", error);
+      toast.error(t("errorAddingTask"));
     }
   };
 
@@ -98,7 +97,7 @@ function AddTask() {
     <div className="add-task">
       <div className="addTask-title">
         <div className="labels-addTask-top">
-          <label htmlFor="titulo-task">Title</label>
+          <label htmlFor="titulo-task">{t("titleLabel")}</label>
         </div>
         <div className="input-addTask-title">
           <input
@@ -112,7 +111,7 @@ function AddTask() {
       </div>
       <div className="addTask-description">
         <div className="labels-addTask-top">
-          <label htmlFor="descricao-task">Description</label>
+          <label htmlFor="descricao-task">{t("descriptionLabel")}</label>
         </div>
         <div className="input-addTask-description">
           <textarea
@@ -128,9 +127,7 @@ function AddTask() {
         <div className="status-and-priority">
           <div className="task-priority">
             <div className="field-titles">
-              <h4 className="taskH4" id="priority-h4">
-                Priority
-              </h4>
+              <h4 className="taskH4" id="priority-h4">{t("priorityTitle")}</h4>
             </div>
             <div className="priority-buttons">
               <button
@@ -140,7 +137,7 @@ function AddTask() {
                 id="low-button"
                 onClick={() => handlePriorityClick("100")}
               >
-                Low
+                {t("lowPriority")}
               </button>
               <button
                 className={`priority-button medium ${
@@ -149,7 +146,7 @@ function AddTask() {
                 id="medium-button"
                 onClick={() => handlePriorityClick("200")}
               >
-                Medium
+                {t("mediumPriority")}
               </button>
               <button
                 className={`priority-button high ${
@@ -158,19 +155,17 @@ function AddTask() {
                 id="high-button"
                 onClick={() => handlePriorityClick("300")}
               >
-                High
+                {t("highPriority")}
               </button>
             </div>
           </div>
           <div className="dates">
             <div className="field-titles">
-              <h4 className="taskH4" id="dates-h4">
-                Dates
-              </h4>
+              <h4 className="taskH4" id="dates-h4">{t("datesTitle")}</h4>
             </div>
             <div className="label-dates">
               <label htmlFor="startDate-editTask" className="label-start-date">
-                Start date:
+                {t("startDateLabel")}:
               </label>
             </div>
             <div className="input-dates">
@@ -183,7 +178,7 @@ function AddTask() {
               />
             </div>
             <div className="label-dates">
-              <label htmlFor="endDate-editTask">End date:</label>
+              <label htmlFor="endDate-editTask">{t("endDateLabel")}</label>
             </div>
             <div className="input-dates">
               <input
@@ -197,7 +192,7 @@ function AddTask() {
           </div>
           <div className="category">
             <div className="field-titles">
-              <h4 className="taskH4">Category</h4>
+              <h4 className="taskH4">{t("categoryTitle")}</h4>
             </div>
             <div className="div-dropdown">
               <select
@@ -208,7 +203,7 @@ function AddTask() {
                 required
               >
                 <option value="" disabled>
-                  Choose an option
+                  {t("chooseOption")}
                 </option>
                 {categories.map((category, index) => (
                   <option key={index} value={category}>
@@ -224,14 +219,14 @@ function AddTask() {
               id="save-button"
               onClick={handleSaveTask}
             >
-              Add Task
+              {t("addTaskButton")}
             </button>
             <button
               className="cancel-button"
               id="cancel-button"
               onClick={() => navigate("/home")}
             >
-              Cancel
+              {t("cancelButton")}
             </button>
           </div>
         </div>

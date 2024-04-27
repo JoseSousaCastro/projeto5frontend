@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 function AsideLogo() {
   const navigate = useNavigate();
   const { fetchTasks } = taskStore();
+  const { t } = useTranslation();
 
   const handleBackToHome = async () => {
     await fetchTasks();
@@ -17,7 +18,7 @@ function AsideLogo() {
     <div className="aside-logo">
       <div className="div-back-home">
         <p to="/home" className="link-to-home" onClick={handleBackToHome}>
-          Back to tasks
+          {t("backToTasks")}
         </p>
       </div>
       <img

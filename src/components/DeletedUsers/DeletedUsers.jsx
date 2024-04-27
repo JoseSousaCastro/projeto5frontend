@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 function DeletedUsers() {
   const { fetchUsers, users } = userStore();
   const [loaded, setLoaded] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     // Use fetchUsers para buscar os usuários apenas uma vez após a montagem do componente
@@ -18,7 +19,7 @@ function DeletedUsers() {
 
   // Verifica se os usuários já foram carregados
   if (!loaded) {
-    return <div>Loading...</div>;
+    return <div>{t("loading")}</div>;
   }
 
   // Filtrar usuários invisíveis
@@ -37,7 +38,7 @@ function DeletedUsers() {
       <div className="page-wrap-user-list" id="users-list-page-wrap">
         <div className="user-section">
           <div className="titulo-main">
-            <h2 className="main-home">Developer</h2>
+            <h2 className="main-home">{t("developer")}</h2>
           </div>
           <div className="panel" id="developer">
             {usersDeveloper.map((user) => (
@@ -49,7 +50,7 @@ function DeletedUsers() {
         </div>
         <div className="user-section">
           <div className="titulo-main">
-            <h2 className="main-home">Scrum Master</h2>
+            <h2 className="main-home">{t("scrumMaster")}</h2>
           </div>
           <div className="panel" id="scrum-master">
             {usersScrumMaster.map((user) => (
@@ -61,7 +62,7 @@ function DeletedUsers() {
         </div>
         <div className="user-section">
           <div className="titulo-main">
-            <h2 className="main-home">Product Owner</h2>
+            <h2 className="main-home">{t("productOwner")}</h2>
           </div>
           <div className="panel" id="product-owner">
             {usersProductOwner.map((user) => (

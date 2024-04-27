@@ -15,6 +15,7 @@ import { userStore } from "../../stores/UserStore";
 import { useTranslation } from "react-i18next";
 
 function DashboardMain() {
+  const { t } = useTranslation();
   const [loaded, setLoaded] = useState(false);
   const { fetchGlobalStats } = statsStore();
   const [websocketDashboard, setWebsocketDashboard] = useState(null); // Estado para armazenar o WebSocket do dashboard
@@ -113,16 +114,16 @@ function DashboardMain() {
   return (
     <div className="DashboardMain">
       <div className="dashboard-main-container">
-        <h2 className="stats-h2">Statistics</h2>
+        <h2 className="stats-h2">{t("statistics")}</h2>
         <div className="users-stats">
           <div className="users-stats-left">
             <div className="users-stats-div-total-users">
-              <label className="users-stats-labels-titles">Total Users: </label>
+              <label className="users-stats-labels-titles">{t("totalUsers")}:</label>
               <label className="users-stats-labels-values">{totalUsers}</label>
             </div>
             <div className="users-stats-div-confirmed-users">
               <label className="users-stats-labels-titles">
-                Confirmed Users:
+                {t("confirmedUsers")}:
               </label>
               <label className="users-stats-labels-values">
                 {totalConfirmedUsers}
@@ -130,7 +131,7 @@ function DashboardMain() {
             </div>
             <div className="users-stats-div-unconfirmed-users">
               <label className="users-stats-labels-titles">
-                Unconfirmed Users:
+                {t("unconfirmedUsers")}:
               </label>
               <label className="users-stats-labels-values">
                 {totalUnconfirmedUsers}
@@ -138,7 +139,7 @@ function DashboardMain() {
             </div>
           </div>
           <div className="users-stats-right">
-            <label>Users</label>
+            <label>{t("users")}</label>
             <ResponsiveContainer width="100%" height={200}>
               <AreaChart
                 width={300}
@@ -171,7 +172,7 @@ function DashboardMain() {
           <div className="tasks-stats-left">
             <div className="tasks-stats-div-total-todoTasks">
               <label className="tasks-stats-labels-titles">
-                Total To Do Tasks:
+                {t("totalToDoTasks")}:
               </label>
               <label className="tasks-stats-labels-values">
                 {totalToDoTasks}
@@ -179,7 +180,7 @@ function DashboardMain() {
             </div>
             <div className="tasks-stats-div-total-doingTasks">
               <label className="tasks-stats-labels-titles">
-                Total Doing Tasks:
+                {t("totalDoingTasks")}:
               </label>
               <label className="tasks-stats-labels-values">
                 {totalDoingTasks}
@@ -187,7 +188,7 @@ function DashboardMain() {
             </div>
             <div className="tasks-stats-div-total-doneTasks">
               <label className="tasks-stats-labels-titles">
-                Total Done Tasks:
+                {t("totalDoneTasks")}:
               </label>
               <label className="tasks-stats-labels-values">
                 {totalDoneTasks}
@@ -195,7 +196,7 @@ function DashboardMain() {
             </div>
             <div className="tasks-stats-div-tasksPerUser">
               <label className="tasks-stats-labels-titles">
-                Average Tasks Per User:
+                {t("averageTasksPerUser")}:
               </label>
               <label className="tasks-stats-labels-values">
                 {tasksPerUser}
@@ -203,7 +204,7 @@ function DashboardMain() {
             </div>
             <div className="tasks-stats-div-averageTaskTime">
               <label className="tasks-stats-labels-titles">
-                Average Task Time:
+                {t("averageTaskTime")}:
               </label>
               <label className="tasks-stats-labels-values">
                 {averageTaskTime}
@@ -211,7 +212,7 @@ function DashboardMain() {
             </div>
           </div>
           <div className="tasks-stats-right">
-            <label>Completed Tasks</label>
+            <label>{t("completedTasks")}</label>
             <ResponsiveContainer width="100%" height={200}>
               <AreaChart
                 width={300}
@@ -241,7 +242,7 @@ function DashboardMain() {
           </div>
         </div>
         <div className="categories-stats">
-          <label className="categories-stats-label">Categories:</label>
+          <label className="categories-stats-label">{t("categories")}:</label>
           <ul className="categories-list">
             {categoriesListDesc.map((item, index) => (
               <li className="categories-stats-li" key={index}>

@@ -5,6 +5,7 @@ import TaskCard from "../TaskCard/TaskCard";
 import { useTranslation } from "react-i18next";
 
 function DeletedTasks() {
+  const { t } = useTranslation();
   const tasks = taskStore((state) => state.tasks);
 
   const erasedTasks = tasks.filter((task) => task.erased);
@@ -18,7 +19,7 @@ function DeletedTasks() {
       <div className="page-wrap-task-list" id="tasks-users-list-page-wrap">
         <div className="task-section">
           <div className="titulo-main">
-            <h2 className="main-home">To do</h2>
+            <h2 className="main-home">{t("todo")}</h2>
           </div>
           <div className="panel" id="todo">
             {todoTasks.map((task) => (
@@ -30,7 +31,7 @@ function DeletedTasks() {
         </div>
         <div className="task-section">
           <div className="titulo-main">
-            <h2 className="main-home">Doing</h2>
+            <h2 className="main-home">{t("doing")}</h2>
           </div>
           <div className="panel" id="doing">
             {doingTasks.map((task) => (
@@ -42,7 +43,7 @@ function DeletedTasks() {
         </div>
         <div className="task-section">
           <div className="titulo-main">
-            <h2 className="main-home">Done</h2>
+            <h2 className="main-home">{t("done")}</h2>
           </div>
           <div className="panel" id="done">
             {doneTasks.map((task) => (

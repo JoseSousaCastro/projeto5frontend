@@ -4,11 +4,13 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 function AsideLogoUsers() {
+  const { t } = useTranslation();
+
   return (
     <div className="aside-logo">
       <div className="div-back-users-list">
         <Link to="/users-list" className="link-to-users-list">
-          Back to users
+          {t("backToUsers")}
         </Link>
       </div>
       <img
