@@ -1,23 +1,3 @@
-/*
------USERS-----
-- Contagem do número total de utilizadores (label com o valor)
-- Contagem do número de utilizadores confirmados e não confirmados (label com o valor)
-- Gráfico que mostre o número de utilizadores registados ao longo do tempo (e.g. gráfico de linhas). Os utilizadores apagados podem ser excluídos desta contagem.
-(Synchronized Area Chart - users apagados no de baixo)
-
------TASKS-----
-- Contagem do número de tarefas por estado (e.g. 5 em “DOING”, 2 em “DONE”, etc) (labels com o valor)
-- Gráfico cumulativo que mostre o número total de tarefas concluídas ao longo do tempo. Tarefas apagadas podem ser excluídas desta contagem.
-(Synchronized Area Chart - tarefas apagadas no de baixo)
-- Contagem do número médio de tarefas por utilizador (label com o valor)
-- Tempo médio que uma tarefa demora até ser concluída (data de conclusão é a última data em que a tarefa foi movida para “DONE”). (label com o valor)
-
------CATEGORIES-----
-- Listagem das categorias, ordenada da mais frequente (mais tarefas) à menos frequente
-
-
-*/
-
 import React, { useEffect, useState } from "react";
 import "../DashboardMain/DashboardMain.css";
 import {
@@ -32,6 +12,7 @@ import {
 } from "recharts";
 import { statsStore } from "../../stores/StatsStore";
 import { userStore } from "../../stores/UserStore";
+import { useTranslation } from "react-i18next";
 
 function DashboardMain() {
   const [loaded, setLoaded] = useState(false);

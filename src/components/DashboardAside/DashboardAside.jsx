@@ -1,11 +1,8 @@
-/* - Por cada utilizador, deverá ser possível consultar:
-	- Contagem total de tarefas atribuídas a este utilizador
-	- o Contagem do número de tarefas por estado (e.g. 5 em “DOING”, 2 em “DONE”, etc) */
-
 import React from "react";
 import { userStore } from "../../stores/UserStore";
 import { useNavigate } from "react-router-dom";
 import "../DashboardAside/DashboardAside.css";
+import { useTranslation } from "react-i18next";
 
 function DashboardAside() {
   const users = userStore((state) => state.users);

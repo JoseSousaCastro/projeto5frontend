@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { statsStore } from "../../stores/StatsStore";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 function Profile() {
   const [inputs] = useState("");

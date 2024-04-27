@@ -7,6 +7,7 @@ import { taskStore } from "../../stores/TaskStore";
 import deleteIcon from "/AoR/42.Projeto5/projeto5frontend/projeto5frontend/src/dark-cross.png";
 import restoreIcon from "/AoR/42.Projeto5/projeto5frontend/projeto5frontend/src/reload.png";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 export default function TaskCard({ task }) {
   const navigate = useNavigate();

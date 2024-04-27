@@ -2,6 +2,7 @@ import React from "react";
 import "../DeletedTasks/DeletedTasks.css";
 import { taskStore } from "../../stores/TaskStore";
 import TaskCard from "../TaskCard/TaskCard";
+import { useTranslation } from "react-i18next";
 
 function DeletedTasks() {
   const tasks = taskStore((state) => state.tasks);

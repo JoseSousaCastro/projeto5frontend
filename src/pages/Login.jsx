@@ -7,6 +7,7 @@ import { taskStore } from "../stores/TaskStore.jsx";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import "../pages/Login.css";
+import { useTranslation } from "react-i18next";
 
 function Login() {
   const [inputs, setInputs] = useState({});

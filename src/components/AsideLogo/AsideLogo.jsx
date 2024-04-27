@@ -2,6 +2,7 @@ import React from "react";
 import "../AsideLogo/AsideLogo.css";
 import { useNavigate } from "react-router-dom";
 import { taskStore } from "../../stores/TaskStore";
+import { useTranslation } from "react-i18next";
 
 function AsideLogo() {
   const navigate = useNavigate();

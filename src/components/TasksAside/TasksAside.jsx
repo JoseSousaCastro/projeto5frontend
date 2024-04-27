@@ -5,6 +5,7 @@ import { userStore } from "../../stores/UserStore";
 import { categoryStore } from "../../stores/CategoryStore";
 import { taskStore } from "../../stores/TaskStore";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 function TasksAside() {
   const { users, typeOfUser } = userStore(); // Obtém a lista de usuários

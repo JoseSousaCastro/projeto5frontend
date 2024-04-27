@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "../Password/Password.css";
 import { userStore } from "../../stores/UserStore";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 function Password() {
   const [inputs, setInputs] = useState({

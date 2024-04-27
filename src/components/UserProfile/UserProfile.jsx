@@ -7,6 +7,7 @@ import { MessageList } from "react-chat-elements";
 import { Input } from "react-chat-elements";
 import { Button } from "react-chat-elements";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 function UserProfile() {
   const [inputs, setInputs] = useState({});

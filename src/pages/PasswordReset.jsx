@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "../pages/PasswordReset.css";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 function PasswordReset() {
   const [inputs, setInputs] = useState({});

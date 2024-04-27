@@ -19,10 +19,13 @@ import RecoverPass from "./pages/RecoverPass";
 import PasswordReset from "./pages/PasswordReset";
 import Dashboard from "./pages/Dashboard";
 import UsersListAll from "./pages/UsersListAll";
-import { ToastContainer } from "react-toastify"; // Importe o ToastContainer aqui
-import "react-toastify/dist/ReactToastify.css"; // Importe o estilo CSS do react-toastify
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useTranslation } from "react-i18next"; // Importe useTranslation apenas aqui
 
 function App() {
+  const { t } = useTranslation(); // Use useTranslation aqui
+
   return (
     <>
       <ToastContainer />

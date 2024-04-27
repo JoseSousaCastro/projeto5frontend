@@ -5,6 +5,7 @@ import { userStore } from "../../stores/UserStore";
 import { categoryStore } from "../../stores/CategoryStore";
 import "../EditTask/EditTask.css";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 function EditTask() {
   const navigate = useNavigate();

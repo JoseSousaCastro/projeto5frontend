@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { userStore } from "../../stores/UserStore";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 export default function UserCard({ user }) {
   const { fetchUsers } = userStore();

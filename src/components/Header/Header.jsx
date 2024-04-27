@@ -4,6 +4,8 @@ import "../Header/Header.css";
 import { userStore } from "../../stores/UserStore";
 import { websocketStore } from "../../stores/WebsocketStore";
 import { toast } from "react-toastify";
+import { useLanguageStore } from "../../stores/LanguageStore";
+import { useTranslation } from "react-i18next";
 
 function Header() {
   const navigate = useNavigate();
@@ -14,6 +16,7 @@ function Header() {
   const [notificationCounts, setNotificationCounts] = useState({});
   const [selectedOption, setSelectedOption] = useState("default");
   const [selectedLanguage, setSelectedLanguage] = useState("en");
+  const { language, setLanguage } = useLanguageStore();
 
   const [websocket, setWebsocket] = useState(null);
 
@@ -209,8 +212,13 @@ function Header() {
     }
   };
 
+  useEffect(() => {
+    setLanguage(language);
+  }, [language]);
+
   const handleLanguageClick = (lang) => {
     setSelectedLanguage(lang);
+    setLanguage(lang);
   };
 
   return (
@@ -242,6 +250,7 @@ function Header() {
             PT
           </button>
         </div>
+
         <div className="nav-left-container">
           <nav className="nav-menu-left">
             <ul id="menu">

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../UsersMain/UsersMain.css";
 import { userStore } from "../../stores/UserStore";
 import UserCard from "../UserCard/UserCard";
+import { useTranslation } from "react-i18next";
 
 function UsersMain() {
   const { fetchUsers, users } = userStore();

@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { statsStore } from "../../stores/StatsStore";
 import { userStore } from "../../stores/UserStore";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 function UserProfileAside() {
   const [loaded, setLoaded] = useState(false);

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "../pages/RegisterConfirmation.css";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 function RegisterConfirmation() {
   const [inputs, setInputs] = useState({});

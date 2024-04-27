@@ -1,8 +1,7 @@
-// list all categories
-
 import React from "react";
 import "../CategoriesMain/CategoriesMain.css";
 import { categoryStore } from "../../stores/CategoryStore";
+import { useTranslation } from "react-i18next";
 
 function CategoriesMain() {
   const { categories } = categoryStore();
