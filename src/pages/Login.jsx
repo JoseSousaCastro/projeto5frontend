@@ -4,9 +4,10 @@ import { userStore } from "../stores/UserStore.jsx";
 import { categoryStore } from "../stores/CategoryStore.jsx";
 import { taskStore } from "../stores/TaskStore.jsx";
 import { toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import "../pages/Login.css";
 import { useTranslation } from "react-i18next";
+import useLanguageStore from "../stores/UseLanguageStore";
 
 function Login() {
   const [inputs, setInputs] = useState({});
@@ -15,6 +16,8 @@ function Login() {
   const updateCategoryStore = categoryStore((state) => state);
   const updateTaskStore = taskStore((state) => state);
   const fetchUsers = userStore((state) => state.fetchUsers);
+  const [selectedLanguage, setSelectedLanguage] = useState("en");
+  const setLanguage = useLanguageStore((state) => state.setLanguage);
   const { t } = useTranslation(); // Hook de tradução
 
   const handleChange = (event) => {
@@ -149,6 +152,11 @@ function Login() {
     }
   };
 
+  const handleLanguageClick = (lang) => {
+    setSelectedLanguage(lang);
+    setLanguage(lang);
+  };
+
   return (
     <div className="Login" id="login-outer-container">
       <div className="page-wrap" id="login-page-wrap">
@@ -185,6 +193,24 @@ function Login() {
                 {t("recoverPassword")}
               </Link>
             </p>
+          </div>
+          <div className="language-selector">
+            <button
+              className={`language-button ${
+                selectedLanguage === "en" ? "selected" : ""
+              }`}
+              onClick={() => handleLanguageClick("en")}
+            >
+              EN
+            </button>
+            <button
+              className={`language-button ${
+                selectedLanguage === "pt" ? "selected" : ""
+              }`}
+              onClick={() => handleLanguageClick("pt")}
+            >
+              PT
+            </button>
           </div>
         </div>
       </div>

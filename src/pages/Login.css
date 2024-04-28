@@ -110,3 +110,19 @@
 #recover-link:hover {
   font-weight: bold;
 }
+
+.language-button {
+  background-color: transparent;
+  color: var(--green3);
+  border: none;
+  font-size: 17px;
+  cursor: pointer;
+  align-items: center;
+  gap: 5px;
+}
+
+.language-button.selected {
+  font-weight: bold;
+  border: 2px solid var(--green3);
+  color: var(--green3);
+}

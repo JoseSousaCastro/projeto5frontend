@@ -1,14 +1,13 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import LanguageDetector from 'i18next-browser-languagedetector';
 import translationEN from './en.json';
 import translationPT from './pt.json';
 import useLanguageStore from '../stores/UseLanguageStore';
 
-const store = useLanguageStore.getState(); 
+const initialState = useLanguageStore.getState(); 
 
 i18n
-  .use(LanguageDetector)
+  // .use(LanguageDetector)
   .use(initReactI18next)
   .init({
     resources: {
@@ -19,7 +18,7 @@ i18n
         translation: translationPT,
       },
     },
-    lng: store.language, 
+    lng: initialState.language, 
     fallbackLng: 'en',
     interpolation: {
       escapeValue: false,
@@ -31,8 +30,9 @@ i18n
 
 // Assine a store para reagir a alterações de idioma
 useLanguageStore.subscribe(
-  (language) => {
-    i18n.changeLanguage(language);
+  (state) => {
+    console.log("Changing language to:", state.language);
+    i18n.changeLanguage(state.language);
   },
   (state) => state.language
 );

@@ -214,7 +214,6 @@ function Header() {
   };
 
   useEffect(() => {
-    setLanguage(language);
   }, [language]);
 
   const handleLanguageClick = (lang) => {
@@ -235,7 +234,7 @@ function Header() {
         </div>
         <div className="language-selector">
           <button
-            className={`language-button ${
+            className={`language-button-header ${
               selectedLanguage === "en" ? "selected" : ""
             }`}
             onClick={() => handleLanguageClick("en")}
@@ -243,7 +242,7 @@ function Header() {
             EN
           </button>
           <button
-            className={`language-button ${
+            className={`language-button-header ${
               selectedLanguage === "pt" ? "selected" : ""
             }`}
             onClick={() => handleLanguageClick("pt")}

@@ -164,7 +164,7 @@
   color: var(--green3);
 }
 
-.language-button {
+.language-button-header {
   background-color: transparent;
   color: var(--light-grey);
   border: none;
@@ -174,7 +174,7 @@
   gap: 5px;
 }
 
-.language-button.selected {
+.language-button-header.selected {
   font-weight: bold;
   border: 2px solid var(--green1);
   color: var(--green1);
