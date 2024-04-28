@@ -96,6 +96,9 @@ function Header() {
     if (notificationSocket) {
       notificationSocket.onmessage = (event) => {
         const data = JSON.parse(event.data);
+        if (data === "Session has expired. Token expired.") {
+        processLogout(event);
+        } else {
         console.log("Received notification:", data);
 
         const { senderUsername } = data;
@@ -115,8 +118,9 @@ function Header() {
           }
         });
         setNotificationsCount((prevCount) => prevCount + 1); // Incrementar a contagem total de notificações
+        }
       };
-    }
+    }        
   }, [token]);
 
   const processLogout = async (event) => {
