@@ -7,7 +7,6 @@ import useLanguageStore from '../stores/UseLanguageStore';
 const initialState = useLanguageStore.getState(); 
 
 i18n
-  // .use(LanguageDetector)
   .use(initReactI18next)
   .init({
     resources: {

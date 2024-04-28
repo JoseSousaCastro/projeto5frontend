@@ -15,4 +15,3 @@ const useLanguageStore = create(persist(
 ));
 
 export default useLanguageStore;
-

@@ -30,8 +30,7 @@
 
 .aside-tasksAside {
     width: 300px;
-    min-height: 720px;
-    max-height: 1000px;
+    height: 85vh;
     float: left;
     background-color: var(--light-grey);
     text-align: center;
