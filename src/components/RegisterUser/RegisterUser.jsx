@@ -10,6 +10,7 @@ function RegisterUser() {
   const [inputs, setInputs] = useState({});
   const navigate = useNavigate();
   const fetchUsers = userStore((state) => state.fetchUsers);
+  const token = userStore((state) => state.token);
 
   const handleChange = (event) => {
     const name = event.target.name;
@@ -38,6 +39,7 @@ function RegisterUser() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            token: token,
           },
           body: JSON.stringify(user),
         }
