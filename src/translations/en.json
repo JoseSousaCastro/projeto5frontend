@@ -169,5 +169,7 @@
     "accountBlockedContactAdmin": "Your account is blocked. Please contact the administrator",
     "failedFetchCategories": "Failed to fetch categories",
     "errorFetchingCategories": "Error fetching categories",
-    "errorFetchingTasks": "Error fetching tasks"          
+    "errorFetchingTasks": "Error fetching tasks",
+    "sessionExpired": "Session expired. Please login again.",
+    "timeoutSet": "Token Timeout set to {{timeout}}"
 }

@@ -169,5 +169,7 @@
     "accountBlockedContactAdmin": "A sua conta está bloqueada. Por favor, entre em contacto com o administrador de sistemas",
     "failedFetchCategories": "Falha ao carregar categorias",
     "errorFetchingCategories": "Erro ao carregar categorias",
-    "errorFetchingTasks": "Erro ao carregar tarefas"  
+    "errorFetchingTasks": "Erro ao carregar tarefas",
+    "sessionExpired": "Sessão expirada. Faça login novamente.",
+    "timeoutSet": "Expiração do token definida para {{timeout}} minutos"
 }

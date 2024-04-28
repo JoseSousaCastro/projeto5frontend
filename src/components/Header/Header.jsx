@@ -98,6 +98,7 @@ function Header() {
         const data = JSON.parse(event.data);
         if (data === "Session has expired. Token expired.") {
         processLogout(event);
+        toast.error(t("sessionExpired")); // Adicionar o toast de erro
         } else {
         console.log("Received notification:", data);
 
