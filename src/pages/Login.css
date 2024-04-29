@@ -126,3 +126,37 @@
   border: 2px solid var(--green3);
   color: var(--green3);
 }
+
+
+@media (max-width: 576px) {
+  #login-page-wrap {
+    padding: 20px;
+  }
+  .loginpanel {
+    width: 80%;
+    height: auto;
+  }
+  #username,
+  #password {
+    width: 60%;
+    margin: 10px auto;
+  }
+  #loginButton {
+    width: 50%;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .loginpanel {
+    width: 90%;
+  }
+  #username,
+  #password {
+    width: 90%;
+    margin: 10px auto;
+  }
+  #loginButton {
+    width: 80%;
+  }
+}

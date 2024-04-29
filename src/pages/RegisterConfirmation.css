@@ -100,3 +100,35 @@
       color: var(--green1);
     }
   
+    @media (max-width: 575px) {
+      #register-confirm-page-wrap {
+        padding: 20px;
+      }
+      .register-confirm-panel {
+        width: 90%;
+        height: auto;
+      }
+      #password-register-confirm,
+      #passwordConfirm-register-confirm {
+        width: 90%;
+        margin: 10px auto;
+      }
+      #registerButton-register-confirm {
+        width: 80%;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .register-confirm-panel {
+        width: 90%;
+      }
+      #password-register-confirm,
+      #passwordConfirm-register-confirm {
+        width: 90%;
+        margin: 10px auto;
+      }
+      #registerButton-register-confirm {
+        width: 80%;
+      }
+    }
+    

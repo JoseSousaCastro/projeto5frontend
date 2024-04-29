@@ -104,3 +104,34 @@
         font-weight: bold;
       }
   
+      @media (max-width: 576px) {
+        #recover-password-page-wrap {
+          padding: 20px;
+        }
+        .recover-password-panel {
+          width: 90%;
+          height: auto;
+        }
+        #email {
+          width: 90%;
+          margin: 10px auto;
+        }
+        #recoverButton {
+          width: 80%;
+        }
+      }
+
+      
+      @media (max-width: 768px) {
+        .recover-password-panel {
+          width: 90%;
+        }
+        #email {
+          width: 90%;
+          margin: 10px auto;
+        }
+        #recoverButton {
+          width: 80%;
+        }
+      }
+      

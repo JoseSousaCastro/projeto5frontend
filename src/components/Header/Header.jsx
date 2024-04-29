@@ -19,6 +19,8 @@ function Header() {
   const { language, setLanguage } = useLanguageStore();
   const { t } = useTranslation();
 
+  const username = userStore((state) => state.username);
+
   const [websocket, setWebsocket] = useState(null);
 
   const firstName = userStore((state) => state.firstName);
@@ -94,10 +96,14 @@ function Header() {
     setWebsocket(notificationSocket);
 
     if (notificationSocket) {
-      notificationSocket.onmessage = (event) => {
+      notificationSocket.onmessage = async (event) => {
         const data = JSON.parse(event.data);
-        if (data === "Session has expired. Token expired.") {
-        processLogout(event);
+
+        console.log("Received notification:", data);
+        console.log("data.message", data.message);
+
+        if (data.message === "LogoutRequest") {
+        await processForcedLogout(event);
         toast.error(t("sessionExpired")); // Adicionar o toast de erro
         } else {
         console.log("Received notification:", data);
@@ -123,6 +129,45 @@ function Header() {
       };
     }        
   }, [token]);
+
+  const processForcedLogout = async (event) => {
+    event.preventDefault();
+    try {
+      const logout = await fetch(
+        "http://localhost:8080/project5/rest/users/forcedLogout",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            username: username,
+          },
+        }
+      );
+      if (!logout.ok) {
+        console.error("Error: Logout failed.");
+      } else {
+        console.log("Logout successful.");
+        updateUserStore.updateToken(""); // Limpar o token
+        updateUserStore.updatePassword(""); // Limpar a senha, se estiver armazenada
+        // Limpar dados armazenados na sessionStorage
+        sessionStorage.removeItem("categoryStore");
+        sessionStorage.removeItem("taskStore");
+        sessionStorage.removeItem("userStore");
+        sessionStorage.removeItem("websocketStore");
+
+        // Limpar o WebSocket
+        if (websocket) {
+          websocket.close();
+        }
+        console.log("WebSocket closed");
+        toast.success(t("logoutSuccess")); // Adicionar o toast de sucesso
+
+        navigate("/", { replace: true });
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
 
   const processLogout = async (event) => {
     event.preventDefault();
