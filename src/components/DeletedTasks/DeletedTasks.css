@@ -27,10 +27,12 @@
     padding: 0;
   }
 
-  .page-wrap-task-list {
+  .page-wrap-task-list-deleted {
     display: flex;
     justify-content: space-between;
     padding-inline: 50px;
+    height: 85vh;
+
   }
 
   .task-section {

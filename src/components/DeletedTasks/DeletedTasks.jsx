@@ -16,7 +16,7 @@ function DeletedTasks() {
 
   return (
     <div className="tasks-users-list" id="tasks-users-list-outer-container">
-      <div className="page-wrap-task-list" id="tasks-users-list-page-wrap">
+      <div className="page-wrap-task-list-deleted" id="tasks-users-list-page-wrap">
         <div className="task-section">
           <div className="titulo-main">
             <h2 className="main-home">{t("todo")}</h2>

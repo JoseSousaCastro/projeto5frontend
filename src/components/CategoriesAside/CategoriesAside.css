@@ -30,8 +30,7 @@
 
   .aside {
     width: 300px;
-    min-height: 720px;
-    max-height: 1000px;
+    height: 90vh;
     padding-top: 40px;
     float: left;
     background-color: var(--light-grey);

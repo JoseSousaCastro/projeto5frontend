@@ -31,6 +31,8 @@
     display: flex;
     justify-content: space-between;
     padding-inline: 50px;
+    height: 85vh;
+
   }
 
   .user-section {

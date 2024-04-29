@@ -63,7 +63,7 @@ function RegisterUser() {
 
   return (
     <div className="Register" id="register-outer-container">
-      <div className="page-wrap" id="register-page-wrap">
+      <div className="page-wrap-register-user" id="register-page-wrap">
         <div className="center-container-register">
           <div className="registerPanel-user">
             <form

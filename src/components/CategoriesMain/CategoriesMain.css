@@ -32,6 +32,8 @@
   flex-direction: column;
   align-items: center;
   padding-top: 60px;
+  height: 85vh;
+
 }
 .main-home-categories {
     margin-top: 20px;

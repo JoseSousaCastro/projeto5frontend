@@ -35,7 +35,7 @@ function DeletedUsers() {
 
   return (
     <div className="users-list" id="users-list-outer-container">
-      <div className="page-wrap-user-list" id="users-list-page-wrap">
+      <div className="page-wrap-user-list-deleted" id="users-list-page-wrap">
         <div className="user-section">
           <div className="titulo-main">
             <h2 className="main-home">{t("developer")}</h2>

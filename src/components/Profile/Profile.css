@@ -30,6 +30,8 @@
 .global-edit-profile {
     display: flex;
     gap: 100px;
+    height: 85vh;
+
 }
 
 .editProfilePanel {
